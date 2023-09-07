@@ -1,0 +1,222 @@
+System coldstorageservice
+
+//MESSAGGI
+Request storerequest : storerequest(kg)
+
+Reply loadaccepted : loadaccepted(ticket)
+Reply loadrejected : loadrejected(_)
+
+Request verifyticket : verifyticket(ticket)
+Reply chargetaken : chargetaken(_)
+Reply invalidticket : invalidticket(_)
+
+
+
+Dispatch doJob: doJob(_)
+Dispatch stop : stop(_)
+Dispatch resume : resume(_)
+Dispatch updateled : updateled(_)
+
+
+
+Request engage        : engage(OWNER)
+
+Request moverobot    :  moverobot(TARGETX, TARGETY)
+
+
+
+//CONTESTI
+Context ctxcoldstorageservice ip [host="localhost" port=9990]
+
+Context ctxbasicrobot ip [host="127.0.0.1" port=8020]
+
+Context ctxraspi ip [host="localhost" port=9992]
+
+Context ctxaccessgui ip [host="127.0.0.1" port=9993]
+
+
+
+
+ExternalQActor basicrobot context ctxbasicrobot
+
+//ACCESS GUI
+QActor testgui context ctxaccessgui {
+	[# var Load : Int =0 #]
+	State s0 initial{
+		println("GUI START, sending request to cold storage service") color blue
+		delay 3000
+		request coldstorageservice -m	storerequest: storerequest(20)
+	}
+	Transition t0 whenReply loadaccepted -> enterticket
+				whenReply loadrejected -> handlereject
+				
+				
+	State handlereject {
+		println("frigo pieno, impossibile depositare altro cibo") color blue
+	}
+	
+	State enterticket {
+		onMsg(loadaccepted : loadaccepted(ticket)){
+			[# Load = payloadArg(0).toInt() #]}
+		delay 2000
+		println("inserimento codice biglietto per verifica") color blue
+		request coldstorageservice -m verifyticket : verifyticket(ticket)
+		}
+		Transition t0 whenReply chargetaken -> finish
+					  whenReply invalidticket -> timeout
+					  
+					  
+	State finish{
+		println("deposito andato a buon fine, termino...") color blue
+	}
+	
+	
+	State timeout{
+		println("biglietto non valido o tempo scaduto, provare nuovamente a inviare una richiesta") color blue
+	}
+	Goto s0
+	
+}
+
+
+
+//STORAGE SERVICE
+QActor coldstorageservice context ctxcoldstorageservice{
+	[#
+			val MAXW : Int = 100
+			var CurrentWeight : Int = 0
+			var FreeSpace : Int = 100
+			var TruckLoad : Int = 0
+			var Ticket : Int = 1234
+			var TruckTicket : Int = 0
+	#]
+	State s0 initial{
+		println("FRIDGE SERVICE START, capienza: ${MAXW}, free space:${FreeSpace}") color green
+		
+	} 
+	Goto state_idle
+	
+	
+	State state_idle{
+		println("waiting for requests...") color green 
+	}
+	Transition t0 whenRequest storerequest	-> handle_request
+				  whenRequest verifyticket -> ticketvalidation
+				  
+	
+	
+	State handle_request {
+		printCurrentMessage color green
+		onMsg(storerequest: storerequest(KG)){
+			[# TruckLoad = payloadArg(0).toInt() #]
+			if [# TruckLoad<= FreeSpace #]{
+				[# FreeSpace -= TruckLoad 
+					CurrentWeight += TruckLoad
+				#]
+				println("richiesta di deposito accettata, carico: ${TruckLoad} kg, spazio libero nel frigo: ${FreeSpace} kg.") color green
+				replyTo storerequest with loadaccepted : loadaccepted(Ticket)
+			}
+			else {
+				println("richiesta di deposito rifiutata, non c'e spazio sufficiente") color green
+				replyTo storerequest with loadrejected : loadrejected(_)
+			}
+		}
+	}
+	Goto state_idle
+	
+	
+	State ticketvalidation {
+		printCurrentMessage color green
+		onMsg (verifyticket : verifyticket(TruckTicket)){
+			[# TruckTicket = payloadArg(0).toInt() #]}
+		if [# TruckTicket == Ticket #]{
+			println("biglietto valido, inizio il deposito del carico da indoor a cold room")
+			replyTo verifyticket with chargetaken: chargetaken(_)
+			forward transporttrolley -m doJob : doJob(_)
+		}
+		else {
+			println("biglietto non valido, impossibile procedere con il deposito") color green
+			replyTo verifyticket with invalidticket: invalidticket(_)
+		}
+			
+	}
+	Goto state_idle
+	
+	}
+	
+	
+QActor transporttrolley context ctxcoldstorageservice{
+	State s0 initial{
+		println("TRANSPORT TROLLEY START, engage basicrobot") color yellow
+		request basicrobot -m engage : engage(transporttrolley)
+		forward warningdevice -m updateled : updateled(LED_OFF)
+	}
+	Goto idle
+	
+	State idle {
+		request basicrobot -m moverobot : moverobot (0,0)
+		println("waiting for requests...")
+	}
+	Transition t0 whenMsg doJob -> job
+	
+	State job {
+		println("transporttrolley si dirige all'indoor") color yellow
+		request basicrobot -m moverobot : moverobot (7,0)
+		forward warningdevice -m updateled: updateled(LED_BLINK)
+	}
+	Transition t0   whenTime 8000 -> coldroom
+					whenMsg stop -> halt1
+	
+	State coldroom{
+		println("transporttrolley si dirige alla cold room") color yellow
+		request basicrobot -m moverobot: moverobot (4,4)
+		forward warningdevice -m updateled: updateled(LED_BLINK)
+	}
+	Transition t0 whenTime 8000 -> idle
+				  whenMsg stop -> halt2
+				  
+				  
+	State halt1 {
+		forward basicrobot -m stop : stop(_)
+		forward warningdevice -m updateled: updateled(LED_ON)
+	}
+	Transition t0 whenMsg resume -> job
+	
+	
+	State halt2 {
+		forward basicrobot -m stop : stop(_)
+		forward warningdevice -m updateled: updateled(LED_ON)
+	}
+	Transition t0 whenMsg resume -> coldroom
+	
+}
+
+
+//RASPBERRY
+QActor alarmdevice context ctxraspi{
+	State s0 initial{
+		println("alarm device START...") color red
+	}
+	Goto alarm
+	
+	
+	State alarm{
+		delay 8000
+		println("invio allarme di stop al transporttrolley") color red
+		forward transporttrolley -m stop : stop(_)
+	}
+	Transition t0 whenTime 1500 -> resume
+	
+	State resume{
+		println("invio resume al transporttrolley") color red
+		forward transporttrolley -m resume : resume(_)
+	}
+	
+}
+
+
+QActor warningdevice context ctxraspi{
+	State s0 initial {
+		println("warning device START...") color cyan
+	}
+}
