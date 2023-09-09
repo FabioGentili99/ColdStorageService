@@ -197,19 +197,28 @@ div.imagedesc{
 </div>  
 
 <div class="body"> 
-<h2>Chiarimenti col cliente</h2>
+<h2>Introduzione</h2>
 <div class="remark">
-ci ha spiegato meglio che: 
+Sprint0 del progetto finale del corso di Ingegneria dei Sistemi Software M.<br>
+L'obiettivo di questa fase è quello di formalizzare gli elementi costitutivi del sistema da realizzare (struttura, interazioni, comportamento) e ottenere un primo modello.<br>
+In questo modo è possibile avere a disposizione un punto di partenza per discutere di eventuali correzioni con il committente e per organizzare un piano di lavoro con i successivi sprint.
 </div>
- 
-<h2>Overview</h2>
+</div>
 
+<h2>Requisiti</h2>
+<a href="./TemaFinale23.html">TemaFinale23</a>
  
-<div class="remark">
-Mettere paragrafi con: <br>
--sw fornito dal cliente <br>
--system abstrasct composta da:<br> 1) nodi computazionali NO e 2) service area
-</div>
+<h2>Chiarimenti</h2>
+
+
+ <h3>Software fornito dal committente</h3>
+ Insieme ai requisiti del sistema da realizzare, il committente ha fornito i seguenti componenti software:<br>
+ <ul>
+    <li> BasicRobot, componente che esegue comandi di spostamento di un DDR robot in modo technology independent</li>
+    <li> Software per l'utilizzo di sonar e led collegati al raspberry</LI>
+    <li> unibo.mapperQak23, software per la mappatura della service area, utile per creare un modello della stanza leggibile da una macchina</li>
+
+ </ul>
 
  
 
@@ -348,17 +357,65 @@ Mettere paragrafi con: <br>
 </table>
 </div>
 
+
+<h2>Overview</h2>
+Dall'analisi del testo dei requisiti sopra effettuata possiamo affermare che il sistema sarà composto da almeno 4 nodi computazionali:<br>
+<ul>
+    <li>ColdStorageService: componente che si occupa della gestione delle richieste dei camionisti, della cold room e del transport trolley.<br>
+    Costituisce quindi il core business del sistema e per questo motivo dovrà essere il primo da sviluppare</li>
+    <li>ServiceAccessGUI: applicazione grafica che consente ai camionisti di inviare le richieste di deposito al sistema e di verificare i loro ticket</li>
+    <li>RaspberryPi: componente che include tutto il software per il funzionamento del sonar e del led (alarm device e warning device)</li>
+    <li>DDR robot: componente fisico fornito dal cliente insieme al software per comandarlo.</li>
+</ul>
+<br>
+<h3>Service Area</h3>
+Date l'immagine e la descrizione della service area da parte del committente, si possono così sintetizzare gli elementi principali:<br>
+<ul>
+    <li>la stanza è di forma rettangolare</li>
+    <li>la zona HOME è posta nell'angolo nord-ovest. Il robot si trova qui all'avvio dell'applicazione</li>
+    <li>l'INDOOR è un'area sul lato opposto a HOME in cui il transport trolley deve recarsi ogni volta che un truck load è pronto a essere depositato</li>
+    <li>la cold room è la cella frigorifera dove si depositano i carichi. E' accessibile tramite una porta sul lato rivolto verso l'INDOOR</li>
+    <li>è presente un ostacolo in mezzo alla stanza</li>
+</ul>
+Grazie al software unibo.mapperQak23 fornito dal committente, è possibile ottenere una rappresentazione a griglia della service area, in cui ogni cella è localizzata tramite un sistema di coordinate (colonna,riga).<br>
+Ogni cella è un quadrato di lato pari a RD e HOME si trova in posizione (0,0).<br>
+La rappresentazione ottenuta è la seguente:<br>
+<br>
+<img src="./modello_servicearea.png" width="350" ><br>
+
+Legenda:
+<br>
+<ul>
+    <li>r: posizione corrente del robot</li>
+    <li>1: celle libere</li>
+    <li>X: celle occupate da un ostacolo/cold room</li>
+</ul>
+<br>
+<div class="remark">
+La posizione HOME è rappresentata dalla cella (0,0), INDOOR occupa le celle (0,4) e (1,4), PORT occupa le celle (4,3) e (5,3).
+</div>
+
+
+
 <h2>Formalizzazione dei requisiti</h2>
 <div class="remark">
     tabelle con: 
 entità, dati e messaggi
  </div>
 
-<h2>Models</h2> 
+<h2>Architettura logica</h2> 
+<h3>QAK</h3>
+Per modellare i concetti e le entità in gioco torna utile il metamodello QAK, ovvero un linguaggio con cui è possibile ottenere rapidamente un modello eseguibile del sistema basato su attori che si comportano come automi a stati finiti e che eseguono all'interno di un contesto.<br>
+Per ulteriori dettagli: <a href="./materialeProf/html/QakActors23.html"> Qak Actors</a>
+<br>
+Dato che disponiamo già delle conoscenze per utilizzare Qak e di altri progetti che potrebbero essere riutilizzati, la scelta di utilizzare questo linguaggio ci ha permesso di creare in poco tempo un primo prototipo del Cold Storage Service contenente gli elementi più importanti evidenziati finora nell'analisi dei requisiti.<br>
+L'architettura logica da cui partiremo per svolgere i prossimi sprint è riportata in figura:
+<img src="./coldstorageservicearch.png" width="800">
 
-<div class="remark">
-    why qak & architettura logica
- </div>
+
+
+
+
 <h2>Test Plans</h2> 
 <div class="remark">
     da definire
