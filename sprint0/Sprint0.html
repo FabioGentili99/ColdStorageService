@@ -1,0 +1,452 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <!--
+<link rel="stylesheet" type="text/css" href="../css/issStyle1.css">
+<script type="text/javascript" src="../css/issStyle.js"></script>
+-->
+<style type="text/css">
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+	font-size: 93%;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+	border-radius: 10px;
+	padding: 5px;
+}
+
+top {
+	width: 100%;
+}
+
+
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 90%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #abe876;
+    color: #1632cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 90%;
+	font-weight: bold;
+    color: #990000;
+	background-color: #fcf8c7;
+}
+ks{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #0000CD	;
+	font-size: 90%;
+}
+kc{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #008000	;
+	font-size: 90%;
+}
+pre{
+	font-family: "Consolas";
+	font-size: 85%;
+	background-color: #f5f5f5;
+	border: 1.5px solid silver;
+	padding: 5px;
+}
+m{
+	font-family: "Helvetica";
+	line-height: 100%;
+ 	font-size: 75%;
+}
+div.body{
+	 
+    font-size: 18px;
+}
+k{
+    color: #990000;
+	font-weight: bold;
+	font-size: 90%;
+}
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+	padding: 10px;
+}
+
+h2 {
+    background-color: #9ed8ff;
+    font-size: 130%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 100%;
+}
+h4 {
+    background-color: #ccffcc;
+    font-size: 100%;
+	width: 95%;
+	border-radius: 5px;
+	padding: 2px;
+}
+h5 {
+    background-color: #d5ffb0;
+    font-size: 100%;
+
+}
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+	width: 700px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}
+div.remark{
+	background-color: #E3F2FD;
+    border: 1.5px solid #d5f2ed;
+    padding: 15px;
+    margin: 10px;
+	border-radius: 25px;
+}
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+ol, ul, li {
+  margin: 0;
+  margin-left: 10px;
+  padding: 0;
+  padding-bottom: 5px;
+}
+
+table, th, td {
+	border: 1px solid black;
+}
+
+img {
+	border: 1.5px solid #d5f2ed
+
+}
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+div.wrapdesc{
+	width: 90%;
+	margin: auto;
+}
+
+div.imagedesc{
+	width: 85%;
+	margin: auto;
+}
+</style>
+    
+<head>
+   
+<title>TemplateToFill</title></head>
+    
+<body>
+<div id="top">
+<h1>Cold Storage Service -Sprint0- Analisi dei requisiti <font size="5"></font> </h1>
+</div>  
+
+<div class="body"> 
+<h2>Introduzione</h2>
+<div class="remark">
+Sprint0 del progetto finale del corso di Ingegneria dei Sistemi Software M.<br>
+L'obiettivo di questa fase è quello di formalizzare gli elementi costitutivi del sistema da realizzare (struttura, interazioni, comportamento) e ottenere un primo modello.<br>
+In questo modo è possibile avere a disposizione un punto di partenza per discutere di eventuali correzioni con il committente e per organizzare un piano di lavoro con i successivi sprint.
+</div>
+</div>
+
+<h2>Requisiti</h2>
+<a href="./TemaFinale23.html">TemaFinale23</a>
+ 
+<h2>Chiarimenti</h2>
+
+
+ <h3>Software fornito dal committente</h3>
+ Insieme ai requisiti del sistema da realizzare, il committente ha fornito i seguenti componenti software:<br>
+ <ul>
+    <li> BasicRobot, componente che esegue comandi di spostamento di un DDR robot in modo technology independent</li>
+    <li> Software per l'utilizzo di sonar e led collegati al raspberry</LI>
+    <li> unibo.mapperQak23, software per la mappatura della service area, utile per creare un modello della stanza leggibile da una macchina</li>
+
+ </ul>
+
+ 
+
+<h2 id="Dictionary">Dizionario</h2>
+<h3 id="Nouns">Nomi</h3>
+<table class="dictionary">
+    <tr>
+        <th title="Clicca per ordinare">Termine</th>
+        <th title="Clicca per ordinare">Definizione</th>
+    </tr>
+    <tr>
+        <td>Cold Storage Service</td>
+        <td><a href="https://en.wikipedia.org/wiki/Distributed_computing">Sistema software distribuito</a> che permette di gestire e coordinare il deposito di carichi di cibo. <br>
+            Questo è il<b> prodotto finale</b> nel suo insieme, che deve essere consegnato al cliente.
+    </tr>
+    <tr>
+        <td>Service Area</td>
+        <td>Superficie piana rettangolare, con presenza di un ostacolo </td>
+    </tr>
+    <tr>
+        <td>INDOOR</td>
+        <td>È una porta interna che si trova nella service area utile per inserire gli alimenti (frutta, verdura, ecc.)</td>
+    </tr>
+    <tr>
+        <td>Cold Room</td>
+        <td>È una cella frigorifera all'interno della service area dedicata alla conservazione degli alimenti, con capacità pari a <b>MAXW</b> kg.
+        </td>
+    </tr>
+    <tr>
+        <td>DDR robot</td>
+        <td>Differential Drive Robot (DDR), fornito dal cliente, posizionato all'interno dell'area di servizio. È il robot fisico vero e proprio, e può essere controllato tramite un software fornito dal cliente:  <a href="./materialeProf/html/BasicRobot23.html">BasicRobot</a></td>
+    </tr>
+    <tr>
+        <td>Transport trolley</td>
+        <td>Robot virtuale di forma quadrata, con lato pari a RD. Si trova inizialmente in posizione HOME per poi eseguire un’azione di deposito. Può spostarsi avanti, indietro, fermarsi e ruotare di 90°. Il carrello da trasporto è un attuatore di comando: può utilizzare il robot DDR per eseguire azioni in un ambiente reale.
+        </td>
+    </tr>
+    <tr>
+        <td>RD</td>
+        <td>Lunghezza del lato del Transport Trolley</td>
+    </tr>
+    <tr>
+        <td>HOME</td>
+        <td>Posizione di partenza del Transport Trolley, situata all’interno della service area</td>
+    </tr>
+    <tr>
+        <td>Deposit Action</td>
+        <td>Operazione che descrive il deposito del Food-Load in un contenitore costituito da 3 fasi:
+            <ol>
+           <li>prelevare un carico di cibo da un camion frigorifero situato in <b>INDOOR</b>; </li>
+           <li>spostarsi dalla porta <b>INDOOR</b> alla PORT della <b>ColdRoom</b> ; </li>
+           <li>depositare il <b>food-load</b> nella Cold Room; </li>
+            </ol>
+         Quando l’operazione di deposito è terminata, il <b>transport Trolley</b> o torna alla porta <b>INDOOR</b>  (se ci sono ticket validi) o torna nella sua posizione iniziale HOME.
+        </td>
+    </tr>
+    <tr>
+        <td>Fridge truck</td>
+        <td>Entità generica esterna al sistema, che deposita il carico di cibo di <b>FW</b> kg alla porta INDOOR.</td>
+    </tr>
+    <tr>
+        <td>Food-load</td>
+        <td>E’ il carico di cibo (kg) che il transport trolley deve caricare dal fridge truck (fermo sulla porta Indoor). </td>
+    </tr>
+    <tr>
+        <td>PORT</td>
+        <td>È la porta interna alla service area che consente di depositare il <b>food load</b> nella Cold Room.</td>
+    </tr>
+    <tr>
+        <td>Service Access GUI</td>
+        <td>E’ una interfaccia grafica di accesso al servizio che consente:
+            <ol>
+            <li> di vedere il peso attuale del cibo conservato nella Cold Room;</li>
+            <li> di inviare al ColdStorageService una richiesta di stoccaggio di nuovi <b>FW</b> kg di cibo:
+            se la richiesta viene accettata, restituisce un ticket che scade dopo un tempo prefissato (TICKETTIME secs) ;</li>
+           <li> prevede un campo per inserire il numero del ticket quando un fridge truck si trova all'INDOOR del servizio. </li>
+        </ol>
+            </td>
+    </tr>
+    <tr>
+        <td>FW</td>
+        <td>La quantità (kg) di cibo che sono stati depositati dal fridge truck sulla porta INDOOR.</td>
+    </tr>
+    <tr>
+        <td>ticket</td>
+        <td>Risorsa generata dal sistema nel momento in cui viene accettata una richiesta. E’ composta da un ID e una data di scadenza.</td>
+    </tr>
+    <tr>
+        <td>TICKETTIME</td>
+        <td>Tempo (espresso in secondi) associato ad ogni ticket che stabilisce la durata massima di validità di ciascuno di esso; trascorso il tempo il ticket perde la sua validità.</td>
+    </tr>
+    <tr>
+        <td>Sonar</td>
+        <td>Componente fisico utilizzato come <b>alarm devices</b>, fornito dal cliente insieme al software e può rilevare la presenza di ostacoli entro un certo ambito e indicarne la distanza </td>
+    </tr>
+    <tr>
+        <td>Led</td>
+        <td>Componente fisico  utilizzato come <b>warning devices</b>, fornito dal cliente insieme al software necessario per utilizzarlo. </td>
+    </tr>
+    <tr>
+        <td>RaspberryPi</td>
+        <td>Computer a scheda singola, ci riferiamo al modello  <a href="https://www.raspberrypi.com/products/raspberry-pi-4-model-b/">Raspberry pi4</a> </td>
+    </tr>
+    <tr>
+        <td>DLIMT</td>
+        <td>Distanza prefissata utilizzata per attivare il sistema di allarme che ferma il transport trolley.</td>
+    </tr>
+    <tr>
+        <td>Warning devices</td>
+        <td>Componente astratto che utilizza i Led (tramite il software fornito dal cliente) e verrà installato su un Raspberry Pi. Fornirà informazioni sullo stato attuale del transport trolley:
+            <ol>
+            <li> <b>OFF</b> quando il transport trolley si trova in HOME;</li>
+            <li><b>BLINKS</b> quando il transport trolley è in movimento;</li>
+            <li><b>ON</b> quando il transport trolley è fermo.</li>
+            </td>
+        </ol>
+    </tr><tr>
+        <td>Charge taken</td>
+        <td>Messaggio di conferma della validità del ticket (inserito da parte dell’utente). </td>
+    </tr><tr>
+        <td>Alarm Devices</td>
+        <td>Componente astratto che utilizza il <b>Sonar</b> (tramite il software fornito dal cliente) e verrà installato su un Raspberry PI. <br> Quando il <b>Sonar</b> misura una distanza inferiore ad un valore prefissato <b>DLIMT</b> il transport trolley deve essere fermato; il transport trolley tornerà a funzionare quando la distanza rilevata dal Sonar sarà superiore alla soglia <b>DLIMT</b>.</td>
+    </tr><tr>
+        <td>MINT</td>
+        <td>Durata (espressa in msec). Il transport trolley non potrà essere fermato nuovamente se questo tempo non è trascorso.</td>
+    </tr>
+    
+
+    
+    
+
+
+
+
+
+</table>
+</div>
+
+
+<h2>Overview</h2>
+Dall'analisi del testo dei requisiti sopra effettuata possiamo affermare che il sistema sarà composto da almeno 4 nodi computazionali:<br>
+<ul>
+    <li>ColdStorageService: componente che si occupa della gestione delle richieste dei camionisti, della cold room e del transport trolley.<br>
+    Costituisce quindi il core business del sistema e per questo motivo dovrà essere il primo da sviluppare</li>
+    <li>ServiceAccessGUI: applicazione grafica che consente ai camionisti di inviare le richieste di deposito al sistema e di verificare i loro ticket</li>
+    <li>RaspberryPi: componente che include tutto il software per il funzionamento del sonar e del led (alarm device e warning device)</li>
+    <li>DDR robot: componente fisico fornito dal cliente insieme al software per comandarlo.</li>
+</ul>
+<br>
+<h3>Service Area</h3>
+Date l'immagine e la descrizione della service area da parte del committente, si possono così sintetizzare gli elementi principali:<br>
+<ul>
+    <li>la stanza è di forma rettangolare</li>
+    <li>la zona HOME è posta nell'angolo nord-ovest. Il robot si trova qui all'avvio dell'applicazione</li>
+    <li>l'INDOOR è un'area sul lato opposto a HOME in cui il transport trolley deve recarsi ogni volta che un truck load è pronto a essere depositato</li>
+    <li>la cold room è la cella frigorifera dove si depositano i carichi. E' accessibile tramite una porta sul lato rivolto verso l'INDOOR</li>
+    <li>è presente un ostacolo in mezzo alla stanza</li>
+</ul>
+Grazie al software unibo.mapperQak23 fornito dal committente, è possibile ottenere una rappresentazione a griglia della service area, in cui ogni cella è localizzata tramite un sistema di coordinate (colonna,riga).<br>
+Ogni cella è un quadrato di lato pari a RD e HOME si trova in posizione (0,0).<br>
+La rappresentazione ottenuta è la seguente:<br>
+<br>
+<img src="./modello_servicearea.png" width="350" ><br>
+
+Legenda:
+<br>
+<ul>
+    <li>r: posizione corrente del robot</li>
+    <li>1: celle libere</li>
+    <li>X: celle occupate da un ostacolo/cold room</li>
+</ul>
+<br>
+<div class="remark">
+La posizione HOME è rappresentata dalla cella (0,0), INDOOR occupa le celle (0,4) e (1,4), PORT occupa le celle (4,3) e (5,3).
+</div>
+
+
+
+<h2>Formalizzazione dei requisiti</h2>
+<div class="remark">
+    tabelle con: 
+entità, dati e messaggi
+ </div>
+
+<h2>Architettura logica</h2> 
+<h3>QAK</h3>
+Per modellare i concetti e le entità in gioco torna utile il metamodello QAK, ovvero un linguaggio con cui è possibile ottenere rapidamente un modello eseguibile del sistema basato su attori che si comportano come automi a stati finiti e che eseguono all'interno di un contesto.<br>
+Per ulteriori dettagli: <a href="./materialeProf/html/QakActors23.html"> Qak Actors</a>
+<br>
+Dato che disponiamo già delle conoscenze per utilizzare Qak e di altri progetti che potrebbero essere riutilizzati, la scelta di utilizzare questo linguaggio ci ha permesso di creare in poco tempo un primo prototipo del Cold Storage Service contenente gli elementi più importanti evidenziati finora nell'analisi dei requisiti.<br>
+L'architettura logica da cui partiremo per svolgere i prossimi sprint è riportata in figura:
+<img src="./coldstorageservicearch.png" width="800">
+
+
+
+
+
+<h2>Test Plans</h2> 
+<div class="remark">
+    da definire
+ 
+</div>
+
+<h2>Testing</h2> 
+ 
+
+<h2>Deployment</h2> 
+
+ 
+<h2>Maintenance</h2> 
+ 
+<!-- USEFUL
+<table style="width:100%" border="1">
+<tr>
+<td style="width:50%">
+</td>
+<td></td>
+</tr>
+</table>
+-->
+	      	
+<br/><br/> 	
+</div>  
+
+<div style="background-color:rgba(86, 56, 253, 0.9); width:60%;text-align:left;color:white">
+By studentName email: student@studio.unibo.it, 
+<img src="./img/emiglio.png" alt="mbot" width="15%" height="15%">
+GIT repo: https://github.com/... 
+</div> 
+</body>
+</html>
