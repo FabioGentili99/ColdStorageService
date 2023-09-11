@@ -189,11 +189,20 @@ div.imagedesc{
     
 <head>
    
-<title>TemplateToFill</title></head>
+<title>Sprint0_v1</title>
+<link rel="stylesheet" type="text/css" href="../commons/resources/styles/templateISS.css">
+<link rel="stylesheet" type="text/css" href="../commons/resources/styles/main.css">
+<link rel="stylesheet" type="text/css" href="../commons/resources/styles/navbar.css">
+<link rel="stylesheet" type="text/css" href="../commons/resources/styles/table.css">
+<link rel="stylesheet" type="text/css" href="../commons/resources/styles/code.css">
+<script type="text/javascript" src="../commons/resources/scripts/myScripts.js"></script>
+
+
+</head>
     
 <body>
 <div id="top">
-<h1>Cold Storage Service -Sprint0- Analisi dei requisiti <font size="5"></font> </h1>
+<h1>Cold Storage Service: Sprint0 <font size="5"></font> </h1>
 </div>  
 
 <div class="body"> 
@@ -206,24 +215,18 @@ In questo modo è possibile avere a disposizione un punto di partenza per discut
 </div>
 
 <h2>Requisiti</h2>
-<a href="./TemaFinale23.html">TemaFinale23</a>
+<a href="../commons/html/TemaFinale23.html">TemaFinale23</a>
  
-<h2>Chiarimenti</h2>
+<h2>Chiarimenti con il cliente</h2>
 
 
- <h3>Software fornito dal committente</h3>
- Insieme ai requisiti del sistema da realizzare, il committente ha fornito i seguenti componenti software:<br>
- <ul>
-    <li> BasicRobot, componente che esegue comandi di spostamento di un DDR robot in modo technology independent</li>
-    <li> Software per l'utilizzo di sonar e led collegati al raspberry</LI>
-    <li> unibo.mapperQak23, software per la mappatura della service area, utile per creare un modello della stanza leggibile da una macchina</li>
 
- </ul>
 
+ 
  
 
 <h2 id="Dictionary">Dizionario</h2>
-<h3 id="Nouns">Nomi</h3>
+
 <table class="dictionary">
     <tr>
         <th title="Clicca per ordinare">Termine</th>
@@ -345,20 +348,20 @@ In questo modo è possibile avere a disposizione un punto di partenza per discut
         <td>MINT</td>
         <td>Durata (espressa in msec). Il transport trolley non potrà essere fermato nuovamente se questo tempo non è trascorso.</td>
     </tr>
-    
-
-    
-    
-
-
-
-
 
 </table>
 </div>
 
-
 <h2>Overview</h2>
+<h3>Software fornito dal committente</h3>
+Insieme ai requisiti del sistema da realizzare, il committente ha fornito i seguenti componenti software:<br>
+<ul>
+   <li> BasicRobot, componente che esegue comandi di spostamento di un DDR robot in modo technology independent</li>
+   <li> Software per l'utilizzo di sonar e led collegati al raspberry</LI>
+   <li> unibo.mapperQak23, software per la mappatura della service area, utile per creare un modello della stanza leggibile da una macchina</li>
+
+</ul>
+<h3> Abstract del Sistema</h3>
 Dall'analisi del testo dei requisiti sopra effettuata possiamo affermare che il sistema sarà composto da almeno 4 nodi computazionali:<br>
 <ul>
     <li>ColdStorageService: componente che si occupa della gestione delle richieste dei camionisti, della cold room e del transport trolley.<br>
@@ -368,6 +371,7 @@ Dall'analisi del testo dei requisiti sopra effettuata possiamo affermare che il 
     <li>DDR robot: componente fisico fornito dal cliente insieme al software per comandarlo.</li>
 </ul>
 <br>
+
 <h3>Service Area</h3>
 Date l'immagine e la descrizione della service area da parte del committente, si possono così sintetizzare gli elementi principali:<br>
 <ul>
@@ -395,22 +399,94 @@ Legenda:
 La posizione HOME è rappresentata dalla cella (0,0), INDOOR occupa le celle (0,4) e (1,4), PORT occupa le celle (4,3) e (5,3).
 </div>
 
-
-
 <h2>Formalizzazione dei requisiti</h2>
-<div class="remark">
-    tabelle con: 
-entità, dati e messaggi
- </div>
 
+<h3 id="Entities">Entità</h3>
+<table class="dictionary">
+    <tr>
+        <th>Entità</th>
+        <th>Attvità</th>
+        <th>Tipo</th>
+        <th>Descrizione</th>
+    </tr>
+    <tr>
+        <td>Fridge truck</td>
+        <td>Reattivo</td>
+        <td>Attore</td>
+        <td>Entità che si avvicina alla porta INDOOR della Service Area per scaricare nuovi food-load.
+        E' rappresentato come un attore per scopi di test: invia richieste fittizie di tanto in tanto.</td>
+    </tr>
+    <tr>
+        <td>ColdStorageService</td>
+        <td>Proattivo & Reattivo</td>
+        <td>Attore</td>
+        <td>Gestisce le richieste di fridgeTruck e gestice le azioni del Transport Trolley. Inoltre invia aggiornamenti agli Alarm Devices .</td>
+    </tr>
+    <tr>
+        <td>basicRobot</td>
+        <td>Reattivo</td>
+        <td>Attore</td>
+        <td>Entità che riceve comandi dal TransportTrolley e guida il DDR robot.</td>
+    </tr>
+    <tr>
+        <td>transportTrolley</td>
+        <td>Proattivo e Reattivo</td>
+        <td>Attore</td>
+        <td>Entità principale del ColdStorage system, che si muove all'interno della Service Area ed esegue le azioni di trasporto.</td>
+    </tr>
+    <tr>
+        <td>ServiceAcessGUI</td>
+        <td>Reattivo</td>
+        <td>Attore</td>
+        <td>Entità che riceve dati dal ColdStorageService e aggiorna una GUI, usata per monitorare il peso attuale del cibo conservato nella ColdRoom. Permette di inviare al ColdStorageService una richiesta di stoccaggio di nuovi FW kg di cibo.
+
+        </td>
+    </tr>
+    <tr>
+        <td>alarmDevice</td>
+        <td>Proattivo</td>
+        <td>Attore</td>
+        <td>Entità che invia messaggi al ColdStorageService quando rileva la presenza di un ostacolo.
+            Formalizziamo l'alarmDevice come attore perché ha un proprio flusso di controllo autonomo e invia messaggi al ColdStorageService. </td>
+    </tr>
+    <tr>
+        <td>warningDevice</td>
+        <td>Reattivo</td>
+        <td>Attore</td>
+        <td>Entità, che fa parte di un dispositivo intelligente, utilizzata per monitorare lo stato del transport trolley. Modelliamo anch'essa come un attore perché elabora i messaggi uno per uno e aggiorna di conseguenza lo stato dei Led.</td>
+    </tr>
+</table>
+
+<h4 id="notesEntities">Note</h4>
+<div>
+    <ol>
+        <li><b>Proattivo</b>:entità che crea o controlla una situazione invece di limitarsi a rispondere passivamente dopo che si è verificata.</li>
+        <li><b>Reattivo</b>:entità che agisce in risposta ad una situazione invece di crearla o controllarla. .</li>
+    </ol>
+</div>
+<h3 id="Data">Dati</h3>
+
+Abbiamo scelto <ksi>Kotlin</ksi> perché fornisce la sintassi built-in necessaria per dichiarare gli elementi del nostro modello e può essere incluso nel codice QAK.
+<table class="dictionary">
+    <tr>
+        <td>Dati</td>
+        <td>Tipo</td>
+
+        <td>Descrizione</td>
+    </tr>
+</table>
+
+<h3 id="Messages">Messaggi</h3>
 <h2>Architettura logica</h2> 
 <h3>QAK</h3>
 Per modellare i concetti e le entità in gioco torna utile il metamodello QAK, ovvero un linguaggio con cui è possibile ottenere rapidamente un modello eseguibile del sistema basato su attori che si comportano come automi a stati finiti e che eseguono all'interno di un contesto.<br>
-Per ulteriori dettagli: <a href="./materialeProf/html/QakActors23.html"> Qak Actors</a>
+Per ulteriori dettagli: <a href="../commons/html/QakActors23.html"> Qak Actors</a>
 <br>
 Dato che disponiamo già delle conoscenze per utilizzare Qak e di altri progetti che potrebbero essere riutilizzati, la scelta di utilizzare questo linguaggio ci ha permesso di creare in poco tempo un primo prototipo del Cold Storage Service contenente gli elementi più importanti evidenziati finora nell'analisi dei requisiti.<br>
+
+<h3>Architettura logica </h3>
 L'architettura logica da cui partiremo per svolgere i prossimi sprint è riportata in figura:
-<img src="./coldstorageservicearch.png" width="800">
+<img width="100%" src="./coldstorageservicearch.png" width="800">
 
 
 
