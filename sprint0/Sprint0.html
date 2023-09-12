@@ -531,23 +531,44 @@ Abbiamo scelto <ksi>Kotlin</ksi> perché fornisce la sintassi built-in necessari
         <td>Non c'è abbastanza spazio per depositare il nuovo food-load.</td>
     </tr>
     <tr>
+        <td>verifyticket</td>
+        <td>Richiesta</td>
+        <td>ServiceAccessGUI</td>
+        <td>ColdStorageService</td>
+        <td>Chiede la verifica se la durata del ticket sia ancora valida</td>
+    </tr>
+    <tr>
+        <td>chargetaken</td>
+        <td>Risposta</td>
+        <td>TransportTrolley</td>
+        <td>ColdStorageService ??</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>invalidticket</td>
+        <td>Risposta</td>
+        <td>ColdStorageService</td>
+        <td>ServiceAccessGUI</td>
+        <td></td>
+    </tr>
+    <tr>
         <td>doJob</td>
         <td>Dispatch</td>
         <td>ColdStorageService</td>
         <td>TransportTrolley</td>
-        <td>Comincia un'azione di deposito.</td>
+        <td>Comincia un'azione di deposito. ????</td>
     </tr>
     <tr>
         <td>stop</td>
         <td>Dispatch</td>
-        <td>ColdStorageService</td>
+        <td>alarmDevice</td>
         <td>TransportTrolley</td>
         <td>Arresta il robot e impedisce di scolgere qualsiasi attività.</td>
     </tr>
     <tr>
         <td>resume</td>
         <td>Dispatch</td>
-        <td>ColdStorageService</td>
+        <td>alarmDevice</td>
         <td>TransportTrolley</td>
         <td>Riprende l'attività del robot.</td>
     </tr>
