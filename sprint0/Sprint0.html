@@ -471,12 +471,95 @@ Abbiamo scelto <ksi>Kotlin</ksi> perché fornisce la sintassi built-in necessari
     <tr>
         <td>Dati</td>
         <td>Tipo</td>
-
         <td>Descrizione</td>
+    </tr>
+    <tr>
+        <td>truckLoad</td>
+        <td>variabile intera</td>
+        <td>Indica il peso diverso che ogni truckFridge vuole scaricare, espresso in KG.</td>
+    </tr>
+    <tr>
+        <td>TICKETTIME</td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
     </tr>
 </table>
 
 <h3 id="Messages">Messaggi</h3>
+<table class="dictionary">
+    <tr>
+        <td>Messaggio</td>
+        <td>Tipo</td>
+        <td>Mittente</td>
+        <td>Destinatario</td>
+        <td>Descrizione</td>
+    </tr>
+    <tr>
+        <td>storerequest</td>
+        <td>Richiesta</td>
+        <td>Fridge truck driver</td>
+        <td>ColdStorageService</td>
+        <td>Chiede se il foodload di FW kg può essere scaricato nella ColdStorageService.</td>
+    </tr>
+    <tr>
+        <td>loadaccepted</td>
+        <td>Risposta</td>
+        <td>ColdStorageService</td>
+        <td>Fridge truck driver</td>
+        <td>C'è abbastanza spazio per depositare il nuovo food-load.</td>
+    </tr>
+    <tr>
+        <td>loadrejected</td>
+        <td>Risposta</td>
+        <td>ColdStorageService</td>
+        <td>Fridge truck driver</td>
+        <td>Non c'è abbastanza spazio per depositare il nuovo food-load.</td>
+    </tr>
+    <tr>
+        <td>doJob</td>
+        <td>Dispatch</td>
+        <td>ColdStorageService</td>
+        <td>TransportTrolley</td>
+        <td>Comincia un'azione di deposito.</td>
+    </tr>
+    <tr>
+        <td>stop</td>
+        <td>Dispatch</td>
+        <td>ColdStorageService</td>
+        <td>TransportTrolley</td>
+        <td>Arresta il robot e impedisce di scolgere qualsiasi attività.</td>
+    </tr>
+    <tr>
+        <td>resume</td>
+        <td>Dispatch</td>
+        <td>ColdStorageService</td>
+        <td>TransportTrolley</td>
+        <td>Riprende l'attività del robot.</td>
+    </tr>
+    <tr>
+        <td>updateled</td>
+        <td>Dispatch</td>
+        <td>TransportTrolley</td>
+        <td>Warning Device</td>
+        <td>Aggiorna lo stato del led.</td>
+
+    </tr>
+    </table>
 <h2>Architettura logica</h2> 
 <h3>QAK</h3>
 Per modellare i concetti e le entità in gioco torna utile il metamodello QAK, ovvero un linguaggio con cui è possibile ottenere rapidamente un modello eseguibile del sistema basato su attori che si comportano come automi a stati finiti e che eseguono all'interno di un contesto.<br>
