@@ -489,10 +489,21 @@ Abbiamo scelto <ksi>Kotlin</ksi> perché fornisce la sintassi built-in necessari
         <td>Indica la quantità massima,espressa in KG, che il container della ColdRoom può dedicare alla conservazione del cibo . </td>
     </tr>
     <tr>
-        <td>CurrentWeight (FW?)</td>
+        <td>CurrentWeight</td>
         <td>variabile intera</td>
         <td>Inizialmente con valore nullo, indica il peso espresso in KG di food-load che il container della ColdRoom ha in quel momento. </td>
     </tr>
+    <tr>
+        <td>Ticket</td>
+        <td>variabile intera</td>
+        <td>Viene generato dal servizio una volta che il driver della truckFridge ha inviato una <b>storerequest</b>.</td>
+    </tr>
+    <tr>
+        <td>TruckTicket</td>
+        <td>variabile intera</td>
+        <td>Si tratta dell'intero associato al precedente ticket generato, che risulta essenziale per il driver quando dovrà inserirlo al momento dell'arrivo presso la porta INDOOR. Questo numero è importante per verificare se il ticket è ancora valido o se è scaduto.</td>
+    </tr>
+     <!--
     <tr>
         <td>TICKETTIME <br>(da inserire nel kotlin)</td>
         <td>variabile intera</td>
@@ -501,7 +512,7 @@ Abbiamo scelto <ksi>Kotlin</ksi> perché fornisce la sintassi built-in necessari
     <tr>
         <td>RD</td>
         <td>costante intera</td>
-        <td>Lunghezza di ogni lato del TransportTrolley.</td>
+        <td>Lunghezza di ogni lato del TransportTrolley.</td>   
     </tr>
     <tr>
         <td>DLIMT</td>
@@ -513,10 +524,11 @@ Abbiamo scelto <ksi>Kotlin</ksi> perché fornisce la sintassi built-in necessari
         <td>variabile FLOAT</td>
         <td>Intervallo di tempo espresso in msecs entro il quale il TransportTrolley non deve essere fermato se non è trascorso un certo periodo di tempo dal precedente stop. </td>
     </tr>
-   
+-->
+
     
 </table>
-
+Le variabili TICKETTIME,RD,DLIMT, MINT verranno introdotte nei prossimi sprint.
 <h3 id="Messages">Messaggi</h3>
 <table class="dictionary">
     <tr>
@@ -611,7 +623,7 @@ Dato che disponiamo già delle conoscenze per utilizzare Qak e di altri progetti
 L'architettura logica da cui partiremo per svolgere i prossimi sprint è riportata in figura:
 <img width="100%" src="./coldstorageservicearch.png" width="800">
 
-
+Sorgente del modello QAK: <a href="./ColdStorageService/src/coldstorageservice_sprint0.qak">coldstorageservice_sprint0.qak</a>
 
 
 
