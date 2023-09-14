@@ -1,5 +1,0 @@
-{"actor":"transporttrolley", "msgType":"dispatch", "curstate":"idle", "nextstate":"job", "msgId":"doJob"}
-{"actor":"transporttrolley", "msgType":"dispatch", "curstate":"job", "nextstate":"halt1", "msgId":"stop"}
-{"actor":"transporttrolley", "msgType":"dispatch", "curstate":"coldroom", "nextstate":"halt2", "msgId":"stop"}
-{"actor":"transporttrolley", "msgType":"dispatch", "curstate":"halt1", "nextstate":"job", "msgId":"resume"}
-{"actor":"transporttrolley", "msgType":"dispatch", "curstate":"halt2", "nextstate":"coldroom", "msgId":"resume"}
