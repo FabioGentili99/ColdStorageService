@@ -641,14 +641,29 @@ RISULTATI: <a href="./test_sprint0.png">output esecuzione test</a><br>
 SOURCE: <a href="./ColdStorageService/test/sprint0/TestStoreRequest.java">TestStoreRequest.java</a><br>
 QAK DI RIFERIMENTO: <a href="./ColdStorageService/src/test_coldstorageservice_sprint0.qak">test_coldstorageservice_sprint0.qak</a>
 
-<h2>Work Plan</h2>
+<h2>Piano di lavoro</h2>
 <div class="remark">
- E' stato deciso di suddividere il sistema in 2 sprint principali:
- <h3>Sprint1 - Core-Business</h3>
-
- <h3>Sprint2 - RaspeberryPi</h3>
+   
+    Questo primo Sprint (Sprint0) ha raggruppato i requisiti del progetto, delineando le seguenti macro componenti in ordine di priorità:
+    <ol>
+        <li><ksi>Core-business</ksi> : coinvolge la catena dei principali nodi del sistema(ColdStorageService,transportTrolley,BasicRobot,ServiceAcessGUI).
+        <br> <emni>PRIORITA' ALTA</emni> poichè il sistema non può fornire il servizio senza di essa.  </li>
+        <li><ksi>RaspberryPi</ksi> : include gli alarmDevice(sonar) e i warningDevice (led).
+        <br> <emni>PRIORITA' MEDIA</emni> poichè riguarda la sicurezza del servizio.</li>
+ 
+    </ol>
 </div>
  
+ E' stato deciso di suddividere il sistema in <b>2 sprint principali</b>, che segue le macro componenti sopra citate:
+ <h3><b>Sprint1</b> - Core-Business</h3>
+    Lo Sprint1 si concentrerà sulla Core-business essendo il primo requisito, e includerà:
+    <li>ColdStorageService: un'analisi del problema comprensiva di un modello di interazioni avanzate, un'analisi approfondita sulla service area, progettazione e realizzazione di un prototipo.</li>
+    <li>TransportTrolley: un'analisi del problema, progettazione e prototipazione dell'elemento che controllerà i movimenti del robot. </li>
+    <li>BasicRobot: Software già pronto e funzionante, dovrà solo essere integrato nel progetto.</li>
+    <li>ServiceAcessGUI</li>
+    <h3><b>Sprint2</b> - RaspberryPi</h3>
+
+ link per sprint1(Core-Business)
  
 <!-- USEFUL
 <table style="width:100%" border="1">
@@ -664,7 +679,8 @@ QAK DI RIFERIMENTO: <a href="./ColdStorageService/src/test_coldstorageservice_sp
 </div>  
 
 <div style="background-color:rgba(137, 129, 186, 0.9); width:60%;text-align:left;color:white">
-By andrea.isernio@studio.unibo.it & fabio.gentili3@studio.unibo.it <br>
+By
+ andrea.isernio@studio.unibo.it & fabio.gentili3@studio.unibo.it <br>
 <br>
 GIT repo: <a href="https://github.com/FabioGentili99/ColdStorageService">https://github.com/FabioGentili99/ColdStorageService </a>
 
