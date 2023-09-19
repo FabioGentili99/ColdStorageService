@@ -1,0 +1,68 @@
+System test_sprint0
+
+Request storerequest : storerequest(TruckLoad)
+Reply loadaccepted : loadaccepted(ticket)
+Reply loadrejected : loadrejected(_)
+
+Request verifyticket : verifyticket(Ticket)
+Reply chargetaken : chargetaken(_)
+Reply invalidticket : invalidticket(_)
+
+
+Context ctxtestsprint0 ip [host="localhost" port=9999]
+
+QActor test_sprint0 context ctxtestsprint0 {
+	[# val MAXW : Int = 100
+		var CurrentWeight : Int = 0
+		var FreeSpace : Int = 100
+		var TruckLoad : Int = 0
+		var Ticket : Int = 1234
+		var TruckTicket : Int = 0
+	#]
+	
+	State s0 initial{
+		println("[Test_ColdStorageService_sprint0] Waiting for messages...") color yellow
+	}
+	Transition t1	whenRequest storerequest	-> handle_store
+					whenRequest verifyticket -> ticketvalidation
+	
+	State handle_store{
+		onMsg(storerequest: storerequest(TRUCKLOAD)) {
+			[#
+				TruckLoad = payloadArg(0).toInt()
+			#]
+			
+		if [# TruckLoad<= FreeSpace #]{
+				[# FreeSpace -= TruckLoad 
+					CurrentWeight += TruckLoad
+				#]
+				println("richiesta di deposito accettata, carico: ${TruckLoad} kg, spazio libero nel frigo: ${FreeSpace} kg.") color yellow
+				replyTo storerequest with loadaccepted : loadaccepted(Ticket)
+			}
+			else {
+				println("richiesta di deposito rifiutata, non c'e spazio sufficiente") color yellow
+				replyTo storerequest with loadrejected : loadrejected(_)
+			}
+		}
+	}
+	Goto s0
+	
+	
+	State ticketvalidation {
+		printCurrentMessage color green
+		onMsg (verifyticket : verifyticket(TruckTicket)){
+			[# TruckTicket = payloadArg(0).toInt() #]}
+		if [# TruckTicket == Ticket #]{
+			println("biglietto valido, inizio il deposito del carico da indoor a cold room") color yellow
+			replyTo verifyticket with chargetaken: chargetaken(_)
+			//forward transporttrolley -m doJob : doJob(_)
+		}
+		else {
+			println("biglietto non valido, impossibile procedere con il deposito") color yellow
+			replyTo verifyticket with invalidticket: invalidticket(_)
+		}
+			
+	}
+	Goto s0
+	
+}

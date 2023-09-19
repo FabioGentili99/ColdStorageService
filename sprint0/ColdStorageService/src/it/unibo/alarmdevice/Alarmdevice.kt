@@ -33,7 +33,6 @@ class Alarmdevice ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name
 					action { //it:State
 						delay(8000) 
 						CommUtils.outred("invio allarme di stop al transporttrolley")
-						forward("stop", "stop(_)" ,"transporttrolley" ) 
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
@@ -41,12 +40,11 @@ class Alarmdevice ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name
 				 	 		stateTimer = TimerActor("timer_alarm", 
 				 	 					  scope, context!!, "local_tout_alarmdevice_alarm", 1500.toLong() )
 					}	 	 
-					 transition(edgeName="t013",targetState="resume",cond=whenTimeout("local_tout_alarmdevice_alarm"))   
+					 transition(edgeName="t08",targetState="resume",cond=whenTimeout("local_tout_alarmdevice_alarm"))   
 				}	 
 				state("resume") { //this:State
 					action { //it:State
 						CommUtils.outred("invio resume al transporttrolley")
-						forward("resume", "resume(_)" ,"transporttrolley" ) 
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002

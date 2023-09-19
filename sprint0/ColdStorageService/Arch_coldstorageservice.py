@@ -31,11 +31,6 @@ with Diagram('coldstorageserviceArch', show=False, outformat='png', graph_attr=g
           testgui=Custom('testgui','./qakicons/symActorSmall.png')
      testgui >> Edge(color='magenta', style='solid', xlabel='storerequest', fontcolor='magenta') >> coldstorageservice
      testgui >> Edge(color='magenta', style='solid', xlabel='verifyticket', fontcolor='magenta') >> coldstorageservice
-     coldstorageservice >> Edge(color='blue', style='solid', xlabel='doJob', fontcolor='blue') >> transporttrolley
      transporttrolley >> Edge(color='magenta', style='solid', xlabel='engage', fontcolor='magenta') >> basicrobot
-     transporttrolley >> Edge(color='blue', style='solid', xlabel='updateled', fontcolor='blue') >> warningdevice
      transporttrolley >> Edge(color='magenta', style='solid', xlabel='moverobot', fontcolor='magenta') >> basicrobot
-     transporttrolley >> Edge(color='blue', style='solid', xlabel='stop', fontcolor='blue') >> basicrobot
-     alarmdevice >> Edge(color='blue', style='solid', xlabel='stop', fontcolor='blue') >> transporttrolley
-     alarmdevice >> Edge(color='blue', style='solid', xlabel='resume', fontcolor='blue') >> transporttrolley
 diag

@@ -23,7 +23,6 @@ class Transporttrolley ( name: String, scope: CoroutineScope  ) : ActorBasicFsm(
 					action { //it:State
 						CommUtils.outyellow("TRANSPORT TROLLEY START, engage basicrobot")
 						request("engage", "engage(transporttrolley)" ,"basicrobot" )  
-						forward("updateled", "updateled(LED_OFF)" ,"warningdevice" ) 
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
@@ -40,13 +39,11 @@ class Transporttrolley ( name: String, scope: CoroutineScope  ) : ActorBasicFsm(
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t06",targetState="job",cond=whenDispatch("doJob"))
 				}	 
 				state("job") { //this:State
 					action { //it:State
 						CommUtils.outyellow("transporttrolley si dirige all'indoor")
 						request("moverobot", "moverobot(7,0)" ,"basicrobot" )  
-						forward("updateled", "updateled(LED_BLINK)" ,"warningdevice" ) 
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
@@ -54,14 +51,12 @@ class Transporttrolley ( name: String, scope: CoroutineScope  ) : ActorBasicFsm(
 				 	 		stateTimer = TimerActor("timer_job", 
 				 	 					  scope, context!!, "local_tout_transporttrolley_job", 8000.toLong() )
 					}	 	 
-					 transition(edgeName="t07",targetState="coldroom",cond=whenTimeout("local_tout_transporttrolley_job"))   
-					transition(edgeName="t08",targetState="halt1",cond=whenDispatch("stop"))
+					 transition(edgeName="t06",targetState="coldroom",cond=whenTimeout("local_tout_transporttrolley_job"))   
 				}	 
 				state("coldroom") { //this:State
 					action { //it:State
 						CommUtils.outyellow("transporttrolley si dirige alla cold room")
 						request("moverobot", "moverobot(4,4)" ,"basicrobot" )  
-						forward("updateled", "updateled(LED_BLINK)" ,"warningdevice" ) 
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
@@ -69,30 +64,23 @@ class Transporttrolley ( name: String, scope: CoroutineScope  ) : ActorBasicFsm(
 				 	 		stateTimer = TimerActor("timer_coldroom", 
 				 	 					  scope, context!!, "local_tout_transporttrolley_coldroom", 8000.toLong() )
 					}	 	 
-					 transition(edgeName="t09",targetState="idle",cond=whenTimeout("local_tout_transporttrolley_coldroom"))   
-					transition(edgeName="t010",targetState="halt2",cond=whenDispatch("stop"))
+					 transition(edgeName="t07",targetState="idle",cond=whenTimeout("local_tout_transporttrolley_coldroom"))   
 				}	 
 				state("halt1") { //this:State
 					action { //it:State
-						forward("stop", "stop(_)" ,"basicrobot" ) 
-						forward("updateled", "updateled(LED_ON)" ,"warningdevice" ) 
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t011",targetState="job",cond=whenDispatch("resume"))
 				}	 
 				state("halt2") { //this:State
 					action { //it:State
-						forward("stop", "stop(_)" ,"basicrobot" ) 
-						forward("updateled", "updateled(LED_ON)" ,"warningdevice" ) 
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t012",targetState="coldroom",cond=whenDispatch("resume"))
 				}	 
 			}
 		}

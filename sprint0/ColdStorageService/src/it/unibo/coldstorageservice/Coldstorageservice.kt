@@ -83,7 +83,6 @@ class Coldstorageservice ( name: String, scope: CoroutineScope  ) : ActorBasicFs
 						if(  TruckTicket == Ticket  
 						 ){CommUtils.outblack("biglietto valido, inizio il deposito del carico da indoor a cold room")
 						answer("verifyticket", "chargetaken", "chargetaken(_)"   )  
-						forward("doJob", "doJob(_)" ,"transporttrolley" ) 
 						}
 						else
 						 {CommUtils.outgreen("biglietto non valido, impossibile procedere con il deposito")
