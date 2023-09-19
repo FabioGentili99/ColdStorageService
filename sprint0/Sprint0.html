@@ -217,7 +217,6 @@ In questo modo è possibile avere a disposizione un punto di partenza per discut
 <h2>Requisiti</h2>
 <a href="../commons/html/TemaFinale23.html">TemaFinale23</a>
  
-<h2>Chiarimenti con il cliente</h2>
 
 
 
@@ -386,7 +385,9 @@ Ogni cella è un quadrato di lato pari a RD e HOME si trova in posizione (0,0).<
 La rappresentazione ottenuta è la seguente:<br>
 <br>
 <img src="./modello_servicearea.png" width="350" ><br>
-
+<div class="remark">
+    La posizione <ksi>HOME</ksi> è rappresentata dalla cella (0,0), <ksi>INDOOR</ksi> occupa le celle (0,4) e (1,4), <KSI>PORT</KSI> occupa le celle (4,3) e (5,3).
+    </div>
 Legenda:
 <br>
 <ul>
@@ -395,9 +396,7 @@ Legenda:
     <li>X: celle occupate da un ostacolo/cold room</li>
 </ul>
 <br>
-<div class="remark">
-La posizione HOME è rappresentata dalla cella (0,0), INDOOR occupa le celle (0,4) e (1,4), PORT occupa le celle (4,3) e (5,3).
-</div>
+
 
 <h2>Formalizzazione dei requisiti</h2>
 
@@ -574,7 +573,7 @@ Le variabili TICKETTIME,RD,DLIMT, MINT verranno introdotte nei prossimi sprint.
         <td>ServiceAccessGUI</td>
         <td>ColdStorageService ha elaborato che il ticket non è più valido/scaduto.</td>
     </tr>
-    <tr>
+     <!--<tr>
         <td>doJob</td>
         <td>Dispatch</td>
         <td>ColdStorageService</td>
@@ -603,6 +602,8 @@ Le variabili TICKETTIME,RD,DLIMT, MINT verranno introdotte nei prossimi sprint.
         <td>Aggiorna lo stato del led.</td>
 
     </tr>
+     -->
+    
     </table>
 <h2>Architettura logica</h2> 
 <h3>QAK</h3>
@@ -614,7 +615,7 @@ Dato che disponiamo già delle conoscenze per utilizzare Qak e di altri progetti
 <h3>Architettura logica </h3>
 L'architettura logica da cui partiremo per svolgere i prossimi sprint è riportata in figura:
 <img width="70%" src="./coldstorageservicearch.png" ><br>
-
+Dal ColdStorageService partono le risposte verso la ServiceAcessGUI. <br>
 Sorgente del modello QAK: <a href="./ColdStorageService/src/coldstorageservice_sprint0.qak">coldstorageservice_sprint0.qak</a>
 
 
@@ -665,8 +666,8 @@ QAK DI RIFERIMENTO: <a href="./ColdStorageService/src/test_coldstorageservice_sp
     <h3><b>Sprint2</b> - ServiceAccessGUI</h3>
 
 
-    <h3><b>Sprint3</b> - RaspebbryPi</h3>
-
+    <h3><b>Sprint3</b> - RaspberryPi</h3>
+  E' stato decisco che la quantità di tempo che sarà dedicata al completamento dello Sprint 1 sarà di circa <b>50 ore umane</b>. <br>
  link per sprint1(Core-Business)
  
 <!-- USEFUL
