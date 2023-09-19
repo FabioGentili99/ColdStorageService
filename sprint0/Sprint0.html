@@ -475,32 +475,24 @@ Abbiamo scelto <ksi>Kotlin</ksi> perché fornisce la sintassi built-in necessari
     </tr>
     <tr>
         <td>truckLoad</td>
-        <td>variabile intera</td>
+        <td>variabile intera > 0</td>
         <td>Indica il peso diverso di ogni food-load che il truckFridge vuole scaricare, espresso in KG.</td>
     </tr>
-    <tr>
-        <td>FreeSpace</td>
-        <td>variabile intera</td>
-        <td>Inizialmente con valore 100 poichè si considera vuota ad ogni avvio.</td>
-    </tr>
+
     <tr>
         <td>MAXW</td>
-        <td>costante intera</td>
+        <td>costante intera > 0</td>
         <td>Indica la quantità massima,espressa in KG, che il container della ColdRoom può dedicare alla conservazione del cibo . </td>
     </tr>
-    <tr>
-        <td>CurrentWeight</td>
-        <td>variabile intera</td>
-        <td>Inizialmente con valore nullo, indica il peso espresso in KG di food-load che il container della ColdRoom ha in quel momento. </td>
-    </tr>
+
     <tr>
         <td>Ticket</td>
-        <td>variabile intera</td>
+        <td>variabile intera > 0</td>
         <td>Viene generato dal servizio una volta che il driver della truckFridge ha inviato una <b>storerequest</b>.</td>
     </tr>
     <tr>
         <td>TruckTicket</td>
-        <td>variabile intera</td>
+        <td>variabile intera > 0</td>
         <td>Si tratta dell'intero associato al precedente ticket generato, che risulta essenziale per il driver quando dovrà inserirlo al momento dell'arrivo presso la porta INDOOR. Questo numero è importante per verificare se il ticket è ancora valido o se è scaduto.</td>
     </tr>
      <!--
@@ -636,7 +628,15 @@ A tal proposito sono stati scritti 4 Unit test:<br>
     <li>TestValidTicket, per verificare che il sistema valida i ticket con un codice corretto</li>
     <li>TestInvalidTicket, per verificare che il sistema non valida i ticket con un codice scorretto</li>
 </ol>
+
+
 <br>
+Per la scrittura di questi test sono state introdotte due variabili aggiuntive:
+<br>
+<ul>
+    <li>freespace, variabile intera >= 0 e inizializzata a MAXW, indica lo spazio attualmente libero nella cold room</li>
+    <li>currentweight, variabile intera >= 0 e inizializzata a 0, indica lo spazio attualmente occupato nella cold room</li>
+</ul>
 RISULTATI: <a href="./test_sprint0.png">output esecuzione test</a><br>
 SOURCE: <a href="./ColdStorageService/test/sprint0/TestStoreRequest.java">TestStoreRequest.java</a><br>
 QAK DI RIFERIMENTO: <a href="./ColdStorageService/src/test_coldstorageservice_sprint0.qakx">test_coldstorageservice_sprint0.qak</a>
