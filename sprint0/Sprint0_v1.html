@@ -255,7 +255,7 @@ In questo modo è possibile avere a disposizione un punto di partenza per discut
     </tr>
     <tr>
         <td>Transport trolley</td>
-        <td>Robot virtuale di forma quadrata, con lato pari a RD. Si trova inizialmente in posizione HOME per poi eseguire un’azione di deposito. Può spostarsi avanti, indietro, fermarsi e ruotare di 90°. Il carrello da trasporto è un attuatore di comando: può utilizzare il robot DDR per eseguire azioni in un ambiente reale.
+        <td>Attore del sistema che comunica con il ColdStorageService. Si trova inizialmente in posizione HOME per poi eseguire un’azione di deposito. Può spostarsi avanti, indietro, fermarsi e ruotare di 90°. Il carrello da trasporto è un attuatore di comando: può utilizzare il robot DDR per eseguire azioni in un ambiente reale.
         </td>
     </tr>
     <tr>
@@ -355,13 +355,15 @@ In questo modo è possibile avere a disposizione un punto di partenza per discut
 <h3>Software fornito dal committente</h3>
 Insieme ai requisiti del sistema da realizzare, il committente ha fornito i seguenti componenti software:<br>
 <ul>
-   <li> BasicRobot, componente che esegue comandi di spostamento di un DDR robot in modo technology independent</li>
-   <li> Software per l'utilizzo di sonar e led collegati al raspberry</LI>
-   <li> unibo.mapperQak23, software per la mappatura della service area, utile per creare un modello della stanza leggibile da una macchina</li>
+   <li> BasicRobot, componente che esegue comandi di spostamento di un DDR robot in modo technology independent
+<a href="../commons/html/BasicRobot23.html">BasicRobot23</a>.</li>
+   <li> Software per l'utilizzo di sonar e led collegati al raspberry <a href="../commons/it.unibo.raspIntro2023/"> Raspberry Utilities</a>.</li>
+   <li> unibo.mapperQak23, software per la mappatura della service area, utile per creare un modello della stanza leggibile da una macchina <a href="../commons/unibo.mapperQak23/">unibo.mapperQak23</a>.</li>
 
 </ul>
 <h3> Abstract del Sistema</h3>
-Dall'analisi del testo dei requisiti sopra effettuata possiamo affermare che il sistema sarà composto da almeno 4 nodi computazionali:<br>
+Dall'analisi del testo dei requisiti sopra effettuata possiamo affermare che il sistema sarà composto da 4 <b>contesti</b> e possono essere eseguiti sia su macchine diverse che sulla stessa:<br>
+
 <ul>
     <li>ColdStorageService: componente che si occupa della gestione delle richieste dei camionisti, della cold room e del transport trolley.<br>
     Costituisce quindi il core business del sistema e per questo motivo dovrà essere il primo da sviluppare</li>
@@ -370,6 +372,7 @@ Dall'analisi del testo dei requisiti sopra effettuata possiamo affermare che il 
     <li>DDR robot: componente fisico fornito dal cliente insieme al software per comandarlo.</li>
 </ul>
 <br>
+<h4>I contesti possono eseguire anche se un unico nodo computazionale.</h4> <br>
 
 <h3>Service Area</h3>
 Date l'immagine e la descrizione della service area da parte del committente, si possono così sintetizzare gli elementi principali:<br>
@@ -407,13 +410,6 @@ Legenda:
         <th>Attvità</th>
         <th>Tipo</th>
         <th>Descrizione</th>
-    </tr>
-    <tr>
-        <td>Fridge truck</td>
-        <td>Reattivo</td>
-        <td>Attore</td>
-        <td>Entità che si avvicina alla porta INDOOR della Service Area per scaricare nuovi food-load.
-        E' rappresentato come un attore per scopi di test: invia richieste fittizie di tanto in tanto.</td>
     </tr>
     <tr>
         <td>ColdStorageService</td>
@@ -615,7 +611,7 @@ Dato che disponiamo già delle conoscenze per utilizzare Qak e di altri progetti
 <h3>Architettura logica </h3>
 L'architettura logica da cui partiremo per svolgere i prossimi sprint è riportata in figura:
 <img width="70%" src="./coldstorageservicearch.png" ><br>
-Dal ColdStorageService partono le risposte verso la ServiceAcessGUI. <br>
+<h3>Dal <ksi>ColdStorageService</ksi> partono le risposte verso la <ksi>ServiceAcessGUI</ksi>. <br></h3>
 Sorgente del modello QAK: <a href="./ColdStorageService/src/coldstorageservice_sprint0.qak">coldstorageservice_sprint0.qak</a>
 
 
@@ -668,7 +664,7 @@ QAK DI RIFERIMENTO: <a href="./ColdStorageService/src/test_coldstorageservice_sp
 
     <h3><b>Sprint3</b> - RaspberryPi</h3>
   E' stato decisco che la quantità di tempo che sarà dedicata al completamento dello Sprint 1 sarà di circa <b>50 ore umane</b>. <br>
- link per sprint1(Core-Business)
+  <a href="Sprint1">Sprint1</a>   link per sprint1(Core-Business)
  
 <!-- USEFUL
 <table style="width:100%" border="1">
