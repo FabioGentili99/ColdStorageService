@@ -1,0 +1,434 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <!--
+<link rel="stylesheet" type="text/css" href="../css/issStyle1.css">
+<script type="text/javascript" src="../css/issStyle.js"></script>
+-->
+<style type="text/css">
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+	font-size: 93%;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+	border-radius: 10px;
+	padding: 5px;
+}
+
+top {
+	width: 100%;
+}
+
+
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 90%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #abe876;
+    color: #1632cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 90%;
+	font-weight: bold;
+    color: #990000;
+	background-color: #fcf8c7;
+}
+ks{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #0000CD	;
+	font-size: 90%;
+}
+kc{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #008000	;
+	font-size: 90%;
+}
+pre{
+	font-family: "Consolas";
+	font-size: 85%;
+	background-color: #f5f5f5;
+	border: 1.5px solid silver;
+	padding: 5px;
+}
+m{
+	font-family: "Helvetica";
+	line-height: 100%;
+ 	font-size: 75%;
+}
+div.body{
+	 
+    font-size: 18px;
+}
+k{
+    color: #990000;
+	font-weight: bold;
+	font-size: 90%;
+}
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+	padding: 10px;
+}
+
+h2 {
+    background-color: #9ed8ff;
+    font-size: 130%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 100%;
+}
+h4 {
+    background-color: #ccffcc;
+    font-size: 100%;
+	width: 95%;
+	border-radius: 5px;
+	padding: 2px;
+}
+h5 {
+    background-color: #d5ffb0;
+    font-size: 100%;
+
+}
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+	width: 700px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}
+div.remark{
+	background-color: #E3F2FD;
+    border: 1.5px solid #d5f2ed;
+    padding: 15px;
+    margin: 10px;
+	border-radius: 25px;
+}
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+ol, ul, li {
+  margin: 0;
+  margin-left: 10px;
+  padding: 0;
+  padding-bottom: 5px;
+}
+
+table, th, td {
+	border: 1px solid black;
+}
+
+img {
+	border: 1.5px solid #d5f2ed
+
+}
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+div.wrapdesc{
+	width: 90%;
+	margin: auto;
+}
+
+div.imagedesc{
+	width: 85%;
+	margin: auto;
+}
+</style>
+    
+<head>
+   
+<title>Sprint1</title>
+<link rel="stylesheet" type="text/css" href="../commons/resources/styles/templateISS.css">
+<link rel="stylesheet" type="text/css" href="../commons/resources/styles/main.css">
+<link rel="stylesheet" type="text/css" href="../commons/resources/styles/navbar.css">
+<link rel="stylesheet" type="text/css" href="../commons/resources/styles/table.css">
+<link rel="stylesheet" type="text/css" href="../commons/resources/styles/code.css">
+<script type="text/javascript" src="../commons/resources/scripts/myScripts.js"></script>
+
+
+</head>
+    
+<body>
+<div id="top">
+<h1>Cold Storage Service: Sprint1 <font size="5"></font> </h1>
+</div>  
+
+<div class="body"> 
+<h2>Introduzione</h2>
+<div class="remark">
+Sprint1 del progetto finale del corso di Ingegneria dei Sistemi Software M.<br>
+In questa fase ci concentreremo sui requisiti riguardanti il core della logica di business del servizio da realizzare, con l'obiettivo di implementare un primo prototipo funzionante dell'applicazione.
+</div>
+</div>
+
+<h2>Requisiti</h2>
+<a href="../commons/html/TemaFinale23.html">TemaFinale23</a><br>
+In particolare, ci concentreremo sull'analisi e progettazione delle entità coinvolte nella catena "richiesta di deposito - accettazione - azione di deposito".<br>
+ 
+
+
+
+
+ 
+ 
+
+<h2 >Analisi dei requisiti</h2>
+<h3>System abstract</h3>
+Lo Sprint1 coinvolge i seguenti contesti:
+<ul>
+    <li>ColdStorageService</li>
+    <li>DDR Robot</li>
+    <li>ServiceAccesGUI</li>
+</ul>
+Dato che siamo interessati ad analizzare solo il core-business del sistema, implementeremo la GUI come una semplice applicazione che simula l'interazione tra un camionista e il servizio.<br>
+Inoltre non prenderemo in considerazione l'esistenza del raspberry e non implementeremo le funzionalità di stop/resume del transporttrolley, le quali verranno trattate nell'ultimo sprint.
+
+
+
+
+<h3>Formalizzazione dei requisiti</h3>
+Di seguito sono riportati gli elementi individuati nello sprint0 che sono coinvolti in questa fase.<br>
+<h4 id="Entities">Entità</h4>
+<table class="dictionary">
+    <tr>
+        <th>Entità</th>
+        <th>Attvità</th>
+        <th>Tipo</th>
+        <th>Descrizione</th>
+    </tr>
+    <tr>
+        <td>ColdStorageService</td>
+        <td>Proattivo & Reattivo</td>
+        <td>Attore</td>
+        <td>Gestisce le richieste di fridgeTruck e gestice le azioni del Transport Trolley. Inoltre invia aggiornamenti agli Alarm Devices .</td>
+    </tr>
+    <tr>
+        <td>basicRobot</td>
+        <td>Reattivo</td>
+        <td>Attore</td>
+        <td>Entità che riceve comandi dal TransportTrolley e guida il DDR robot.</td>
+    </tr>
+    <tr>
+        <td>transportTrolley</td>
+        <td>Proattivo e Reattivo</td>
+        <td>Attore</td>
+        <td>Entità principale del ColdStorage system, che si muove all'interno della Service Area ed esegue le azioni di trasporto.</td>
+    </tr>
+    <tr>
+        <td>ServiceAcessGUI-simulator</td>
+        <td>Reattivo</td>
+        <td>Attore</td>
+        <td>Entità che funge da simulatore di store request e di interazione tra camionista e servizio</td>
+    </tr>
+    
+</table>
+
+
+<h4 id="Data">Dati</h4>
+
+
+<table class="dictionary">
+    <tr>
+        <td>Dati</td>
+        <td>Tipo</td>
+        <td>Descrizione</td>
+    </tr>
+    <tr>
+        <td>truckLoad</td>
+        <td>variabile intera > 0</td>
+        <td>Indica il peso diverso di ogni food-load che il truckFridge vuole scaricare, espresso in KG.</td>
+    </tr>
+
+    <tr>
+        <td>MAXW</td>
+        <td>costante intera > 0</td>
+        <td>Indica la quantità massima,espressa in KG, che il container della ColdRoom può dedicare alla conservazione del cibo . </td>
+    </tr>
+
+    <tr>
+        <td>Ticket</td>
+        <td>variabile intera > 0</td>
+        <td>Viene generato dal servizio una volta che il driver della truckFridge ha inviato una <b>storerequest</b>.</td>
+    </tr>
+    <tr>
+        <td>TruckTicket</td>
+        <td>variabile intera > 0</td>
+        <td>Si tratta dell'intero associato al precedente ticket generato, che risulta essenziale per il driver quando dovrà inserirlo al momento dell'arrivo presso la porta INDOOR. Questo numero è importante per verificare se il ticket è ancora valido o se è scaduto.</td>
+    </tr>
+    
+    <tr>
+        <td>TICKETTIME <br>(da inserire nel kotlin)</td>
+        <td>variabile intera > 0</td>
+        <td>Indica un tempo espresso in secondi, che il driver ha a disposizione, una volta che la ColdStorageService ha accettato la <b>storerequest</b> per recarsi alla porta INDOOR.</td>
+    </tr>
+    <tr>
+        <td>RD</td>
+        <td>costante intera > 0</td>
+        <td>Lunghezza di ogni lato del TransportTrolley.</td>   
+    </tr>
+    <!--
+    <tr>
+        <td>DLIMT</td>
+        <td>costante FLOAT</td>
+        <td>Distanza limite entro il quale si attiva l'alarmDevice.</td>
+    </tr>
+    <tr>
+        <td>MINT</td>
+        <td>variabile FLOAT</td>
+        <td>Intervallo di tempo espresso in msecs entro il quale il TransportTrolley non deve essere fermato se non è trascorso un certo periodo di tempo dal precedente stop. </td>
+    </tr>
+
+-->
+    
+</table>
+
+<h4 id="Messages">Messaggi</h4>
+<table class="dictionary">
+    <tr>
+        <td>Messaggio</td>
+        <td>Tipo</td>
+        <td>Mittente</td>
+        <td>Destinatario</td>
+        <td>Descrizione</td>
+    </tr>
+    <tr>
+        <td>storerequest</td>
+        <td>Richiesta</td>
+        <td>Fridge truck driver</td>
+        <td>ColdStorageService</td>
+        <td>Chiede se il foodload di FW kg può essere scaricato nella ColdStorageService.</td>
+    </tr>
+    <tr>
+        <td>loadaccepted</td>
+        <td>Risposta</td>
+        <td>ColdStorageService</td>
+        <td>Fridge truck driver</td>
+        <td>C'è abbastanza spazio per depositare il nuovo food-load.</td>
+    </tr>
+    <tr>
+        <td>loadrejected</td>
+        <td>Risposta</td>
+        <td>ColdStorageService</td>
+        <td>Fridge truck driver</td>
+        <td>Non c'è abbastanza spazio per depositare il nuovo food-load.</td>
+    </tr>
+    <tr>
+        <td>verifyticket</td>
+        <td>Richiesta</td>
+        <td>ServiceAccessGUI</td>
+        <td>ColdStorageService</td>
+        <td>Quando il Fridge truck driver usa la ServiceAcessGUI, inserisce il numero del ticket per verificare se la durata del ticket sia valida o sia scaduta.</td>
+    </tr>
+    <tr>
+        <td>chargetaken</td>
+        <td>Risposta</td>
+        <td>ColdStorageService</td>
+        <td>ServiceAccessGUI</td>
+        <td>ColdStorageService ha validato il ticket, il TransportTrolley si avvicinerà a INDOOR, preleverà il food-load e il servizio invierà il messsaggio sulla ServiceAccessGUI utile al Fridge truck driver per liberare la porta INDOOR. </td>
+            
+        </td>
+    </tr>
+    <tr>
+        <td>invalidticket</td>
+        <td>Risposta</td>
+        <td>ColdStorageService</td>
+        <td>ServiceAccessGUI</td>
+        <td>ColdStorageService ha elaborato che il ticket non è più valido/scaduto.</td>
+    </tr>
+     <!--<tr>
+        <td>doJob</td>
+        <td>Dispatch</td>
+        <td>ColdStorageService</td>
+        <td>TransportTrolley</td>
+        <td>Il transport trolley è abilitato a svolgere una <b>Deposit Action</b> .</td>
+    </tr>
+    <tr>
+        <td>stop</td>
+        <td>Dispatch</td>
+        <td>alarmDevice</td>
+        <td>TransportTrolley</td>
+        <td>Arresta il robot e impedisce di svolgere qualsiasi attività.</td>
+    </tr>
+    <tr>
+        <td>resume</td>
+        <td>Dispatch</td>
+        <td>alarmDevice</td>
+        <td>TransportTrolley</td>
+        <td>Riprende l'attività del robot.</td>
+    </tr>
+    <tr>
+        <td>updateled</td>
+        <td>Dispatch</td>
+        <td>TransportTrolley</td>
+        <td>Warning Device</td>
+        <td>Aggiorna lo stato del led.</td>
+
+    </tr>
+     -->
+    
+    </table>
+	
+<br/><br/> 	
+</div>  
+
+<div style="background-color:rgba(137, 129, 186, 0.9); width:60%;text-align:left;color:white">
+By
+ andrea.isernio@studio.unibo.it & fabio.gentili3@studio.unibo.it <br>
+<br>
+GIT repo: <a href="https://github.com/FabioGentili99/ColdStorageService">https://github.com/FabioGentili99/ColdStorageService </a>
+
+</div> 
+</body>
+</html>
