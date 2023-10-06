@@ -423,6 +423,23 @@ Di seguito sono riportati gli elementi individuati nello sprint0 che sono coinvo
 <br/><br/> 	
 </div>  
 
+<h3>Componenti della Core-Business</h3>
+<h4>ServiceAcesGUI-Simulator</h4>
+Per simulare il comportamento del truckFridge, introdurremo una applicazione Java esterna al sistema: ServiceAcesGUI-Simulator. <br>
+La ServiceAcesGUI-Simulator consente al fridgeTruck-driver di contattare la ColdStorageService per sapere se può consegnre o meno il nuovo truckLoad.
+<h4>ColdStorageService</h4>
+
+<h4>TransportTrolley & DDR Robot</h4>
+Il TransportTrolley e il DDR Robot sono gli elementi del sistema che effettuano le operazioni di stoccaggio:
+
+    <li>pickup</li>
+    <li>transport</li>
+    <li>stock</li>
+In particolare, il transportTrolley interagisce con la ColdStorageService che invia comandi al DDR Robot, che esegue le varie operazioni di stoccaggio.
+<br>Il Robot che utilizzeremo per il progetto sarà virtuale ed eseguirà quindi all'interno di un ambiente virtuale.
+
+<h2>Analisi del Problema</h2>
+
 <div style="background-color:rgba(137, 129, 186, 0.9); width:60%;text-align:left;color:white">
 By
  andrea.isernio@studio.unibo.it & fabio.gentili3@studio.unibo.it <br>
