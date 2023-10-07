@@ -209,7 +209,7 @@ div.imagedesc{
 <h2>Introduzione</h2>
 <div class="remark">
 Sprint1 del progetto finale del corso di Ingegneria dei Sistemi Software M.<br>
-In questa fase ci concentreremo sui requisiti riguardanti il core della logica di business del servizio da realizzare, con l'obiettivo di implementare un primo prototipo funzionante dell'applicazione.
+In questa fase ci concentreremo sui requisiti riguardanti il core della logica di business del servizio da realizzare analizzati nello <a href="../sprint0/Sprint0_v1.html"><ksi>sprint0</ksi></a> con l'obiettivo di implementare un primo prototipo funzionante dell'applicazione.
 </div>
 </div>
 
@@ -429,7 +429,40 @@ Per simulare il comportamento del truckFridge, introdurremo una applicazione Jav
 La ServiceAcesGUI-Simulator consente al fridgeTruck-driver di contattare la ColdStorageService per sapere se può consegnre o meno il nuovo truckLoad.
 <h4>ColdStorageService</h4>
 
-<h4>TransportTrolley & DDR Robot</h4>
+Il fridgeTruck deve andarsene il prima possibile e il tempo  per il ritiro dei rifiuti è sempre limitato e prevedibile, quindi:
+<li>Se la ColdStorageService risponde con la <ksi>loadaccepted</ksi>allora il fridgeTruck-driver deve attendere il completamento del ritiro, e mandato via subito dopo.</li>
+<li>Se la ColdStorageService risponde con un <ksi>loadrejected</ksi> allora il fridgeTruck-driver deve essere mandato via immediatamente.</li> 
+<h5>Service Area</h5>
+Date l'immagine e la descrizione della service area da parte del committente, si possono così sintetizzare gli elementi principali:<br>
+<ul>
+    <li>la stanza è di forma rettangolare</li>
+    <li>la zona HOME è posta nell'angolo nord-ovest. Il robot si trova qui all'avvio dell'applicazione</li>
+    <li>l'INDOOR è un'area sul lato opposto a HOME in cui il transport trolley deve recarsi ogni volta che un truck load è pronto a essere depositato</li>
+    <li>la cold room è la cella frigorifera dove si depositano i carichi. E' accessibile tramite una porta sul lato rivolto verso l'INDOOR</li>
+    <li>è presente un ostacolo in mezzo alla stanza</li>
+</ul>
+Grazie al software unibo.mapperQak23 fornito dal committente, è possibile ottenere una rappresentazione a griglia della service area, in cui ogni cella è localizzata tramite un sistema di coordinate (colonna,riga).<br>
+Ogni cella è un quadrato di lato pari a RD e HOME si trova in posizione (0,0).<br>
+La rappresentazione ottenuta è la seguente:<br>
+<br>
+<img src="../sprint0/modello_servicearea.png" width="350" ><br>
+<div class="remark">
+    La posizione <ksi>HOME</ksi> è rappresentata dalla cella (0,0), <ksi>INDOOR</ksi> occupa le celle (0,4) e (1,4), <KSI>PORT</KSI> occupa le celle (4,3) e (5,3).
+    </div>
+Legenda:
+<br>
+<ul>
+    <li>r: posizione corrente del robot</li>
+    <li>1: celle libere</li>
+    <li>X: celle occupate da un ostacolo/cold room</li>
+</ul>
+<br>
+
+
+
+
+
+<h4>TransportTrolley &  BasicRobot</h4>
 Il TransportTrolley e il DDR Robot sono gli elementi del sistema che effettuano le operazioni di stoccaggio:
 
     <li>pickup</li>
