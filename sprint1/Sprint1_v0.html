@@ -426,11 +426,12 @@ Di seguito sono riportati gli elementi individuati nello sprint0 che sono coinvo
 </div>  
 
 <h3>Componenti della Core-Business</h3>
-<h4>ServiceAcesGUI-Simulator</h4>
-Per simulare il comportamento del truckFridge, introdurremo una applicazione Java esterna al sistema: ServiceAcesGUI-Simulator. <br>
-La ServiceAcesGUI-Simulator consente al fridgeTruck-driver di contattare la ColdStorageService per sapere se può consegnre o meno il nuovo truckLoad.
-<h4>ColdStorageService</h4>
+<h4>ServiceAccessGUI-Simulator</h4>
+Componente che simula l'interazione tra i camionisti e il ColdStorageService inviando storerequest e verifyticket. <br>
 
+<h4>ColdStorageService</h4>
+Componente che implementa la logica di business della nostra applicazione.
+<h5>Requisiti aggiuntivi</h5>
 Il fridgeTruck deve andarsene il prima possibile e il tempo  per il ritiro dei rifiuti è sempre limitato e prevedibile, quindi:
 <li>Se la ColdStorageService risponde con la <ksi>loadaccepted</ksi>allora il fridgeTruck-driver deve attendere il completamento del ritiro, e mandato via subito dopo.</li>
 <li>Se la ColdStorageService risponde con un <ksi>loadrejected</ksi> allora il fridgeTruck-driver deve essere mandato via immediatamente.</li> 
@@ -470,11 +471,69 @@ Il TransportTrolley e il DDR Robot sono gli elementi del sistema che effettuano 
     <li>pickup</li>
     <li>transport</li>
     <li>stock</li>
-In particolare, il transportTrolley interagisce con la ColdStorageService che invia comandi al DDR Robot, che esegue le varie operazioni di stoccaggio.
+In particolare, il transportTrolley interagisce con la ColdStorageService e invia comandi al DDR Robot, che esegue le varie operazioni di stoccaggio.
 <br>Il Robot che utilizzeremo per il progetto sarà virtuale ed eseguirà quindi all'interno di un ambiente virtuale.
 
+
+
+
+
+
+
+
+<!-- ------------------ANALISI DEL PROBLEMA---------------------- -->
+<!-- ------------------------------------------------------------ -->
+<!-- ------------------------------------------------------------ -->
 <h2>Analisi del Problema</h2>
+
+
+
 <h3>Core-Business Software</h3>
+<h4>ServiceAccesGUI-Simulator</h4>
+Il simulatore sarà realizzato come un QAK actor in grado di generare storerequest consecutive, intervallate da richieste di tipo verifyticket.<br>
+In questo modo potremo testare il funzionamento della business logic della nostra applicazione senza dover sviluppare una GUI stand alone apposita.<br>
+L'analisi e il progetto di quest'ultima verranno affrontati nello sprint3.<br>
+
+
+
+
+<h4>ColdStorageService</h4>
+Questo è il componente centrale del sistema e dovrà occuparsi di varie operazioni (interfacciamento con GUI e raspberry, generazione e gestione dei ticket, controllo del transporttrolley...).<br>
+Per questo motivo risulta vantaggioso scomporlo in più sotto-componenti, in primis per rispettare il principio di singola responsabilità e, in secondo luogo, per rendere l'applicazione più modulare e migliorarne reusability e maintainability in visione di futuri aggiornamenti.<br>
+Ogni parte sarà implementata come un attore QAK poichè dovrà essere in grado sia di ricevere che inviare messaggi.<br>
+<div class="remark">
+Una prima suddivisione può comprendere i seguenti attori:
+<ul>
+    <li>ColdStorageService</li>si occupa di interfacciarsi con gli altri contesti e di inoltrare eventuali richieste ai giusti attori. E' quindi l'access point dell'applicazione
+    <li>Transporttrolley</li>rappresenta l'astrazione logica del DDR robot, si occupa di inoltrare i comandi di movimento al basic robot e funge quindi da unità di controllo di alto livello
+    <li>Ticketmanager</li>si occupa della generazione, memorizzazione e verifa dei ticket legati a ogni storerequest andata a buon fine
+    <li>Coldroommanager</li>si occupa di gestire i contatori della cold room ed, eventualmente, svuotarla periodicamente
+</ul>
+</div>
+<h4>Service area</h4>
+Nonostante la zona INDOOR e la porta della cold room occupino due celle ciascuna nel nostro modello di service area, abbiamo deciso di scegliere soltanto una delle due come destinazione dei movimenti del DDR robot, in modo da poterle cablare direttamente nel codice.<br>
+Questo per tre motivi principali:
+<ul>
+    <li>semplicità e velocità di implementazione</li>
+    <li>non prevediamo che la forma della stanza possa cambiare in futuro</li>
+    <li>il basic robot è già dotato di un componente in grado di calcolare il miglior path dato un punto di partenza e un goal. Tenere conto del fatto che il goal potrebbe essere composto da due posizioni invece di una non inficia considerevolmente l'efficienza dei movimenti del robot</li>
+</ul>
+<br>
+<div class="remark">
+    In alternativa si potrebbe estendere la libreria unibo.planner23-1.0 in modo da rappresentare le celle corrispondenti all'INDOOR e alla porta con degli specifici nomi logici invece delle semplici coordinate (x,y).<br>
+    Valuteremo se implementare questa soluzione in uno sprint futuro.
+</div>
+
+<h4>DDR robot</h4>
+Il DDR robot è l'end point finale dell'applicazione: è il componente fisico che effettuerà i movimenti e le azioni di deposito all'interno della service area.<br>
+Lo si può pensare come un robot fisico reale o come, nel caso di questo progetto, un robot virtuale.<br>
+Infatti il committente ci ha fornito, oltre al software già citato, anche un'implementazione di tale robot virtuale, compatibile con il modello Qak a scambio di messaggi .<br>
+Il progetto unibo.basicrobot23 rappresenta lo strato software da interporre tra la nostra applicazione e l'implementazione del robot ed è esso stesso basato sul modello qak, quindi facilmente integrabile al nostro sistema.<br>
+Il transporttrolley si occuperà di comunicare al basic robot i movimenti da effettuare.<br>
+Una caratteristica importante del basic robot è la sua completa indipendenza dalla realizzazione sottostante del DDR robot, per questo motivo in futuro sarà possibile sostituire il virtual robot con uno fisico senza cambiare nulla del codice della nostra applicazione.
+
+
+
 
 <div style="background-color:rgba(137, 129, 186, 0.9); width:60%;text-align:left;color:white">
 By
