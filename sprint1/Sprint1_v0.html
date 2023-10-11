@@ -533,8 +533,88 @@ Il transporttrolley si occuperà di comunicare al basic robot i movimenti da eff
 Una caratteristica importante del basic robot è la sua completa indipendenza dalla realizzazione sottostante del DDR robot, per questo motivo in futuro sarà possibile sostituire il virtual robot con uno fisico senza cambiare nulla del codice della nostra applicazione.
 
 
+<h3>Interazioni</h3>
+<h4>Formato dei Messaggi</h4>
+Per il formato dei messaggi abbiamo pensato di utilizzare il linguaggio Prolog poichè esso è anche il formato dei messaggi del linguaggio a meta-modelling di QAK.
+<br>
+<h4 id="Messages">Lista Messaggi della Core Business</h4>
+<table class="dictionary">
+    <tr>
+        <td>Messaggio</td>
+        <td>Tipo</td>
+        <td>Mittente</td>
+        <td>Destinatario</td>
+        <td>Descrizione</td>
+    </tr>
+    <tr>
+        <td>storeRequest</td>
+        <td>Richiesta</td>
+        <td>ServiceAcessGUI</td>
+        <td>ColdStorageService</td>
+        <td>Chiede se il foodload kg può essere scaricato nella ColdStorageService</td>
+    <tr>
+        <td>loadaccepted</td>
+        <td>Risposta</td>
+        <td>ColdStorageService</td>
+        <td>ServiceAccesGUI</td>
+        <td>Informa il fridge truck driver(ServiceAcessGUI) che il foodload è stato accettato e che il prelievo è stato effettuato.</td>
+    </tr>
+    <tr>
+        <td>loadrejected</td>
+        <td>Risposta</td>
+        <td>ColdStorageService</td>
+        <td>ServiceAcessGUI</td>
+        <td>Non è possibile depositare il nuovo foodload poichè potrebbe non esserci disponibilità nella ColdRoom.</td>
+    </tr>
+    <tr>
+        <td>deposit</td>
+        <td>Richiesta</td>
+        <td>ColdStorageService</td>
+        <td>TransportTrolley</td>
+        <td>Chiede al TransportTrolley di depositare un nuovo foodload</td>
+    </tr>
+    <tr>
+        <td>verifyticket</td>
+        <td>Richiesta</td>
+        <td>ServiceAcessGUI</td>
+        <td>Ticketmanager</td>
+        <td>Quando il Fridge truck driver usa la ServiceAcessGUI, inserisce il numero del ticket per verificare se la durata del ticket sia valida o sia scaduta.</td>
+    </tr>
+    <tr>
+        <td>pickupCompleted</td>
+        <td>Risposta</td>
+        <td>TransportTrolley</td>
+        <td>ColdStorageService</td>
+        <td>Informa il ColdStorageServiceche il foodload è stato prelevato dalla porta Indoor.</td>
+    </tr>
+    <tr>
+        <td>depositCompleted</td>
+        <td>Dispatch</td>
+        <td>TransportTrolley</td>
+        <td>ColdStorageService</td>
+        <td>Informa il ColdStorageService che il foodload è stato scaricato nella coldroom</td>
+    </tr>
+    <tr>
+        <td>chargetaken</td>
+        <td>Risposta</td>
+        <td>ColdStorageService</td>
+        <td>ServiceAcessGUI</td>
+        <td>La ColdStorageService ha validato il ticket, il TransportTrolley si avvicinerà a INDOOR, preleverà il food-load e il servizio invierà il messsaggio sulla ServiceAccessGUI utile al Fridge truck driver per liberare la porta INDOOR.</td>
+    </tr>
+    <tr>
+        <td>invalidticket</td>
+        <td>Risposta</td>
+        <td>TicketManager</td>
+        <td>ServiceAcessGUI</td>
+        <td>Il TicketManager ha elaborato che il ticket non è più valido/scaduto.</td>
+    </tr>
+    </table>
 
+    Abbiamo introdotto i due messaggi "depositcomplted e pickupcompleted" e il terzo messaggio "deposit" 
 
+    <h4 id="ServiceAcessGUI-ColdStorageService">ServiceAcessGUI &harr; ColdStorageService</h4>
+    <h4 id="ColdStorageService TransportTrolley">ColdStorageService &harr; TransportTrolley</h4>
+    <h3 id="Architettura Logica"> Architettura Logica</h3>
 <div style="background-color:rgba(137, 129, 186, 0.9); width:60%;text-align:left;color:white">
 By
  andrea.isernio@studio.unibo.it & fabio.gentili3@studio.unibo.it <br>
