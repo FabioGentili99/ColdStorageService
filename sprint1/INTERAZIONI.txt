@@ -40,7 +40,6 @@ T: dispatch
 S:TransportTrolley
 R: ColdStorageService
 D: Informa il ColdStorageService che il foodload è stato scaricato nella coldroom
-Il tempo di pickup e di deposito del foodload è proporzionale alla quantità/peso in KG del foodload
 chagetaken
 Risposta 
 ColdStorageService
@@ -51,6 +50,9 @@ Risposta
 TicketManager
 ServiceAcessGUI
 Il TicketManager ha elaborato che il ticket non è più valido/scaduto.
+
+
+Il tempo di pickup e di deposito del foodload è proporzionale alla quantità/peso in KG del foodload
 
 
 ServiceAcessGUI <-> ColdStorageService

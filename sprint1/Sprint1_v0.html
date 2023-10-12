@@ -613,7 +613,52 @@ Per il formato dei messaggi abbiamo pensato di utilizzare il linguaggio Prolog p
     Abbiamo introdotto i due messaggi "depositcomplted e pickupcompleted" e il terzo messaggio "deposit" 
 
     <h4 id="ServiceAcessGUI-ColdStorageService">ServiceAcessGUI &harr; ColdStorageService</h4>
+    Le richieste del cliente non specificano se vi sono regole di priorità per quanto riguarda le richieste dei vari <b>fridge-truck</b>, pertanto si presuppone che verranno serviti in ordine di arrivo.
+    <problem>Validazione della storeRequest </problem>
+    <b>Problema</b>: cosa succede se l'utente inserisce un carattere al posto di un numero o se inserisce un qualsiasi altro parametro in formato errato (anche aggiunto in futuro) nella ServiceAcessGUI? Oppure cosa succede se alla ColdStorageService arriva una <b>storeRequest</b> non valida? <br>
+    <div class="remark">
+
+        <b>Soluzione</b>:
+        <ul>
+            <li>
+                <ksi>convalida latoclient</ksi>:  se l'utente inserisce un parametro in formato errato, la ServiceAcessGUI ritorna un errore e la richiesta non verrà inviata.
+                <br>
+                <ksi>convalida latoserver</ksi>: se la ColdStorageService riceve una storeRequest non valida, allora risponde con un loadrejected. <br>
+            </li>
+        </ul>
+        <br>
+        <b>Motivazione soluzione:</b>
+        <ul>
+            <li>
+                Questa soluzione è la più semplice da implementare e la più efficiente, poichè le storeRequest non valide vengono semplicemente ignorate e sprecando meno tempo e risorse computazionali.
+            </li>
+            <li>
+                Allo stato attuale del progetto, il livello di sicurezza del sistema non impedisce a un malintenzionato di inviare storeRequest non valide ed una <emni>convalida latoserver</emni> dovrebbe rendere più sicuro il sistema.
+
+            </li>
+        </ul>
+    </div>
+
+    <problem>Congedare il fridgeTruck</problem>
+    <b>Problema</b>: 
+    Quando e che tipo di messaggio bisogna inviare per congedare il fridge-truck ? Bisogna introdurre nuovi messaggi? Cosa accade se il fridge-truck driver dalla ServiceAcessGUI invia una storeRequest al TicketManager/ColdStorageService mentre vi è in corso una <b>Deposit-Action</b> ?
+    <div class="remark"><b>Soluzione</b>:
+        <ul>
+            <li>La <ksi>loadaccepted</ksi> viene inviata quando l'azione di prelievo da parte del TransportTrolley è terminata (invio del messaggio <ksi>pickupCompleted</ksi> ). <br> La riposta viene inviata solo quando il fridgeTruck può essere congedato (per fare spazio e liberare la porta INDOOR e quindi proseguire con le successive richieste da parte di altri fridgeTruck-driver).</li>
+            <li>L' introduzione del nuovo attore <ksi>TicketManager</ksi> che si occuperà validare o meno i ticket (in base alla loro scadenza <b>TICKETTIME</b>) e di eventualmente eliminare un ticket, mentre al TransportTrolley lasciamo gestire/eseguire la Deposit-Action.<br>
+            La ColdStorageService,  grazie al TicketManager, consentirà  quindi di inviare una risposta alla ServiceAccesGUI il più presto possibile. </li>             
+            <li> Se il fridge-truck driver, dalla ServiceAcessGUI, invia una storeRequest al TicketManager/ColdStorageService mentre vi è in corso una Deposit-Action, esso dovrà attendere fino  alla terminazione di quest'ultima, ovvero fino a quando la ColdStorageService non riceve il messaggio di <ksi>depositCompleted</ksi> da parte del transportTrolley. </li>
+        </ul>
+     </div>
+        
+
+   
+   
     <h4 id="ColdStorageService TransportTrolley">ColdStorageService &harr; TransportTrolley</h4>
+    ESEMPIO: Come rendere la mappa scalabile a nuovi modelli (nel casi di cambiamenti in futuro)
+    <h4 id="ColdStorageService TicketManager">ColdStorageService &harr; TicketManager </h4>
+    ESEMPIO: Come sapere se il ticket è ancora valido o meno? R:verifyTicket<br>Cosa accade se l'utente inserisce un numero di ticket non valido? R: invalidticket 
+     <br> 
     <h3 id="Architettura Logica"> Architettura Logica</h3>
 <div style="background-color:rgba(137, 129, 186, 0.9); width:60%;text-align:left;color:white">
 By
