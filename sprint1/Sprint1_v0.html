@@ -662,16 +662,25 @@ Per il formato dei messaggi abbiamo pensato di utilizzare il linguaggio Prolog p
     <h4 id="ColdStorageService TicketManager">ColdStorageService &harr; TicketManager </h4>
     <problem>Convalida ticket</problem>
     <b>Problema</b>:
-    Cosa accade se l'utente inserisce un numero di ticket non valido?
+    Cosa accade se l'utente inserisce un numero di ticket non valido o con TICKETTIME scaduto? Cosa fare per evitare di far attendere per molto tempo il driver che è in attesa di una risposta di validazione o meno del ticket? 
     <div class="remark"><b>Soluzione</b>:
         Dopo una discussione con il committente, vedi <a href="../commons/html/DiscussioniTF23.html">DiscussioniTemaFinale23</a>, ipotizziamo che nessun driver cerchi di imbrogliare (rubando ticket,etc.). <br>
         La ServiceAccesGUI-Simulator invia un <ksi>verifyticket</ksi> al ColdStorageService, che lo inoltra al <b>TicketManager</b> ed è quest'ultimo che verifca effettivamente se il ticket sia valido o meno. <br>
+
         Il ticket potrebbe risultare non valido per due ragioni:
         <ul>
             <li>Il fridgeTruck-driver ha inserito un codice ticket errato portandolo  sul reinserimento del ticket.</li>
             <li>Il TICKETTIME è scaduto e il driver viene mandato via.</li>
         </ul>
-    </div>
+        <br>
+        Per evitare di far attendere per molto tempo il driver, dopo aver discusso col cliente ( vedi <a href="../commons/html/DiscussioniTF23.html">DiscussioniTemaFinale23</a>), si può risolvere il problema impostando una interazione a DUE-FASI tra driver e service (compito che può svolgere la serviceAcessGui): <br>
+
+        <ul>
+            <li>    FASE1: il driver invia il ticket e attenda una risposta (immediata) come ad esempio ticketaccepted/ticketrejected (sarebbero le nostre <ksi>chargetaken/invalidticket</ksi>) <br></li>
+            <li>  FASE2: il driver invia la richiesta <ksi>loaddone</ksi> e attenda una seconda risposta (chargeTaken o fallimento per cause legate al servizio) (chargeTaken sarebbe la nostra <ksi>goaway</ksi>)</li>
+        </ul>
+    
+       </div>
 
     <h3 id="Architettura Logica"> Architettura Logica</h3>
 <div style="background-color:rgba(137, 129, 186, 0.9); width:60%;text-align:left;color:white">
