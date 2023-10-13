@@ -1,0 +1,74 @@
+System coldstorageservice
+
+//MESSAGGI
+
+//serviceaccessGUI-simulator -> coldstorageservice
+
+Request storerequest : storerequest(TruckLoad)
+Reply loadaccepted : loadaccepted(Ticket)
+Reply loadrejected : loadrejected(_)
+
+Request verifyticket : verifyticket(TruckTicket)
+Reply chargetaken : chargetaken(_)
+Reply invalidticket : invalidticket(_)
+
+
+
+//coldstorgaeservice -> coldroommanager
+
+Request verifyspace : verifyspace(TruckLoad)
+Reply enoughspace : enoughspace(_)
+Reply nospace : nospace(_)
+
+
+//coldstorageservice -> ticketmanager
+
+Request generateticket : generateticket(_)
+Reply ticket : ticket(Ticket)
+
+Request verify : verify(TruckTicket)
+Reply valid : valid(_)
+Reply invalid : invalid(REASON)
+
+
+//coldstorageservice -> transporttrolley
+
+Request deposit : deposit(_)
+Reply pickupcompleted : pickupcompleted(_)
+
+
+//transporttrolley -> coldstorageservice
+
+Dispatch depositcompleted : depositcompleted(_)
+Dispatch depositfailed : depositfailed(_)
+
+
+//coldstorageservice -> serviceaccessGUI-simulator
+
+Dispatch goaway : goaway(_)
+
+
+//transporttrolley -> basicrobot
+
+Request engage : engage(CALLER)
+Reply engagedone : engagedone(_)
+Reply engagerefused : engagerefused(_)
+
+Request moverobot : moverobot(TARGET)
+Reply moverobotdone : moverobotok(_)
+Reply moverobotfailed : moverobotfailed(PLANDONE,PLANTODO)
+
+
+
+
+//CONTESTI
+
+Context ctxcoldstorageservice ip [host="localhost" port=9990]
+Context ctxbasicrobot ip [host="127.0.0.1" port=8020]
+Context ctxaccessgui ip [host="127.0.0.1" port=9993]
+
+
+
+//ATTORI
+
+ExternalQActor basicrobot context ctxbasicrobot
