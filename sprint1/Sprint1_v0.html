@@ -501,6 +501,7 @@ L'analisi e il progetto di quest'ultima verranno affrontati nello sprint3.<br>
 Questo è il componente centrale del sistema e dovrà occuparsi di varie operazioni (interfacciamento con GUI e raspberry, generazione e gestione dei ticket, controllo del transporttrolley...).<br>
 Per questo motivo risulta vantaggioso scomporlo in più sotto-componenti, in primis per rispettare il principio di singola responsabilità e, in secondo luogo, per rendere l'applicazione più modulare e migliorarne reusability e maintainability in visione di futuri aggiornamenti.<br>
 Ogni parte sarà implementata come un attore QAK poichè dovrà essere in grado sia di ricevere che inviare messaggi.<br>
+Introduciamo i due componenti della ColdStorageService <ksi>TicketManager</ksi> e <ksi>Coldroommanager</ksi>, il loro funzionamento dettagliato sarà esplicitato meglio in fase di progettazione.
 <div class="remark">
 Una prima suddivisione può comprendere i seguenti attori:
 <ul>
@@ -663,7 +664,7 @@ Per il formato dei messaggi abbiamo pensato di utilizzare il linguaggio Prolog p
     <b>Problema</b>:
     Cosa accade se l'utente inserisce un numero di ticket non valido?
     <div class="remark"><b>Soluzione</b>:
-        Dopo una discussione con il committente, vedi DiscussioniTF23, (LINK) Si ipotizza che nessun driver cerchi di imbrogliare (rubando ticket,etc.) <br>
+        Dopo una discussione con il committente, vedi <a href="../commons/html/DiscussioniTF23.html">DiscussioniTemaFinale23</a>, ipotizziamo che nessun driver cerchi di imbrogliare (rubando ticket,etc.). <br>
         La ServiceAccesGUI-Simulator invia un <ksi>verifyticket</ksi> al ColdStorageService, che lo inoltra al <b>TicketManager</b> ed è quest'ultimo che verifca effettivamente se il ticket sia valido o meno. <br>
         Il ticket potrebbe risultare non valido per due ragioni:
         <ul>
