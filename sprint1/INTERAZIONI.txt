@@ -59,3 +59,7 @@ ServiceAcessGUI <-> ColdStorageService
 Le richieste del cliente non specificano se vi sono regole di priorità per quanto riguarda le richieste dei vari fridge-truck, pertanto si presuppone che verranno serviti in ordine di arrivo.
 
 ColdStorageService <-> TransportTrolley 
+Quale messaggio deve inviare ColdStorageService al transporttrolley, una volta che ha ricevuto la richiesta da parte della ServiceAcessGUI (accertandosi che l'operazione di deposito possa avvenire) ?
+Introduciamo il messaggio "deposit"
+
+

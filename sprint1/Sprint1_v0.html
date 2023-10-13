@@ -233,7 +233,7 @@ Lo Sprint1 coinvolge i seguenti contesti:
     <li>ServiceAccesGUI</li>
 </ul>
 <br>
-<img src="../sprint1/resources/imgs/terzoschemaSprint1.jpg" width="600"> <br>
+<img src="../sprint1/resources/imgs/quartoschemaSprin1.drawio.png"  > <br>
 Dato che siamo interessati ad analizzare solo il core-business del sistema, implementeremo la GUI come una semplice applicazione che simula l'interazione tra un camionista e il servizio.<br>
 Inoltre non prenderemo in considerazione l'esistenza del raspberry e non implementeremo le funzionalità di stop/resume del transporttrolley, le quali verranno trattate nell'ultimo sprint.
 
@@ -638,6 +638,8 @@ Per il formato dei messaggi abbiamo pensato di utilizzare il linguaggio Prolog p
             </li>
         </ul>
     </div>
+    Viene riportato qui un esempio delle possibili interazioni tra i vari attori del sistema a seguito di una storeRequest: <br>
+    <img src="./resources/imgs/diagInterazioneSprint1StoreRequest.drawio.png"> <br>
 
     <problem>Congedare il fridgeTruck</problem>
     <b>Problema</b>: 
@@ -646,7 +648,7 @@ Per il formato dei messaggi abbiamo pensato di utilizzare il linguaggio Prolog p
         <ul>
             <li>La <ksi>loadaccepted</ksi> viene inviata quando l'azione di prelievo da parte del TransportTrolley è terminata (invio del messaggio <ksi>pickupCompleted</ksi> ). <br> La riposta viene inviata solo quando il fridgeTruck può essere congedato (per fare spazio e liberare la porta INDOOR e quindi proseguire con le successive richieste da parte di altri fridgeTruck-driver).</li>
             <li>L' introduzione del nuovo attore <ksi>TicketManager</ksi> che si occuperà validare o meno i ticket (in base alla loro scadenza <b>TICKETTIME</b>) e di eventualmente eliminare un ticket, mentre al TransportTrolley lasciamo gestire/eseguire la Deposit-Action.<br>
-            La ColdStorageService,  grazie al TicketManager, consentirà  quindi di inviare una risposta alla ServiceAccesGUI il più presto possibile. </li>             
+            </li>             
             <li> Se il fridge-truck driver, dalla ServiceAcessGUI, invia una storeRequest al TicketManager/ColdStorageService mentre vi è in corso una Deposit-Action, esso dovrà attendere fino  alla terminazione di quest'ultima, ovvero fino a quando la ColdStorageService non riceve il messaggio di <ksi>depositCompleted</ksi> da parte del transportTrolley. </li>
         </ul>
      </div>
@@ -654,11 +656,22 @@ Per il formato dei messaggi abbiamo pensato di utilizzare il linguaggio Prolog p
 
    
    
-    <h4 id="ColdStorageService TransportTrolley">ColdStorageService &harr; TransportTrolley</h4>
-    ESEMPIO: Come rendere la mappa scalabile a nuovi modelli (nel casi di cambiamenti in futuro)
+    <h4 id="ColdStorageService TransportTrolley">DDR Robot &harr; TransportTrolley</h4>
+    L'interazione tra le due componenti avviene tramite l'utilizzo dei messaggi messi a dispozione dall'interfaccia di BasicRobot. <br>
     <h4 id="ColdStorageService TicketManager">ColdStorageService &harr; TicketManager </h4>
-    ESEMPIO: Come sapere se il ticket è ancora valido o meno? R:verifyTicket<br>Cosa accade se l'utente inserisce un numero di ticket non valido? R: invalidticket 
-     <br> 
+    <problem>Convalida ticket</problem>
+    <b>Problema</b>:
+    Cosa accade se l'utente inserisce un numero di ticket non valido?
+    <div class="remark"><b>Soluzione</b>:
+        Dopo una discussione con il committente, vedi DiscussioniTF23, (LINK) Si ipotizza che nessun driver cerchi di imbrogliare (rubando ticket,etc.) <br>
+        La ServiceAccesGUI-Simulator invia un <ksi>verifyticket</ksi> al ColdStorageService, che lo inoltra al <b>TicketManager</b> ed è quest'ultimo che verifca effettivamente se il ticket sia valido o meno. <br>
+        Il ticket potrebbe risultare non valido per due ragioni:
+        <ul>
+            <li>Il fridgeTruck-driver ha inserito un codice ticket errato portandolo  sul reinserimento del ticket.</li>
+            <li>Il TICKETTIME è scaduto e il driver viene mandato via.</li>
+        </ul>
+    </div>
+
     <h3 id="Architettura Logica"> Architettura Logica</h3>
 <div style="background-color:rgba(137, 129, 186, 0.9); width:60%;text-align:left;color:white">
 By
