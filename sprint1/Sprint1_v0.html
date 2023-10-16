@@ -596,19 +596,20 @@ Per il formato dei messaggi abbiamo pensato di utilizzare il linguaggio Prolog p
         <td>Informa il ColdStorageService che il foodload è stato scaricato nella coldroom</td>
     </tr>
     <tr>
-        <td>chargetaken</td>
+        <td>chargetaken/invalidTicket</td>
         <td>Risposta</td>
         <td>ColdStorageService</td>
         <td>ServiceAcessGUI</td>
-        <td>La ColdStorageService ha validato il ticket, il TransportTrolley si avvicinerà a INDOOR, preleverà il food-load e il servizio invierà il messsaggio sulla ServiceAccessGUI utile al Fridge truck driver per liberare la porta INDOOR.</td>
+        <td>Possibili messaggi di risposta (da parte del service) che il driver riceve a seguito di una <b>verifyticket</b></td>
     </tr>
     <tr>
-        <td>invalidticket</td>
+        <td>goaway</td>
         <td>Risposta</td>
-        <td>TicketManager</td>
+        <td>ColdStorageService</td>
         <td>ServiceAcessGUI</td>
-        <td>Il TicketManager ha elaborato che il ticket non è più valido/scaduto.</td>
+        <td>Messaggio destinato al driver per indicargli di liberare la porta INDOOR e andar via. Viene inviato alla fine di un operazione di pickup avvenuta con successo. </td>
     </tr>
+
     </table>
 
     Abbiamo introdotto i due messaggi "depositcomplted e pickupcompleted" e il terzo messaggio "deposit" 
@@ -681,11 +682,11 @@ Per il formato dei messaggi abbiamo pensato di utilizzare il linguaggio Prolog p
         </ul>
     
        </div>
-<img src="../sprint1/resources/imgs/diagInteraSprint1VerifyTicket_v4-Pagina-2.drawio.png" height="640" weight="480"> <br>
+<img src="../sprint1/resources/imgs/diagInteraSprint1VerifyTicket_v5-Pagina-2.drawio.png" height="640" weight="480"> <br>
 <h4 id="notesNouns">Nota</h4>
 <div>
     <ol>
-        <li>Per semplicità in questa fase non analizziamo nel dettaglio le interazioni a seguito di una risposta da parte del service di <ksi>invalidticket</ksi>, ovvero la diversa gestione dei casi in cui l'invalid ticket è causato da un inserimento errato del ticket o dal ticket scaduto(<b>TICKETTIME</b> scaduto). <br></li>
+        <li>Per semplicità in questa fase non abbiamo analizzato nel dettaglio le interazioni a seguito di una risposta da parte del service di <ksi>invalidticket</ksi>, ovvero la diversa gestione dei casi in cui l'invalid ticket è causato da un inserimento errato del ticket o dal ticket scaduto(<b>TICKETTIME</b> scaduto). <br></li>
     </ol>
 </div>
  <h3 id="Architettura Logica"> Architettura Logica</h3>
