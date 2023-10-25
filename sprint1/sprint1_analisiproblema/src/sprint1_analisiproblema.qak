@@ -12,45 +12,51 @@ Request verifyticket : verifyticket(TruckTicket)
 Reply chargetaken : chargetaken(_)
 Reply invalidticket : invalidticket(_)
 
+Request loaddone : loaddone(TruckTicket)
+Reply goaway : goaway(_)
+Reply depositfailed : depositfailed(_)
+
 
 
 //coldstorgaeservice -> coldroommanager
 
-Request verifyspace : verifyspace(TruckLoad)
-Reply enoughspace : enoughspace(_)
-Reply nospace : nospace(_)
+//Request verifyspace : verifyspace(TruckLoad)
+//Reply enoughspace : enoughspace(_)
+//Reply nospace : nospace(_)
 
 
-//coldstorageservice -> ticketmanager
+//coldroommanager -> ticketmanager
 
-Request generateticket : generateticket(_)
+Request generateticket : generateticket(TruckLoad)
 Reply ticket : ticket(Ticket)
 
-Request verify : verify(TruckTicket)
-Reply valid : valid(_)
-Reply invalid : invalid(REASON)
+//Request verify : verify(TruckTicket)
+//Reply valid : valid(_)
+//Reply invalid : invalid(REASON)
 
 
 //coldstorageservice -> transporttrolley
 
-Request deposit : deposit(_)
-Reply pickupcompleted : pickupcompleted(_)
+//Request deposit : deposit(_)
+//Reply pickupcompleted : pickupcompleted(_)
 
 
-//transporttrolley -> coldstorageservice
+//transporttrolley -> coldroommanager
 
-Dispatch depositcompleted : depositcompleted(_)
-Dispatch depositfailed : depositfailed(_)
+Dispatch depositdone : depositdone(Ticket)
+Dispatch depositfailed : depositfailed(Ticket)
 
+//ticketmanager -> coldroommanager
+Dispatch expiredticket : expiredticket(Ticket)
 
 //coldstorageservice -> serviceaccessGUI-simulator
 
-Dispatch goaway : goaway(_)
+//Dispatch goaway : goaway(_)
 
 
 //transporttrolley -> basicrobot
 
-Request engage : engage(CALLER)
+Request engage : engage(OWNER,STEPTIME)
 Reply engagedone : engagedone(_)
 Reply engagerefused : engagerefused(_)
 
@@ -65,10 +71,439 @@ Reply moverobotfailed : moverobotfailed(PLANDONE,PLANTODO)
 
 Context ctxcoldstorageservice ip [host="localhost" port=9990]
 Context ctxbasicrobot ip [host="127.0.0.1" port=8020]
-Context ctxaccessgui ip [host="127.0.0.1" port=9993]
+Context ctxaccessgui ip [host="10.201.7.226" port=9993]
 
 
 
 //ATTORI
 
 ExternalQActor basicrobot context ctxbasicrobot
+
+
+QActor serviceaccessgui_simulator context ctxaccessgui /*ctxcoldstorageservice*/{
+	
+	[#
+		var TruckTicket : Int= 0
+		//val TruckLoad : Int = 50
+	#]
+	
+	State s0 initial {
+		println("GUI START, sending request to cold storage service") color blue
+		delay 3000
+		
+		request coldstorageservice -m	storerequest: storerequest(50)
+		
+	}
+	Transition t0 whenReply loadaccepted -> enterticket
+			whenReply loadrejected -> handlereject
+		
+		
+	State handlereject {
+		println("frigo pieno, impossibile depositare altro cibo") color blue
+	}
+	Goto s0
+		
+		
+	State enterticket {
+	onMsg(loadaccepted : loadaccepted(Ticket)){
+		[# TruckTicket = payloadArg(0).toInt() #]}
+	delay 2000
+	println("inserimento codice biglietto per verifica") color blue
+	request coldstorageservice -m verifyticket : verifyticket($TruckTicket)
+	}
+	Transition t0 whenReply chargetaken -> startdeposit
+				  whenReply invalidticket -> error
+					  
+					  
+	State error {
+		println("il ticket inserito non è valido o è scaduto") color blue
+	}
+	Goto s0
+		
+		
+	State startdeposit{
+		println("il ticket inseriro è valido, inizio azione di deposito...") color blue
+		delay 2000
+		request coldstorageservice -m loaddone : loaddone($TruckTicket)
+	}
+	Transition t0 whenReply goaway -> depositcompleted
+				  whenReply depositfailed -> failure
+					  
+					  
+	State failure {
+		println("il deposito è fallito, liberare l'INDOOR e procedere con una nuova richiesta") color blue
+	}
+	Goto s0
+		
+		
+	State depositcompleted{
+		println("il transporttrolley ha scaricato la merce dal camion, liberare l'INDOOR") color blue
+	}
+	Goto s0
+}
+	
+	
+	
+	
+QActor coldstorageservice context ctxcoldstorageservice{
+	/*[#
+			val MAXW : Int = 100
+			var CurrentWeight : Int = 0
+			var FreeSpace : Int = 100
+			var TruckLoad : Int = 0
+			var Ticket : Int = 1234
+			var TruckTicket : Int = 0
+	#]*/
+	State s0 initial{
+		delay 1000
+		println("COLD STORAGE SERVICE STARTING, waiting for requests...") color green
+		delegate "storerequest" to coldroommanager
+		delegate "verifyticket" to ticketmanager
+		delegate "loaddone" to transporttrolley
+		delay 1000
+	}
+	
+}
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+QActor coldroommanager context ctxcoldstorageservice{
+	
+	[#
+		val MAXW : Int = 100
+		var CurrentWeight : Int = 0
+		var FreeSpace : Int = 100
+		var TruckLoad : Int = 0
+		var TruckTicket : Int = 0
+		var Requests = hashMapOf<Int,Int>()
+	#]
+	
+	State s0 initial{
+		println("COLD ROOM STARTING,capienza: $MAXW, free space: $FreeSpace") color green
+		delay 1000
+	}
+	Goto waiting
+	
+	
+	
+	State waiting {
+		println("waiting for requests...") color green
+	}
+	Transition t0 whenRequest storerequest -> handlestorerequest
+				  whenMsg depositdone -> handledepositok
+				  whenMsg depositfailed -> handledepositfail
+				  whenMsg expiredticket -> handleexpire
+				 
+				 
+	
+	State handlestorerequest{
+		println("richiesta di deposito in fase di valutazione...") color green 
+		onMsg(storerequest: storerequest(KG)){
+			[# TruckLoad = payloadArg(0).toInt() #]
+		}	
+			if [# TruckLoad<= FreeSpace #]{
+				[# 
+					FreeSpace -= TruckLoad 
+				#]
+				println("richiesta di deposito accettata, carico: $TruckLoad kg, spazio libero nel frigo: $FreeSpace kg. In attesa di generare un ticket univoco...") color green
+				//replyTo storerequest with loadaccepted : loadaccepted(Ticket)
+				request ticketmanager -m generateticket : generateticket($TruckLoad)
+			}
+			else {
+				println("richiesta di deposito rifiutata, non c'e spazio sufficiente") color green
+				replyTo storerequest with loadrejected : loadrejected(_)
+			}
+			
+	}
+	Transition t0 whenReply ticket -> requestaccepted
+				 // whenRequest storerequest -> handlestorerequest
+	
+	
+	State requestaccepted{
+		onMsg(ticket: ticket(Ticket)) {
+			[#
+				TruckTicket = payloadArg(0).toInt()
+				Requests.put(TruckTicket, TruckLoad)
+			#]
+			println("generato il ticket $TruckTicket per la richiesta di deposito di $TruckLoad kg") color green
+			replyTo storerequest with loadaccepted : loadaccepted($TruckTicket)
+		}
+		
+		
+		println("è stato generato il ticket $TruckTicket per il driver") color green
+		replyTo storerequest with loadaccepted : loadaccepted($TruckTicket)
+	}
+	Goto waiting
+	
+	
+	
+	State handledepositok{
+		onMsg(depositdone: depositdone(Ticket)){
+			[# TruckTicket = payloadArg(0).toInt() #]
+		}
+		println("il deposito del carico portato dal driver $(TruckTicket) è avvenuto con successo, aggiornamento del current weight in corso...") color green
+		
+		[#
+			CurrentWeight = CurrentWeight + Requests.get(TruckTicket)!!
+			Requests.remove(TruckTicket)
+		#]
+		
+		println("il nuovo current weight è di $CurrentWeight kg") color green
+	}
+	Goto waiting
+	
+	
+	
+	
+	State handledepositfail{
+		onMsg(depositfailed: depositfailed(Ticket)){
+			[# TruckTicket = payloadArg(0).toInt() #]
+		}
+		
+		println("il deposito del carico portato dal driver $TruckTicket è fallito, aggiornamento di free space in corso...") color red
+		
+		[#
+			FreeSpace = FreeSpace - Requests.get(TruckTicket)!!	
+			Requests.remove(TruckTicket)
+		#]
+		
+		println("il nuovo free space è di $FreeSpace kg") color red
+	}
+	Goto waiting
+	
+	
+	
+	State handleexpire{
+		onMsg(expiredticket : expiredticket(Ticket)){
+			[#	TruckTicket = payloadArg(0).toInt()	#]
+		}
+		
+		println("il ticket $TruckTicket è scaduto, aggiornamento di free space in corso...") color red
+		
+		[#
+			FreeSpace = FreeSpace - Requests.get(TruckTicket)!!
+			Requests.remove(TruckTicket)
+		#]
+		
+		println("il nuovo free space è di $FreeSpace kg") color red
+	}
+	Goto waiting
+	
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+QActor ticketmanager context ctxcoldstorageservice{
+	
+	[#
+		
+		
+		var Tickets = hashMapOf<Int,Long>()
+		var Ticket : Int = 0
+		var Now = 0L
+		var TruckLoad : Int = 0
+		var TICKETTIME = 0L
+		var TruckTicket : Int = 0
+	#]
+	
+	State s0 initial{
+		println("TICKET MANAGER STARTING") color green 
+		
+	}
+	Goto waiting
+	
+	
+	
+	State waiting{
+		println("waiting for requests...") color green
+	}
+	Transition t0 whenRequest generateticket -> handlegeneration
+				  whenRequest verifyticket -> handleverify
+	
+	
+	
+	State handlegeneration{
+		onMsg(generateticket: generateticket(KG)){
+			[# TruckLoad = payloadArg(0).toInt() #]
+		}
+		
+		println("ricevuta richiesta di generazione ticket, elaborazione in corso...") color green 
+		[#
+			Ticket = Random.nextInt(10001)+ 1
+			while ( Tickets.keys.contains(Ticket)){
+				Ticket = Random.nextInt(10001) + 1
+			}
+		#]
+		
+		memoCurrentTime Now
+		[#
+			TICKETTIME = Now + 10000 + TruckLoad * 500
+			Tickets.put(Ticket,TICKETTIME)	
+		#]
+		replyTo generateticket with ticket : ticket($Ticket)
+		println("generato il ticket con codice $Ticket e scadenza $TICKETTIME") color green 
+	}
+	Goto waiting
+	
+	
+	
+	
+	State handleverify {
+		
+		println("ricevuta richiesta di verifica di ticket") color green
+		onMsg(verifyticket : verifyticket(T)){
+			[# TruckTicket = payloadArg(0).toInt() #]
+		}
+		
+		[# 
+			if (!Tickets.keys.contains(TruckTicket)){
+		#]
+		
+				println("il ticket $TruckTicket non esiste, inserire nuovamente il codice") color red
+				replyTo verifyticket with invalidticket : invalidticket(_)
+				
+		[# 
+			}
+		#]
+		
+		memoCurrentTime Now
+		[# 
+			if (!(Tickets.get(TruckTicket)!! > Now)){
+		#]
+		
+				println("il ticket $TruckTicket è scaduto, liberare l'Indoor e fare una nuova store request") color red
+				replyTo verifyticket with invalidticket : invalidticket(_)
+				forward coldroommanager -m expiredticket : expiredticket($TruckTicket)
+				[#	Tickets.remove(TruckTicket)	#]
+				
+		[# 
+			} else{
+		#]
+		
+				println("il ticket $TruckTicket è valido, procedere con il deposito") color green
+				replyTo verifyticket with chargetaken : chargetaken(_)
+				[#	Tickets.remove(TruckTicket)	#]
+		[# 
+			}
+		#]
+				
+	}
+	Goto waiting
+	
+}
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+QActor transporttrolley context ctxcoldstorageservice {
+	[#
+		var TruckTicket : Int = 0	
+	#]
+	
+	State s0 initial {
+		println("TRANSPORT TROLLEY STARTING") color green
+		request basicrobot -m engage : engage(transporttrolley,330)
+	}
+	Transition t0 whenReply engagedone -> waiting
+				  whenReply engagerefused -> errorengage
+				  
+				  
+	
+	State errorengage{
+		println("engage del basicrobot fallito") color red
+	}
+	
+	
+	
+	State waiting{
+		println("waiting for requests...") color green
+	}
+	Transition t0 whenRequest loaddone -> movetoindoor
+	
+	
+	
+	State movetoindoor{
+		onMsg(loaddone : loaddone(T)){
+			[# TruckTicket = payloadArg(0).toInt() #]
+		}
+		println("il driver con ticket $TruckTicket è pronto all'indoor, avvio dell'operazione di scarico dal camion...") color green
+		request basicrobot -m moverobot : moverobot (0,4)
+	}
+	Transition t0 whenReply moverobotdone -> handlecharge
+				  whenReply moverobotfailed -> errordeposit
+				  
+				  
+				  
+	State errordeposit{
+		println("operazione di deposito fallita, si procede con le prossime richieste...") color red
+		forward coldroommanager -m depositfailed : depositfailed($TruckTicket)
+	}
+	Goto waiting
+	
+	
+	
+	
+	State handlecharge{
+		println("il robot è arrivato all'indoor, inizio scarico della merce dal camion...") color green
+		delay 3000
+		replyTo loaddone with goaway : goaway(_)
+	}
+	Goto movetoport
+	
+	
+	
+	State movetoport{
+		println("il camion è stato scaricato, il robot si dirige verso la porta della cold room...") color green
+		request basicrobot -m moverobot : moverobot (4,3)
+	}
+	Transition t0 whenReply moverobotdone -> handledeposit
+				  whenReply moverobotfailed -> errordeposit
+				  
+				  
+				  
+				  
+	State handledeposit{
+		println("il robot è arrivato davanti alla cold room, inizia la fase di deposito...") color green
+		delay 3000
+		forward coldroommanager -m depositdone : depositdone($TruckTicket)
+		println("deposito effettuato con successo") color green
+	}
+	Goto waiting
+	
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
