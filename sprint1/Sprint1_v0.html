@@ -558,7 +558,7 @@ Per il formato dei messaggi abbiamo pensato di utilizzare il linguaggio Prolog p
         <td>Risposta</td>
         <td>ColdStorageService</td>
         <td>ServiceAccesGUI</td>
-        <td>Informa il fridge truck driver(ServiceAcessGUI) che il foodload è stato accettato e che il prelievo è stato effettuato.</td>
+        <td>Informa il fridge truck driver(ServiceAcessGUI) che c'è abbastanza spazio per il suo foodload.</td>
     </tr>
     <tr>
         <td>loadrejected</td>
@@ -572,14 +572,14 @@ Per il formato dei messaggi abbiamo pensato di utilizzare il linguaggio Prolog p
         <td>Richiesta</td>
         <td>ColdStorageService</td>
         <td>TransportTrolley</td>
-        <td>Chiede al TransportTrolley di depositare un nuovo foodload</td>
+        <td>Chiede al TransportTrolley di eseguire un'azione di deposito (Indoor->scarico->cold room->deposito)</td>
     </tr>
     <tr>
         <td>verifyticket</td>
         <td>Richiesta</td>
         <td>ServiceAcessGUI</td>
-        <td>Ticketmanager</td>
-        <td>Quando il Fridge truck driver usa la ServiceAcessGUI, inserisce il numero del ticket per verificare se la durata del ticket sia valida o sia scaduta.</td>
+        <td>ColdStorageService</td>
+        <td>una volta arrivato all'indoor, il driver inserisce il suo ticket tramite la gui per verificare che sia valido e poter procedere con il deposito</td>
     </tr>
     <tr>
         <td>pickupCompleted</td>
@@ -651,7 +651,7 @@ Per il formato dei messaggi abbiamo pensato di utilizzare il linguaggio Prolog p
             <li>La <ksi>loadaccepted</ksi> viene inviata quando l'azione di prelievo da parte del TransportTrolley è terminata (invio del messaggio <ksi>pickupCompleted</ksi> ). <br> La riposta viene inviata solo quando il fridgeTruck può essere congedato (per fare spazio e liberare la porta INDOOR e quindi proseguire con le successive richieste da parte di altri fridgeTruck-driver).</li>
             <li>L' introduzione del nuovo attore <ksi>TicketManager</ksi> che si occuperà validare o meno i ticket (in base alla loro scadenza <b>TICKETTIME</b>) e di eventualmente eliminare un ticket, mentre al TransportTrolley lasciamo gestire/eseguire la Deposit-Action.<br>
             </li>             
-            <li> Se il fridge-truck driver, dalla ServiceAcessGUI, invia una storeRequest al TicketManager/ColdStorageService mentre vi è in corso una Deposit-Action, esso dovrà attendere fino  alla terminazione di quest'ultima, ovvero fino a quando la ColdStorageService non riceve il messaggio di <ksi>depositCompleted</ksi> da parte del transportTrolley. </li>
+            <li> Se il fridge-truck driver, dalla ServiceAcessGUI, invia una storeRequest mentre vi è in corso una Deposit-Action,  questa potrà essere tranquillamente gestita dal coldroom manager dato che è il transport trolley a occuparsi del deposito.</li>
         </ul>
      </div>
         
@@ -690,6 +690,117 @@ Per il formato dei messaggi abbiamo pensato di utilizzare il linguaggio Prolog p
     </ol>
 </div>
  <h3 id="Architettura Logica"> Architettura Logica</h3>
+Grazie alla funzione <b>delegate</b> del linguaggio QAK, è possibile far gestire i messaggi inviati dalla gui al cold storage service direttamente agli opportuni attori, senza dover generare nuovi messaggi.<br>
+Inoltre, in questo modo, i vari attori possono rispondere alle richieste senza dover passare nuovamente per il cold storage service.<br>
+Ciò permette di risparmiare sulla quantità di messaggi da inviare, oltre che consetire la scrittura di codice più pulito e leggibile.<br>
+I messaggi che ci serviranno per implementare i comportamenti mostrati nei diagrammi di sequenza precedenti sono:<br>
+<table class="dictionary">
+    <tr>
+        <td>Messaggio</td>
+        <td>Tipo</td>
+        <td>Mittente</td>
+        <td>Destinatario</td>
+        <td>Descrizione</td>
+    </tr>
+
+    <tr>
+        <td>storerequest</td>
+        <td>request</td>
+        <td>serviceaccessGUI-simulator</td>
+        <td>coldstorageservice</td>
+        <td>richiesta di deposito di un certo numero di kg di cibo</td>
+    </tr>
+
+    <tr>
+        <td>loadaccepted/loadrejected</td>
+        <td>reply</td>
+        <td>coldroommanager</td>
+        <td>serviceaccessGUI-simulator</td>
+        <td>accept/reject del carico richiesto dal driver</td>
+    </tr>
+
+    <tr>
+        <td>verifyticket</td>
+        <td>request</td>
+        <td>serviceaccessGUI-simulator</td>
+        <td>coldstorageservice</td>
+        <td>richiesta di verifica del ticket inserito dal driver una volta arrivato all'indoor</td>
+    </tr>
+
+    <tr>
+        <td>chargetaken/invalidticket</td>
+        <td>reply</td>
+        <td>ticketmanager</td>
+        <td>serviceaccessGUI-simulator</td>
+        <td>accept/reject del ticket inserito dal driver</td>
+    </tr>
+
+    <tr>
+        <td>loaddone</td>
+        <td>request</td>
+        <td>serviceaccessGUI-simulator</td>
+        <td>coldstorageservice</td>
+        <td>richiesta inviata dal driver per sapere quando potrà liberare l'indoor </td>
+    </tr>
+
+    <tr>
+        <td>goaway/depositfailed</td>
+        <td>reply</td>
+        <td>transporttrolley</td>
+        <td>serviceaccessGUI-simulator</td>
+        <td>completamento/fallimento dell'azione di scarico dal camion, in entrambi i casi il driver dovrà liberare l'indoor</td>
+    </tr>
+
+    <tr>
+        <td>generateticket</td>
+        <td>request</td>
+        <td>coldroommanager</td>
+        <td>ticketmanager</td>
+        <td>richiesta di generazione di un nuovo ticket per completare la risposta positiva a una storerequest</td>
+    </tr>
+
+    <tr>
+        <td>ticket</td>
+        <td>reply</td>
+        <td>ticketmanager</td>
+        <td>coldroommanager</td>
+        <td>invio del ticket generato richiesto dal cold room manager</td>
+    </tr>
+
+    <tr>
+        <td>depositdone/depositfailed</td>
+        <td>dispatch</td>
+        <td>transporttrolley</td>
+        <td>coldroommanager</td>
+        <td>messaggio di successo/fallimento dell'azione di deposito per l'eventuale aggiornamento dello stato della cella</td>
+    </tr>
+
+    <tr>
+        <td>expiredticket</td>
+        <td>dispatch</td>
+        <td>ticketmanager</td>
+        <td>coldroommanager</td>
+        <td>notifica al cold room manager il fatto che il tickt inserito è scaduto in modo da poter aggiornare lo stato della cella</td>
+    </tr>
+
+</table>
+
+<br>
+
+l'archietettura logica risultante è la seguente:<br>
+<img src="./sprint1_analisiproblema/coldstorageservicearch.png" height="640" weight="480"> <br>
+<a href="./sprint1_analisiproblema/src/sprint1_analisiproblema.qak" >file qak architettura logica</a><br>
+<br>
+
+
+
+
+
+
+
+
+
+
 <div style="background-color:rgba(137, 129, 186, 0.9); width:60%;text-align:left;color:white">
 By
  andrea.isernio@studio.unibo.it & fabio.gentili3@studio.unibo.it <br>
