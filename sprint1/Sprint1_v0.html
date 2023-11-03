@@ -793,6 +793,57 @@ l'archietettura logica risultante è la seguente:<br>
 <br>
 
 
+<!-- ------------------Progettazione e sviluppo---------------------- -->
+<!-- ------------------------------------------------------------ -->
+<!-- ------------------------------------------------------------ -->
+<h2>Progettazione e sviluppo</h2>
+Il progetto contiene tutto il software sviluppato dal nostro team per la Core-Business dell'applicazione finale.
+<h3>Architettura Logica</h3>
+Di seguito viene riportata l'immagine dell'architettura logica, ci sono cambiamenti rispetto a quella dell'analisi del problema?
+<h3>ServiceAccesGUI-Simulator</h3>
+E' un simulatore della ServiceAccesGUI e viene usato per:
+<ol>
+    <li>simulare l'arrivo del fridgeTruck-driver </li>
+    <li>simulare l'interazione con il ColdStorageService </li>
+</ol>
+
+NB E' un simulatore  per ora poichè non deve andare a complicare la realizzazione della Core-Business.<br>
+La ServiceAcessGUI la andremo a realizzare nello sprint successivo, ovvero nello sprint2.
+<h3>ColdStorageService</h3>
+E' il cuore del progetto. E' l' elemento principale della core-business ma anche l'elemento principale del sistema distribuito nel complesso. <br>
+In questa fase pensiamo alla gestione corretta nell' invio di <ksi>invalidticket</ksi> che potrebbe essere inviato o a causa dell'errato inserimento del numero del ticket o causa di un ticket scaduto.<br>
+!!!!!qui Metterò diagramma interazione a seguito di invio invaliticket da parte del ticketmanager. !!!!!!!!!!!!!!!!!!!<br>
+<br>Per simulare l'azione di prelievo dalla porta INDOOR e per simulare l'azione di deposito nella porta della ColdRoom, abbiamo pensato di ritardare l'esecuzione di queste due azioni con un valore proporzionale al peso del foodload corrente. 
+
+
+
+<h4>ColdStorageService</h4>
+Riceve le richieste provenienti dalla ServiceAccesGUI (simulator per ora) e gestisce le interazioni con gli altri componenti (come ticketmanager, coldroomManager,transportTrolley).
+
+<h4>TransportTrolley</h4>
+Riceve la richiesta di deposito, inoltrata dalla ColdStorageService, e la inoltra al basicRobot.
+Una volta che il basicrobot può essere ingaggiato per eseguire le azioni di prelievo e di deposito si mette in attesa che arrivi una loaddone da parte del SAG(-simulator) per poi inviare la richiesta al basicrobot di spostarsi nella cella corrispondente alla porta INDOOR (0,4).
+Per semplicità abbiamo pensato di hardcodare le celle della porta INDOOR in posizione (0,4) escludendo l'utilizzo della seconda cella adiacente in posizione(0,5) e di hardcodare la cella della porta della ColdRoom in (4,3) escludendo la seconda cella disponibile in (5,3) per eseguire il deposito nella ColdRoom.<br>
+Solo in seguito a un'azione di deposito completata con successo, il transportTrolley inoltra il messaggio di <ksi>depositdone</ksi> al ColdRoomManager in modo tale da aggiornare il peso corrente <b>CurrentWeight</b> della ColdRoom.
+
+<h4>ColdRoomManager</h4>
+Riceve la <ksi>storeRequest</ksi> inoltrata dal ColdStorageService e valuta se la richiesta di deposito possa essere accettata o meno. <br>
+<ol>
+    Se c'è abbastanza spazio, invia una richiesta al ticketmanager di generare un nuovo ticket,attende che gli venga inviato e lo inoltra alla SAG(simulator); infine aggiorna il reale contatore <b>CurrentWeight</b>.<br> 
+Se non c'è abbastanza spazio o il tickettime non è più valido rifiuta la richiesta rispondendo con un <ksi>loadrejected</ksi> e infine aggiorna il contatore fittizio <b>FreeSpace</b> . 
+
+</ol>
+
+<h4>Ticket Manager</h4>
+Ogni ticket è composto da due interi: id del ticket e TICKETTIME e viene mantenuto in una <b>hashMapOf&lt;Int,Long&gt;</b>. <br>
+Il Ticket Manager riceve due tipi di richieste (inoltrate dal coldstorageservice) :
+<ol>
+    <li>di generazione di un nuovo ticket <ksi>generateticket</ksi>. <br> Il ticket sarà composto da due interi: il primo intero viene assocciato all'id del ticket e viene utilizzata la classe Random per generare un intero compreso tra 1 e 10000.  <br>
+        Il secondo intero viene usato per associare al ticket un <b>TICKETTIME</b> calcolato dalla somma del tempo attuale, più 10 secondi, più 0,5 secondi per ogni kg del truckLoad.  </li>
+    <li>di verificare che il ticket inserito sia valido, quindi <ksi>verifyTicket</ksi> e risponderà direttamente alla SAG (simulator in questo sprint) con invalidTicket o chargeTaken. </li>
+</ol>
+
+
 
 
 
