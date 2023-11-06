@@ -1,5 +1,6 @@
-package sprint0;
-import it.unibo.ctxtestsprint0.MainCtxtestsprint0Kt;
+package sprint1_progetto;
+
+import it.unibo.ctxtestsprint1.MainCtxtestsprint1Kt;
 import it.unibo.kactor.ActorBasic;
 import it.unibo.kactor.MsgUtil;
 import it.unibo.kactor.QakContext;
@@ -15,18 +16,19 @@ import unibo.basicomm23.utils.CommUtils;
 
 import static org.junit.Assert.assertTrue;
 
-public class TestStoreRequest {
-	
+
+public class sprint1_test {
 	private final static String hostname = "localhost";
     private final static int port = 9999;
-    private final static String actorName = "test_sprint0";
+    private final static String actorName = "test_coldstorageservice_sprint1";
 
     private Thread ctx_test;
     private ActorBasic actorColdStorage;
     private Interaction interaction;
+    
 
-
-
+    
+    
     @Before
     public void startup() {
         CommSystemConfig.tracing = false;
@@ -40,7 +42,7 @@ public class TestStoreRequest {
         }
 
     }
-
+    
 
     @AfterEach
     public void shutdown() {
@@ -55,10 +57,10 @@ public class TestStoreRequest {
 
         ColorsOut.outappl("TEST TERMINATED", ColorsOut.CYAN);
     }
-
-
+    
+    
     private void setupColdStorageService() {
-        new Thread(MainCtxtestsprint0Kt::main).start();
+        new Thread(MainCtxtestsprint1Kt::main).start();
 
         actorColdStorage = QakContext.Companion.getActor(actorName);
         while(actorColdStorage == null) {
@@ -66,10 +68,11 @@ public class TestStoreRequest {
             actorColdStorage = QakContext.Companion.getActor(actorName);
         }
 
-        ColorsOut.outappl("[Test_ColdStorageService_sprint0] UP", ColorsOut.MAGENTA);
+        ColorsOut.outappl("[Test_ColdStorageService_sprint1] UP", ColorsOut.MAGENTA);
     }
-
-
+    
+    
+    
     @Test
     public void testLoadAccepted() {
         try {
@@ -86,8 +89,9 @@ public class TestStoreRequest {
             e.printStackTrace();
         }
     }
-
-
+    
+    
+    
     @Test
     public void testLoadRejected() {
         try {
@@ -104,13 +108,13 @@ public class TestStoreRequest {
             e.printStackTrace();
         }
     }
-
-
-
+    
+    
+    
     @Test
     public void testValidTicket(){
         try{
-            IApplMessage msg = MsgUtil.buildRequest("testTicketOK","verifyticket","verifyticket(1234)",actorName);
+            IApplMessage msg = MsgUtil.buildRequest("testTicketOK","verifyticket","verifyticket(1235)",actorName);
             ColorsOut.outappl(msg.toString(), ColorsOut.MAGENTA);
 
             String reply = interaction.request(msg.toString());
@@ -123,23 +127,51 @@ public class TestStoreRequest {
             e.printStackTrace();}
     }
 
-
+    
+    
     @Test
-    public void testInvalidTicket(){
-        try{
-            IApplMessage msg = MsgUtil.buildRequest("testTicketOK","verifyticket","verifyticket(1235)",actorName);
+    public void testWrongTicket() {
+    	try {
+
+            IApplMessage msg = MsgUtil.buildRequest("testTicketOK","verifyticket","verifyticket(1237)",actorName);
             ColorsOut.outappl(msg.toString(), ColorsOut.MAGENTA);
 
             String reply = interaction.request(msg.toString());
-
             assertTrue(reply.contains("invalidticket"));
-            if(reply.contains("invalidticket"))
-                ColorsOut.outappl("TEST InvalidTicket: PASSED", ColorsOut.GREEN);
-            else ColorsOut.outappl("TEST InvalidTicket: FAILED", ColorsOut.RED);
-        } catch (Exception e) {
+            if(reply.contains("wrong_ticket"))
+                ColorsOut.outappl("TEST wrongTicket: PASSED", ColorsOut.GREEN);
+            else ColorsOut.outappl("TEST wrongTicket: FAILED", ColorsOut.RED);
+    	}catch (Exception e) {
             e.printStackTrace();}
         }
+    
 
 
+
+	@Test
+	public void testExpiredTicket() {
+		try {
+
+            IApplMessage msg = MsgUtil.buildRequest("testTicketOK","verifyticket","verifyticket(1236)",actorName);
+            ColorsOut.outappl(msg.toString(), ColorsOut.MAGENTA);
+
+            String reply = interaction.request(msg.toString());
+            assertTrue(reply.contains("expired_ticket"));
+            if(reply.contains("expired_ticket"))
+                ColorsOut.outappl("TEST expiredTicket: PASSED", ColorsOut.GREEN);
+            else ColorsOut.outappl("TEST expiredTicket: FAILED", ColorsOut.RED);
+    	}catch (Exception e) {
+            e.printStackTrace();}
+    }
+   
 
 }
+
+    
+    
+    
+    
+    
+    
+
+
