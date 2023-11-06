@@ -801,20 +801,25 @@ Il progetto contiene tutto il software sviluppato dal nostro team per la Core-Bu
 <h3>Architettura Logica</h3>
 Di seguito viene riportata l'immagine dell'architettura logica, ci sono cambiamenti rispetto a quella dell'analisi del problema?
 <h3>ServiceAccesGUI-Simulator</h3>
-E' un simulatore della ServiceAccesGUI e viene usato per:
-<ol>
-    <li>simulare l'arrivo del fridgeTruck-driver </li>
-    <li>simulare l'interazione con il ColdStorageService </li>
-</ol>
+E' un simulatore della ServiceAccesGUI,modellato come un attore QAK per interagire con il service e viene utilizzato per:
+<div class="remark"> 
+    <ol>
+        <li>simulare l'arrivo del fridgeTruck-driver: invia al ColdStorageService una storerequest e attende una risposta dal ColdRoomManager che verifica se la richiesta può essere presa in carica o meno in quel determinanto momento. Riceverà dal service un <ksi>loadaccepted</ksi> o una <ksi>loadrejected</ksi> nel caso in cui in quel momento è impossibile depositare altro cibo, riportando così la SAG(simulator) nello stato iniziale.  </li>
+        <li>simulare l'interazione con il ColdStorageService: una volta che il servizio ha preso in carico la richiesta invia alla SAG(simulator) un loadaccepted e un intero corrispondente al numero del ticket. A questo punto il ServiceAccesGUI-Simulator inserisce il ticket e attende che il service verifichi che il ticket inserito sia corretto e ancora valido. Nel caso in cui il ticket sia ancora valido, il service risponderà con un <ksi>chargetaken</ksi>; il SAG-simulator invierà un <ksi>loaddone</ksi> (con parametro il numero del ticket) e attenderà che l'azione di deposito da parte del service sia completata o fallita. Il service invierà:<ol>-o un <ksi>goaway</ksi> nel caso di azione di pickup avvenuta successo, quindi che il robot ha scaricato la merce dal camion. Il service continuerà con l'azione di deposito, per completare la richiesta fatta dal driver che è appena andato via<br>-o un <ksi>depositfailed</ksi> nel caso contrario. </ol>
 
-NB E' un simulatore  per ora poichè non deve andare a complicare la realizzazione della Core-Business.<br>
-La ServiceAcessGUI la andremo a realizzare nello sprint successivo, ovvero nello sprint2.
+    </ol>
+</div>
+In entrambi i casi verrà visualizzato a video il messaggio di liberare la porta INDOOR per procedere con nuove richieste. <br>
+
+
+<h4>NOTA: </h4><br>E' un simulatore per ora poichè non deve andare a complicare la realizzazione della Core-Business.<br>
+      
+    La ServiceAcessGUI la andremo a realizzare nello sprint successivo, ovvero nello sprint2. (METTI LINK !!!) </div>
 <h3>ColdStorageService</h3>
 E' il cuore del progetto. E' l' elemento principale della core-business ma anche l'elemento principale del sistema distribuito nel complesso. <br>
 In questa fase pensiamo alla gestione corretta nell' invio di <ksi>invalidticket</ksi> che potrebbe essere inviato o a causa dell'errato inserimento del numero del ticket o causa di un ticket scaduto.<br>
 !!!!!qui Metterò diagramma interazione a seguito di invio invaliticket da parte del ticketmanager. !!!!!!!!!!!!!!!!!!!<br>
-<br>Per simulare l'azione di prelievo dalla porta INDOOR e per simulare l'azione di deposito nella porta della ColdRoom, abbiamo pensato di ritardare l'esecuzione di queste due azioni con un valore proporzionale al peso del foodload corrente. 
-
+<br>
 
 
 <h4>ColdStorageService</h4>
@@ -823,25 +828,55 @@ Riceve le richieste provenienti dalla ServiceAccesGUI (simulator per ora) e gest
 <h4>TransportTrolley</h4>
 Riceve la richiesta di deposito, inoltrata dalla ColdStorageService, e la inoltra al basicRobot.
 Una volta che il basicrobot può essere ingaggiato per eseguire le azioni di prelievo e di deposito si mette in attesa che arrivi una loaddone da parte del SAG(-simulator) per poi inviare la richiesta al basicrobot di spostarsi nella cella corrispondente alla porta INDOOR (0,4).
-Per semplicità abbiamo pensato di hardcodare le celle della porta INDOOR in posizione (0,4) escludendo l'utilizzo della seconda cella adiacente in posizione(0,5) e di hardcodare la cella della porta della ColdRoom in (4,3) escludendo la seconda cella disponibile in (5,3) per eseguire il deposito nella ColdRoom.<br>
-Solo in seguito a un'azione di deposito completata con successo, il transportTrolley inoltra il messaggio di <ksi>depositdone</ksi> al ColdRoomManager in modo tale da aggiornare il peso corrente <b>CurrentWeight</b> della ColdRoom.
+<div class="remark">Per semplicità abbiamo pensato di cablare come cella fissa della porta INDOOR, la cella situata in posizione (0,4) escludendo l'utilizzo della seconda cella adiacente in posizione(0,5) e di cablare la cella fissa della porta della ColdRoom quella presente in posizione (4,3) escludendo la seconda cella disponibile in (5,3) per eseguire il deposito nella ColdRoom.<br></div>
+Se il <b>basicrobot</b> non è impegnato con altre richieste, si muove verso la porta INDOOR e inizia a scaricare la merce dal camion e rispondendo alla richiesta di loaddone(inviata dalla SAG-simulator) con un <ksi>goaway</ksi>; il transportTrolley chiederà nuovamente al basicrobot di muoversi, questa volta nella posizione associata alla cella della ColdRoom e se il basicRobot ha eseguito anche questa azione con successo, invierà al transportTrolley un <ksi>moverobotdone</ksi> per dire che il basicrobot è arrivato davanti alla coldroom e che sta completando la fase di deposito.
+<br>Solo in seguito a un'azione di deposito completata con successo, il transportTrolley inoltra il messaggio di <ksi>depositdone</ksi> al ColdRoomManager in modo tale da aggiornare il peso corrente <b>CurrentWeight</b> della ColdRoom.
 
 <h4>ColdRoomManager</h4>
-Riceve la <ksi>storeRequest</ksi> inoltrata dal ColdStorageService e valuta se la richiesta di deposito possa essere accettata o meno. <br>
-<ol>
-    Se c'è abbastanza spazio, invia una richiesta al ticketmanager di generare un nuovo ticket,attende che gli venga inviato e lo inoltra alla SAG(simulator); infine aggiorna il reale contatore <b>CurrentWeight</b>.<br> 
-Se non c'è abbastanza spazio o il tickettime non è più valido rifiuta la richiesta rispondendo con un <ksi>loadrejected</ksi> e infine aggiorna il contatore fittizio <b>FreeSpace</b> . 
+Abbiamo introdotto le variabili contatore <b>CurrentWeight</b> e <b>FreeSpace</b> per una gestione migliore della disponibilità corrente della ColdRoom. <br>
 
-</ol>
+  
+    
+
+
+
+<table class="dictionary">
+    <tr>
+        <td>Nome</td>
+        <td>Tipo</td>
+        <td>Descrizione</td>
+    </tr>
+    <tr>
+        <td>CurrentWeight</td>
+        <td>variabile intera > 0</td>
+        <td>Indica il peso realmente disponibile per le varie richieste di deposito, inizializzato con il valore <b>0</b> e si aggiorna solo nel momento in cui la richiesta di deposito viene eseguita con successo.</td>
+    </tr>
+    <tr>
+        <td>FreeSpace</td>
+        <td>variabile intera > 0</td>
+        <td>è un indicatore fittizio di CurrentWeight ,inizializzato con il valore <b>100</b> che simula la disponibilità reale nella ColdRoom.<br>Si aggiorna solo dopo aver verificato che il truckLoad della richiesta sia inferiore a <b>FreeSpace</b> stesso, quindi viene usato nelle prime fasi di validazione della richiesta.</td>
+    </tr>
+</table>
+Per gestire le varie richieste di deposito, abbiamo utilizzato una lista del tipo <b>hashMapOf&lt;Int,Int&gt;</b> dove il primo intero è associato al <b>TruckTicket</b> ovvero l'id del ticket e il secondo intero al <b>truckLoad</b> ovvero il foodload espresso in KG. <br>
+Riceve la <ksi>storeRequest</ksi> inoltrata dal ColdStorageService e valuta se la richiesta di deposito possa essere accettata o meno: <br>
+<div class="remark"><ol>
+
+    -se non c'è abbastanza spazio,rifiuta la richiesta rispondendo con un <ksi>loadrejected</ksi> .<br>
+    -se c'è abbastanza spazio, aggiorna il contatore fittizio <b>FreeSpace</b> sottraendo ad esso il foodload della storeRequest corrente, invia una richiesta al ticketmanager di generare un nuovo ticket,attende che gli venga inviato e lo inoltra alla SAG(simulator); inserisce la richiesta(passandogli il TruckTicket e il truckLoad) nella lista Requests e risponde alla storeRequest della SAG-simulator con una loadaccepted (e il Truckticket ad esso associato);solo  quando il transportTrolley invia un <ksi>depositdone</ksi> il ColdRoomManager aggiorna il reale contatore <b>CurrentWeight</b> sommandogli il foodload corrente e rimuove la richiesta dalla lista .<br> 
+
+</ol> </div>
+
 
 <h4>Ticket Manager</h4>
 Ogni ticket è composto da due interi: id del ticket e TICKETTIME e viene mantenuto in una <b>hashMapOf&lt;Int,Long&gt;</b>. <br>
 Il Ticket Manager riceve due tipi di richieste (inoltrate dal coldstorageservice) :
 <ol>
-    <li>di generazione di un nuovo ticket <ksi>generateticket</ksi>. <br> Il ticket sarà composto da due interi: il primo intero viene assocciato all'id del ticket e viene utilizzata la classe Random per generare un intero compreso tra 1 e 10000.  <br>
-        Il secondo intero viene usato per associare al ticket un <b>TICKETTIME</b> calcolato dalla somma del tempo attuale, più 10 secondi, più 0,5 secondi per ogni kg del truckLoad.  </li>
+    <li>di generazione di un nuovo ticket <ksi>generateticket</ksi>. <br> Il ticket sarà composto da due interi: il primo intero viene assocciato all'id del ticket e viene utilizzata la classe Random per generare un intero compreso tra 1 e 10000; il secondo intero viene usato per associare al ticket un <b>TICKETTIME</b> calcolato dalla somma del tempo attuale, più 10 secondi, più 0,5 secondi per ogni kg del truckLoad.  </li>
     <li>di verificare che il ticket inserito sia valido, quindi <ksi>verifyTicket</ksi> e risponderà direttamente alla SAG (simulator in questo sprint) con invalidTicket o chargeTaken. </li>
 </ol>
+<div class="remark">Per simulare l'azione di prelievo dalla porta INDOOR e per simulare l'azione di deposito nella porta della ColdRoom, abbiamo pensato di definire il TICKETTIME variabile in base al foodload corrente (espresso in KG), perchè richieste con foodload minore devono essere eseguite in un tempo minore rispetto a richieste con foodload maggiore poichè il robot ha meno carico e si muove più velocemente. </div>
+
+
 
 
 
