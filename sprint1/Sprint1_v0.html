@@ -882,6 +882,53 @@ Il Ticket Manager riceve due tipi di richieste (inoltrate dal coldstorageservice
 Di seguito viene riportata l'immagine dell'architettura logica, ci sono cambiamenti rispetto a quella dell'analisi del problema?
 METTERE Link al qak del progetto
 
+<!-- ------------------Test plan---------------------- -->
+<!-- ------------------------------------------------------------ -->
+<!-- ------------------------------------------------------------ -->
+
+<h2>Test plan</h2>
+Il qak di riferimento per l'escuzione dei seguenti test è <a href="./sprint1_progetto/src/test_coldstorageservice_sprint1.qak" >test_coldstorageservice_sprint1.qak</a><br>
+La classe java che implementa gli unit test è <a href="./sprint1_progetto/test/sprint1_test.java" >sprint1_test.java</a><br><br>
+<table class="dictionary">
+    <tr>
+        <td>Test</td>
+        <td>Descrizione</td>
+        <td>Risultato</td>
+    </tr>
+
+    <tr>
+        <td>testLoadAccepted</td>
+        <td>verifica che, in caso di una storerequest da parte dell'accessgui e se c'è abbastanza spazio nella cold room, l'applicazione risponda con un messaggio di loadaccepted</td>
+        <td><a href="./resources/img/test_loadaccepted.png" >output testloadaccepted</a></td>
+    </tr>
+
+    <tr>
+        <td>testLoadRejected</td>
+        <td>verifica che, in caso di una storerequest da parte dell'accessgui e se non c'è abbastanza spazio nella cold room, l'applicazione risponda con un messagio di loadrejected</td>
+        <td><a href="./resources/img/test_loadrejected.png" >output testloadrejected</a></td>
+    </tr>
+
+    <tr>
+        <td>testValidTicket</td>
+        <td>verifica che, in seguito a una verifyticket da parte dell'accessgui, l'applicazione risponda con un messaggio di chargetaken se il ticket inserito esiste e non è scaduto</td>
+        <td><a href="./resources/img/test_validticket.png" >output testvalidticket</a></td>
+    </tr>
+
+    <tr>
+        <td>testWrongTicket</td>
+        <td>verifica che, in seguito a una verifyticket da parte dell'accessgui, l'applicazione risponda con  un messaggio di invalidticket con parametro wrong_ticket se il ticket inserito non esiste</td>
+        <td><a href="./resources/img/test_wrongticket.png" >output testwrongticket</a></td>
+    </tr>
+
+    <tr>
+        <td>testExpiredTicket</td>
+        <td>verifica che, in seguito a una verifyticket da parte dell'accessgui, l'applicazione risponda con un messaggio di invalidticket con parametro expired_ticket se il ticket inserito esiste ma è scaduto</td>
+        <td><a href="./resources/img/test_expiredticket.png" >output testexpiredticket</a></td>
+    </tr>
+
+</table>
+<br>
+<br>
 
 
 
