@@ -798,8 +798,6 @@ l'archietettura logica risultante è la seguente:<br>
 <!-- ------------------------------------------------------------ -->
 <h2>Progettazione e sviluppo</h2>
 Il progetto contiene tutto il software sviluppato dal nostro team per la Core-Business dell'applicazione finale.
-<h3>Architettura Logica</h3>
-Di seguito viene riportata l'immagine dell'architettura logica, ci sono cambiamenti rispetto a quella dell'analisi del problema?
 <h3>ServiceAccesGUI-Simulator</h3>
 E' un simulatore della ServiceAccesGUI,modellato come un attore QAK per interagire con il service e viene utilizzato per:
 <div class="remark"> 
@@ -813,12 +811,13 @@ In entrambi i casi verrà visualizzato a video il messaggio di liberare la porta
 
 
 <h4>NOTA: </h4><br>E' un simulatore per ora poichè non deve andare a complicare la realizzazione della Core-Business.<br>
-      
+ <br>
     La ServiceAcessGUI la andremo a realizzare nello sprint successivo, ovvero nello sprint2. (METTI LINK !!!) </div>
 <h3>ColdStorageService</h3>
 E' il cuore del progetto. E' l' elemento principale della core-business ma anche l'elemento principale del sistema distribuito nel complesso. <br>
 In questa fase pensiamo alla gestione corretta nell' invio di <ksi>invalidticket</ksi> che potrebbe essere inviato o a causa dell'errato inserimento del numero del ticket o causa di un ticket scaduto.<br>
-!!!!!qui Metterò diagramma interazione a seguito di invio invaliticket da parte del ticketmanager. !!!!!!!!!!!!!!!!!!!<br>
+<img src="../sprint1/resources/imgs/diagInteraSprint1_progettoVerifyTicket-Pagina-2.drawio.png" height="800" weight="700" >
+
 <br>
 
 
@@ -874,12 +873,14 @@ Il Ticket Manager riceve due tipi di richieste (inoltrate dal coldstorageservice
     <li>di generazione di un nuovo ticket <ksi>generateticket</ksi>. <br> Il ticket sarà composto da due interi: il primo intero viene assocciato all'id del ticket e viene utilizzata la classe Random per generare un intero compreso tra 1 e 10000; il secondo intero viene usato per associare al ticket un <b>TICKETTIME</b> calcolato dalla somma del tempo attuale, più 10 secondi, più 0,5 secondi per ogni kg del truckLoad.  </li>
     <li>di verificare che il ticket inserito sia valido, quindi <ksi>verifyTicket</ksi> e risponderà direttamente alla SAG (simulator in questo sprint) con invalidTicket o chargeTaken. </li>
 </ol>
-<div class="remark">Per simulare l'azione di prelievo dalla porta INDOOR e per simulare l'azione di deposito nella porta della ColdRoom, abbiamo pensato di definire il TICKETTIME variabile in base al foodload corrente (espresso in KG), perchè richieste con foodload minore devono essere eseguite in un tempo minore rispetto a richieste con foodload maggiore poichè il robot ha meno carico e si muove più velocemente. </div>
 
 
 
 
 
+<h3>Architettura Logica</h3>
+Di seguito viene riportata l'immagine dell'architettura logica, ci sono cambiamenti rispetto a quella dell'analisi del problema?
+METTERE Link al qak del progetto
 
 
 
