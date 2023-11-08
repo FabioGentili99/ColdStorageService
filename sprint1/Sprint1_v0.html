@@ -196,7 +196,11 @@ div.imagedesc{
 <link rel="stylesheet" type="text/css" href="../commons/resources/styles/table.css">
 <link rel="stylesheet" type="text/css" href="../commons/resources/styles/code.css">
 <script type="text/javascript" src="../commons/resources/scripts/myScripts.js"></script>
-
+<style>
+    .img-container {
+      text-align: center;
+    }
+  </style>
 
 </head>
     
@@ -641,7 +645,11 @@ Per il formato dei messaggi abbiamo pensato di utilizzare il linguaggio Prolog p
         </ul>
     </div>
     Viene riportato qui un esempio delle possibili interazioni tra i vari attori del sistema a seguito di una storeRequest: <br>
-    <img src="./resources/imgs/diagInterazioneSprint1StoreRequest_v2.drawio.png"> <br>
+    <br>
+    <div class="img-container"> <!-- Elemento genitore a blocco -->
+        <img src="./resources/imgs/diagInterazioneSprint1StoreRequest_v8.drawio.png" alt="storeRequestdrawio"> <br>
+      </div>
+    
 
     <problem>Congedare il fridgeTruck</problem>
     <b>Problema</b>: 
@@ -682,7 +690,7 @@ Per il formato dei messaggi abbiamo pensato di utilizzare il linguaggio Prolog p
         </ul>
     
        </div>
-<img src="../sprint1/resources/imgs/diagInteraSprint1VerifyTicket_v5-Pagina-2.drawio.png" height="640" weight="480"> <br>
+<img src="../sprint1/resources/imgs/diagInteraSprint1VerifyTicket_AnalisiProbv2-Pagina-2.drawio.png" height="600" weight="600"> <br>
 <h4 id="notesNouns">Nota</h4>
 <div>
     <ol>
@@ -787,7 +795,7 @@ I messaggi che ci serviranno per implementare i comportamenti mostrati nei diagr
 
 <br>
 
-l'archietettura logica risultante è la seguente:<br>
+l'architettura logica risultante è la seguente:<br>
 <img src="./sprint1_analisiproblema/coldstorageservicearch.png" height="640" weight="480"> <br>
 <a href="./sprint1_analisiproblema/src/sprint1_analisiproblema.qak" >file qak architettura logica</a><br>
 <br>
@@ -806,17 +814,18 @@ E' un simulatore della ServiceAccesGUI,modellato come un attore QAK per interagi
         <li>simulare l'interazione con il ColdStorageService: una volta che il servizio ha preso in carico la richiesta invia alla SAG(simulator) un loadaccepted e un intero corrispondente al numero del ticket. A questo punto il ServiceAccesGUI-Simulator inserisce il ticket e attende che il service verifichi che il ticket inserito sia corretto e ancora valido. Nel caso in cui il ticket sia ancora valido, il service risponderà con un <ksi>chargetaken</ksi>; il SAG-simulator invierà un <ksi>loaddone</ksi> (con parametro il numero del ticket) e attenderà che l'azione di deposito da parte del service sia completata o fallita. Il service invierà:<ol>-o un <ksi>goaway</ksi> nel caso di azione di pickup avvenuta successo, quindi che il robot ha scaricato la merce dal camion. Il service continuerà con l'azione di deposito, per completare la richiesta fatta dal driver che è appena andato via<br>-o un <ksi>depositfailed</ksi> nel caso contrario. </ol>
 
     </ol>
+    In entrambi i casi verrà visualizzato a video il messaggio di liberare la porta INDOOR per procedere con nuove richieste. <br>
+
 </div>
-In entrambi i casi verrà visualizzato a video il messaggio di liberare la porta INDOOR per procedere con nuove richieste. <br>
 
 
 <h4>NOTA: </h4><br>E' un simulatore per ora poichè non deve andare a complicare la realizzazione della Core-Business.<br>
- <br>
-    La ServiceAcessGUI la andremo a realizzare nello sprint successivo, ovvero nello sprint2. (METTI LINK !!!) </div>
+ 
+    La ServiceAcessGUI la andremo a realizzare nello sprint successivo, ovvero nello sprint2. <a href="../sprint2/">(Link allo sprint2)</a> 
 <h3>ColdStorageService</h3>
 E' il cuore del progetto. E' l' elemento principale della core-business ma anche l'elemento principale del sistema distribuito nel complesso. <br>
 In questa fase pensiamo alla gestione corretta nell' invio di <ksi>invalidticket</ksi> che potrebbe essere inviato o a causa dell'errato inserimento del numero del ticket o causa di un ticket scaduto.<br>
-<img src="../sprint1/resources/imgs/diagInteraSprint1_progettoVerifyTicket-Pagina-2.drawio.png" height="800" weight="700" >
+<img src="../sprint1/resources/imgs/diagInteraSprint1_progettoVerifyTicket_v3.drawio.png" height="800" weight="800">
 
 <br>
 
@@ -879,8 +888,9 @@ Il Ticket Manager riceve due tipi di richieste (inoltrate dal coldstorageservice
 
 
 <h3>Architettura Logica</h3>
-Di seguito viene riportata l'immagine dell'architettura logica, ci sono cambiamenti rispetto a quella dell'analisi del problema?
-METTERE Link al qak del progetto
+Di seguito viene riportata l'immagine dell'architettura logica corrispondente al progetto:<br>
+<img src="./sprint1_progetto/coldstorageservicearch.png" height="600" weight="600"></a> <br>
+LINK al modello qak del progetto: <a href="./sprint1_progetto/src/sprint1_progetto.qakx">sprint1_progetto.qakx</a>
 
 <!-- ------------------Test plan---------------------- -->
 <!-- ------------------------------------------------------------ -->
@@ -930,6 +940,10 @@ La classe java che implementa gli unit test è <a href="./sprint1_progetto/test/
 <br>
 <br>
 
+<h2>Conclusioni</h2>
+
+<h3>Deployment</h3>
+<h3>WorkPlan</h3>
 
 
 
