@@ -1,0 +1,157 @@
+System test_deposit_sprint1
+
+Request loaddone : loaddone(TruckTicket)
+Reply goaway : goaway(_)
+Reply depositfailed : depositfailed(_)
+
+
+Dispatch depositdone : depositdone(Ticket)
+Dispatch depositfailed : depositfailed(Ticket)
+
+
+Request engage : engage(OWNER,STEPTIME)
+Reply engagedone : engagedone(_)
+Reply engagerefused : engagerefused(_)
+
+Request moverobot : moverobot(TARGET)
+Reply moverobotdone : moverobotok(_)
+Reply moverobotfailed : moverobotfailed(PLANDONE,PLANTODO)
+
+
+
+
+
+Context ctxcss_test_deposit ip [host="localhost" port=9999]
+Context ctxbasicrobot ip [host="127.0.0.1" port=8020]
+
+
+ExternalQActor basicrobot context ctxbasicrobot
+
+
+
+
+QActor test_deposit_coldstorageservice context ctxcss_test_deposit{
+	/*[#
+			val MAXW : Int = 100
+			var CurrentWeight : Int = 0
+			var FreeSpace : Int = 100
+			var TruckLoad : Int = 0
+			var Ticket : Int = 1234
+			var TruckTicket : Int = 0
+	#]*/
+	State s0 initial{
+		delay 1000
+		println("COLD STORAGE SERVICE STARTING, waiting for requests...") color green
+		delegate "loaddone" to test_deposit_transporttrolley
+		delay 1000
+	}
+	
+}
+
+
+
+
+QActor test_deposit_transporttrolley context ctxcss_test_deposit {
+	[#
+		var TruckTicket : Int = 0	
+	#]
+	
+	State s0 initial {
+		println("TRANSPORT TROLLEY STARTING") color green
+		request basicrobot -m engage : engage(transporttrolley,450)
+	}
+	Transition t0 whenReply engagedone -> waiting
+				  whenReply engagerefused -> errorengage
+				  
+				  
+	
+	State errorengage{
+		println("engage del basicrobot fallito") color red
+	}
+	Goto s0 
+	
+	
+	State waiting{
+		println("waiting for requests...") color green
+	}
+	Transition t0 whenRequest loaddone -> movetoindoor
+				  
+	
+	
+	State movetoindoor{
+		updateResource [#	"test_deposit_sprint1(handle_loaddone)"	#]
+		onMsg(loaddone : loaddone(T)){
+			[# TruckTicket = payloadArg(0).toInt() #]
+		}
+		println("il driver con ticket $TruckTicket è pronto all'indoor, avvio dell'operazione di scarico dal camion...") color green
+		request basicrobot -m moverobot : moverobot (0,4)
+		updateResource [#	"test_deposit_sprint1(move_to_indoor)"	#]
+	}
+	Transition t0 whenReply moverobotdone -> handlecharge
+				  whenReply moverobotfailed -> errordeposit
+				  
+				  
+				  
+	State errordeposit{
+		updateResource [#	"test_deposit_sprint1(deposit_failed)"	#]
+		println("operazione di deposito fallita, si procede con le prossime richieste...") color red
+		//forward coldroommanager -m depositfailed : depositfailed($TruckTicket)
+	}
+	Goto gohome
+	
+	
+	
+	
+	State handlecharge{
+		println("il robot è arrivato all'indoor, inizio scarico della merce dal camion...") color green
+		delay 3000
+		replyTo loaddone with goaway : goaway(_)
+		updateResource [#	"test_deposit_sprint1(pickup_completed)"	#]
+	}
+	Goto movetoport
+	
+	
+	
+	State movetoport{
+		println("il camion è stato scaricato, il robot si dirige verso la porta della cold room...") color green
+		request basicrobot -m moverobot : moverobot (4,3)
+		updateResource [#	"test_deposit_sprint1(move_to_port)"	#]
+	}
+	Transition t0 whenReply moverobotdone -> handledeposit
+				  whenReply moverobotfailed -> errordeposit
+				  
+				  
+				  
+				  
+	State handledeposit{
+		println("il robot è arrivato davanti alla cold room, inizia la fase di deposito...") color green
+		delay 3000
+		//forward coldroommanager -m depositdone : depositdone($TruckTicket)
+		println("deposito effettuato con successo") color green
+		updateResource [#	"test_deposit_sprint1(deposit_done)"	#]
+	}
+	Goto gohome		//la gestione di eventuali richieste di deposito già arrivate verrà trattata nel prossimo sprint, in questo caso il robot torna sempre in home prima di eseguire nuovi depositi
+				 
+				  
+				  
+				  
+	State gohome {
+		println("ritorno del robot alla posizione home in corso...") color green
+		request basicrobot -m moverobot : moverobot (0,0)
+		updateResource [#	"test_deposit_sprint1(returning_home)"	#]
+	}
+	Goto waiting
+	
+	
+}
+
+
+
+
+
+
+
+
+
+
+

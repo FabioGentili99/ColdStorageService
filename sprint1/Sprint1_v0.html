@@ -940,6 +940,30 @@ La classe java che implementa gli unit test è <a href="./sprint1_progetto/test/
 <br>
 <br>
 
+
+Per testare il movimento del virtual robot durante l'esecuzione di una deposit action è stato predisposto uno specifico qak:<a href="./sprint1_progetto/src/test_deposit_sprint1.qak" >test_deposit_sprint1.qak</a><br>
+Il test si basa sul fatto che gli attori qak sono anche risorse CoAP, quindi è stato implementato un CoapObserver per tenere traccia degli aggiornamenti di stato notificati dal transporttrolley tramite la funzione updateResource.<br>
+In questo modo è possibile verificare che la lista delle azioni compiute dal robot è uguale a una serie di azioni che ci aspettiamo vengano svolte (spostamento verso indoor, scarico, movimento verso port, deposito, ritorno in home).<br>
+La classe kotlin che implementa il test è: <a href="./sprint1_progetto/test/sprint1_progetto/sprint1_test_deposit.kt" >sprint1_test_deposit.kt</a><br>
+
+<table class="dictionary">
+    <tr>
+        <td>Test</td>
+        <td>Descrizione</td>
+        <td>Risultato</td>
+    </tr>
+
+    <tr>
+        <td>test deposit</td>
+        <td>simulazione di invio di una richiesta di loaddone per verificare che il transporttrolley risponda con una goaway e che il robot esegua una specifica serie di azioni</td>
+        <td><a href="./resources/imgs/test_deposit.png" >output testdeposit</a></td>
+    </tr>
+</table>
+
+
+
+
+
 <h2>Conclusioni</h2>
 
 <h3>Deployment</h3>
