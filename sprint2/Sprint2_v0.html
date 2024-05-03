@@ -412,6 +412,19 @@ Di seguito riportiamo un diagramma delle classi UML riguardante l'applicazione s
 <h2>Conclusioni</h2>
 
 <h3>Deployment</h3>
+<ul>
+<li>Avviare l'immagine docker di tipo compose <a href="../sprint2/unibo.basicrobot23/basicrobot23.yaml"><b>basicrobot23.yaml</b></a>  del progetto <a href="../sprint2/unibo.basicrobot23/"><b>unibo.basicrobot23</b></a>   composta dai due container "wenv" e dal "basicrobot23".<br>
+    <div class="remark"> <b>NOTA:</b> per avviare un container multi-compose con docker, bisogna (solo la prima volta) caricare l'immagine docker (.yaml) dal prompt dei comandi: occorre posizionarsi all'interno della directory <a href="../sprint2/unibo.basicrobot23/"><b>unibo.basicrobot23</b></a> ed eseguire il comando<pre><code>docker-compose -f .\basicrobot23.yaml up</code></pre> 
+
+        In questo modo verranno caricati contemporaneamente su Docker i 2 container "wenv"  del progetto <a href="../sprint2/it.unibo.virtualRobot2023/"><b>it.unibo.virtualRobot2023</b></a> e "basicrobot23-1"   del progetto  "unibo.basicrobot23"  corrispondenti all'applicazione multi-compose "unibobasicrobot23"</div></li>
+
+Viene lanciato l'ambiente virtuale con il robot all'indirizzo http://localhost:8090/
+<br>
+<br>
+<li>In intellij avviare il file <a href="../sprint2/ColdStorageSprint2/src/it/unibo/ctxcoldstorageservice/MainCtxcoldstorageservice.kt"><b>MainCtxcoldstorageservice.kt</b></a> del progetto ColdStorageSprint2 </li>
+<br>
+<li>In intellij avviare il file <a href="../sprint2/serviceaccessgui/src/main/java/unibo/springIntro23/SpringIntro23Application.java"><b>SpringIntro23Application.java</b></a> del progetto serviceaccessgui<br>Aprire il client all'indirizzo http://localhost:8085/home </li>
+</ul>
 <!--
 <h4>Setup sul PC</h4>
             
