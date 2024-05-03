@@ -1,0 +1,3 @@
+{"actor":"coldroommanager", "msgType":"dispatch", "curstate":"waiting", "nextstate":"handledepositok", "msgId":"depositdone"}
+{"actor":"coldroommanager", "msgType":"dispatch", "curstate":"waiting", "nextstate":"handledepositfail", "msgId":"depositfailed"}
+{"actor":"coldroommanager", "msgType":"dispatch", "curstate":"waiting", "nextstate":"handleexpire", "msgId":"expiredticket"}

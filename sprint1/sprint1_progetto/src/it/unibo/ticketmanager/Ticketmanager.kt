@@ -33,10 +33,6 @@ class Ticketmanager ( name: String, scope: CoroutineScope, isconfined: Boolean=f
 				state("s0") { //this:State
 					action { //it:State
 						CommUtils.outgreen("TICKET MANAGER STARTING")
-						Now = getCurrentTime()
-						
-									Tickets.put(1234, Now + 100000)
-									Tickets.put(1236, Now)
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
@@ -52,8 +48,8 @@ class Ticketmanager ( name: String, scope: CoroutineScope, isconfined: Boolean=f
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t03",targetState="handlegeneration",cond=whenRequest("generateticket"))
-					transition(edgeName="t04",targetState="handleverify",cond=whenRequest("verifyticket"))
+					 transition(edgeName="t011",targetState="handlegeneration",cond=whenRequest("generateticket"))
+					transition(edgeName="t012",targetState="handleverify",cond=whenRequest("verifyticket"))
 				}	 
 				state("handlegeneration") { //this:State
 					action { //it:State

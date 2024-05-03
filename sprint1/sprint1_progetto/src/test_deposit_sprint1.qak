@@ -58,7 +58,7 @@ QActor test_deposit_transporttrolley context ctxcss_test_deposit {
 	
 	State s0 initial {
 		println("TRANSPORT TROLLEY STARTING") color green
-		request basicrobot -m engage : engage(transporttrolley,450)
+		request basicrobot -m engage : engage(transporttrolley,200)
 	}
 	Transition t0 whenReply engagedone -> waiting
 				  whenReply engagerefused -> errorengage

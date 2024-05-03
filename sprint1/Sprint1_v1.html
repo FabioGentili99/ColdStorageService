@@ -1,0 +1,1049 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<style type="text/css">
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+	font-size: 93%;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+	border-radius: 10px;
+	padding: 5px;
+}
+
+top {
+	width: 100%;
+}
+
+
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 90%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #abe876;
+    color: #1632cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 90%;
+	font-weight: bold;
+    color: #990000;
+	background-color: #fcf8c7;
+}
+ks{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #0000CD	;
+	font-size: 90%;
+}
+kc{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #008000	;
+	font-size: 90%;
+}
+pre{
+	font-family: "Consolas";
+	font-size: 85%;
+	background-color: #f5f5f5;
+	border: 1.5px solid silver;
+	padding: 5px;
+}
+m{
+	font-family: "Helvetica";
+	line-height: 100%;
+ 	font-size: 75%;
+}
+div.body{
+	 
+    font-size: 18px;
+}
+k{
+    color: #990000;
+	font-weight: bold;
+	font-size: 90%;
+}
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+	padding: 10px;
+}
+
+h2 {
+    background-color: #9ed8ff;
+    font-size: 130%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 100%;
+}
+h4 {
+    background-color: #ccffcc;
+    font-size: 100%;
+	width: 95%;
+	border-radius: 5px;
+	padding: 2px;
+}
+h5 {
+    background-color: #d5ffb0;
+    font-size: 100%;
+
+}
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+	width: 700px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}
+div.remark{
+	background-color: #E3F2FD;
+    border: 1.5px solid #d5f2ed;
+    padding: 15px;
+    margin: 10px;
+	border-radius: 25px;
+}
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+ol, ul, li {
+  margin: 0;
+  margin-left: 10px;
+  padding: 0;
+  padding-bottom: 5px;
+}
+
+table, th, td {
+	border: 1px solid black;
+}
+
+img {
+	border: 1.5px solid #d5f2ed
+
+}
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+div.wrapdesc{
+	width: 90%;
+	margin: auto;
+}
+
+div.imagedesc{
+	width: 85%;
+	margin: auto;
+}
+</style>
+    
+<head>
+   
+<title>Sprint1</title>
+<link rel="stylesheet" type="text/css" href="../commons/resources/styles/templateISS.css">
+<link rel="stylesheet" type="text/css" href="../commons/resources/styles/main.css">
+<link rel="stylesheet" type="text/css" href="../commons/resources/styles/navbar.css">
+<link rel="stylesheet" type="text/css" href="../commons/resources/styles/table.css">
+<link rel="stylesheet" type="text/css" href="../commons/resources/styles/code.css">
+<script type="text/javascript" src="../commons/resources/scripts/myScripts.js"></script>
+<style>
+    .img-container {
+      text-align: center;
+    }
+  </style>
+
+</head>
+    
+<body>
+<div id="top">
+<h1>Cold Storage Service: Sprint1 <font size="5"></font> </h1>
+</div>  
+
+<div class="body"> 
+<h2>Introduzione</h2>
+<div class="remark">
+Sprint1 del progetto finale del corso di Ingegneria dei Sistemi Software M.<br>
+In questa fase ci concentreremo sui requisiti riguardanti il core della logica di business del servizio da realizzare analizzati nello <a href="../sprint0/Sprint0_v1.html"><ksi>sprint0</ksi></a> con l'obiettivo di implementare un primo prototipo funzionante dell'applicazione.
+</div>
+</div>
+
+<h2>Requisiti</h2>
+<a href="../commons/html/TemaFinale23.html">TemaFinale23</a><br>
+In particolare, ci concentreremo sull'analisi e progettazione delle entità coinvolte nella catena "richiesta di deposito - accettazione - azione di deposito".<br>
+ 
+
+
+
+
+ 
+ 
+
+<h2 >Analisi dei requisiti</h2>
+<h3>System abstract</h3>
+Lo Sprint1 coinvolge i seguenti contesti:
+<ul>
+    <li>ColdStorageService</li>
+    <li>DDR Robot</li>
+    <li>ServiceAccesGUI</li>
+</ul>
+<br>
+<img src="../sprint1/resources/imgs/quartoschemaSprin1.drawio.png"  > <br>
+Dato che siamo interessati ad analizzare solo il core-business del sistema, implementeremo la GUI come una semplice applicazione che simula l'interazione tra un camionista e il servizio.<br>
+Inoltre non prenderemo in considerazione l'esistenza del raspberry e non implementeremo le funzionalità di stop/resume del transporttrolley, le quali verranno trattate nell'ultimo sprint.
+
+
+
+
+<h3>Formalizzazione dei requisiti</h3>
+Di seguito sono riportati gli elementi individuati nello sprint0 che sono coinvolti in questa fase.<br>
+<h4 id="Entities">Entità</h4>
+<table class="dictionary">
+    <tr>
+        <th>Entità</th>
+        <th>Attvità</th>
+        <th>Tipo</th>
+        <th>Descrizione</th>
+    </tr>
+    <tr>
+        <td>ColdStorageService</td>
+        <td>Proattivo & Reattivo</td>
+        <td>Attore</td>
+        <td>Gestisce le richieste di fridgeTruck e gestice le azioni del Transport Trolley. Inoltre invia aggiornamenti agli Alarm Devices .</td>
+    </tr>
+    <tr>
+        <td>basicRobot</td>
+        <td>Reattivo</td>
+        <td>Attore</td>
+        <td>Entità che riceve comandi dal TransportTrolley e guida il DDR robot.</td>
+    </tr>
+    <tr>
+        <td>transportTrolley</td>
+        <td>Proattivo e Reattivo</td>
+        <td>Attore</td>
+        <td>Entità principale del ColdStorage system, che si muove all'interno della Service Area ed esegue le azioni di trasporto.</td>
+    </tr>
+    <tr>
+        <td>ServiceAcessGUI-simulator</td>
+        <td>Reattivo</td>
+        <td>Attore</td>
+        <td>Entità che funge da simulatore di store request e di interazione tra camionista e servizio</td>
+    </tr>
+    
+</table>
+
+
+<h4 id="Data">Dati</h4>
+
+
+<table class="dictionary">
+    <tr>
+        <td>Dati</td>
+        <td>Tipo</td>
+        <td>Descrizione</td>
+    </tr>
+    <tr>
+        <td>truckLoad</td>
+        <td>variabile intera > 0</td>
+        <td>Indica il peso diverso di ogni food-load che il truckFridge vuole scaricare, espresso in KG.</td>
+    </tr>
+
+    <tr>
+        <td>MAXW</td>
+        <td>costante intera > 0</td>
+        <td>Indica la quantità massima,espressa in KG, che il container della ColdRoom può dedicare alla conservazione del cibo . </td>
+    </tr>
+
+    <tr>
+        <td>Ticket</td>
+        <td>variabile intera > 0</td>
+        <td>Viene generato dal servizio una volta che il driver della truckFridge ha inviato una <b>storerequest</b>.</td>
+    </tr>
+    <tr>
+        <td>TruckTicket</td>
+        <td>variabile intera > 0</td>
+        <td>Si tratta dell'intero associato al precedente ticket generato, che risulta essenziale per il driver quando dovrà inserirlo al momento dell'arrivo presso la porta INDOOR. Questo numero è importante per verificare se il ticket è ancora valido o se è scaduto.</td>
+    </tr>
+    
+    <tr>
+        <td>TICKETTIME <br>(da inserire nel kotlin)</td>
+        <td>variabile intera > 0</td>
+        <td>Indica un tempo espresso in secondi, che il driver ha a disposizione, una volta che la ColdStorageService ha accettato la <b>storerequest</b> per recarsi alla porta INDOOR.</td>
+    </tr>
+    <tr>
+        <td>RD</td>
+        <td>costante intera > 0</td>
+        <td>Lunghezza di ogni lato del TransportTrolley.</td>   
+    </tr>
+    <!--
+    <tr>
+        <td>DLIMT</td>
+        <td>costante FLOAT</td>
+        <td>Distanza limite entro il quale si attiva l'alarmDevice.</td>
+    </tr>
+    <tr>
+        <td>MINT</td>
+        <td>variabile FLOAT</td>
+        <td>Intervallo di tempo espresso in msecs entro il quale il TransportTrolley non deve essere fermato se non è trascorso un certo periodo di tempo dal precedente stop. </td>
+    </tr>
+
+-->
+    
+</table>
+
+<h4 id="Messages">Messaggi</h4>
+<table class="dictionary">
+    <tr>
+        <td>Messaggio</td>
+        <td>Tipo</td>
+        <td>Mittente</td>
+        <td>Destinatario</td>
+        <td>Descrizione</td>
+    </tr>
+    <tr>
+        <td>storerequest</td>
+        <td>Richiesta</td>
+        <td>Fridge truck driver</td>
+        <td>ColdStorageService</td>
+        <td>Chiede se il foodload di FW kg può essere scaricato nella ColdStorageService.</td>
+    </tr>
+    <tr>
+        <td>loadaccepted</td>
+        <td>Risposta</td>
+        <td>ColdStorageService</td>
+        <td>Fridge truck driver</td>
+        <td>C'è abbastanza spazio per depositare il nuovo food-load.</td>
+    </tr>
+    <tr>
+        <td>loadrejected</td>
+        <td>Risposta</td>
+        <td>ColdStorageService</td>
+        <td>Fridge truck driver</td>
+        <td>Non c'è abbastanza spazio per depositare il nuovo food-load.</td>
+    </tr>
+    <tr>
+        <td>verifyticket</td>
+        <td>Richiesta</td>
+        <td>ServiceAccessGUI</td>
+        <td>ColdStorageService</td>
+        <td>Quando il Fridge truck driver usa la ServiceAcessGUI, inserisce il numero del ticket per verificare se la durata del ticket sia valida o sia scaduta.</td>
+    </tr>
+    <tr>
+        <td>chargetaken</td>
+        <td>Risposta</td>
+        <td>ColdStorageService</td>
+        <td>ServiceAccessGUI</td>
+        <td>ColdStorageService ha validato il ticket, il TransportTrolley si avvicinerà a INDOOR, preleverà il food-load e il servizio invierà il messsaggio sulla ServiceAccessGUI utile al Fridge truck driver per liberare la porta INDOOR. </td>
+            
+        </td>
+    </tr>
+    <tr>
+        <td>invalidticket</td>
+        <td>Risposta</td>
+        <td>ColdStorageService</td>
+        <td>ServiceAccessGUI</td>
+        <td>ColdStorageService ha elaborato che il ticket non è più valido/scaduto.</td>
+    </tr>
+     <!--<tr>
+        <td>doJob</td>
+        <td>Dispatch</td>
+        <td>ColdStorageService</td>
+        <td>TransportTrolley</td>
+        <td>Il transport trolley è abilitato a svolgere una <b>Deposit Action</b> .</td>
+    </tr>
+    <tr>
+        <td>stop</td>
+        <td>Dispatch</td>
+        <td>alarmDevice</td>
+        <td>TransportTrolley</td>
+        <td>Arresta il robot e impedisce di svolgere qualsiasi attività.</td>
+    </tr>
+    <tr>
+        <td>resume</td>
+        <td>Dispatch</td>
+        <td>alarmDevice</td>
+        <td>TransportTrolley</td>
+        <td>Riprende l'attività del robot.</td>
+    </tr>
+    <tr>
+        <td>updateled</td>
+        <td>Dispatch</td>
+        <td>TransportTrolley</td>
+        <td>Warning Device</td>
+        <td>Aggiorna lo stato del led.</td>
+
+    </tr>
+     -->
+    
+    </table>
+	
+<br/><br/> 	
+</div>  
+
+<h3>Componenti della Core-Business</h3>
+<h4>ServiceAccessGUI-Simulator</h4>
+Componente che simula l'interazione tra i camionisti e il ColdStorageService inviando storerequest e verifyticket. <br>
+
+<h4>ColdStorageService</h4>
+Componente che implementa la logica di business della nostra applicazione.
+<h5>Requisiti aggiuntivi</h5>
+Il fridgeTruck deve andarsene il prima possibile e il tempo  per il ritiro dei rifiuti è sempre limitato e prevedibile, quindi:
+<li>Se la ColdStorageService risponde con la <ksi>loadaccepted</ksi>allora il fridgeTruck-driver deve attendere il completamento del ritiro, e mandato via subito dopo.</li>
+<li>Se la ColdStorageService risponde con un <ksi>loadrejected</ksi> allora il fridgeTruck-driver deve essere mandato via immediatamente.</li> 
+<h5>Service Area</h5>
+Date l'immagine e la descrizione della service area da parte del committente, si possono così sintetizzare gli elementi principali:<br>
+<ul>
+    <li>la stanza è di forma rettangolare</li>
+    <li>la zona HOME è posta nell'angolo nord-ovest. Il robot si trova qui all'avvio dell'applicazione</li>
+    <li>l'INDOOR è un'area sul lato opposto a HOME in cui il transport trolley deve recarsi ogni volta che un truck load è pronto a essere depositato</li>
+    <li>la cold room è la cella frigorifera dove si depositano i carichi. E' accessibile tramite una porta sul lato rivolto verso l'INDOOR</li>
+    <li>è presente un ostacolo in mezzo alla stanza</li>
+</ul>
+Grazie al software unibo.mapperQak23 fornito dal committente, è possibile ottenere una rappresentazione a griglia della service area, in cui ogni cella è localizzata tramite un sistema di coordinate (colonna,riga).<br>
+Ogni cella è un quadrato di lato pari a RD e HOME si trova in posizione (0,0).<br>
+La rappresentazione ottenuta è la seguente:<br>
+<br>
+<img src="../sprint0/modello_servicearea.png" width="350" ><br>
+<div class="remark">
+    La posizione <ksi>HOME</ksi> è rappresentata dalla cella (0,0), <ksi>INDOOR</ksi> occupa le celle (0,4) e (1,4), <KSI>PORT</KSI> occupa le celle (4,3) e (5,3).
+    </div>
+Legenda:
+<br>
+<ul>
+    <li>r: posizione corrente del robot</li>
+    <li>1: celle libere</li>
+    <li>X: celle occupate da un ostacolo/cold room</li>
+</ul>
+<br>
+
+
+
+
+
+<h4>TransportTrolley &  BasicRobot</h4>
+Il TransportTrolley e il DDR Robot sono gli elementi del sistema che effettuano le operazioni di stoccaggio:
+
+    <li>pickup</li>
+    <li>transport</li>
+    <li>stock</li>
+In particolare, il transportTrolley interagisce con la ColdStorageService e invia comandi al DDR Robot, che esegue le varie operazioni di stoccaggio.
+<br>Il Robot che utilizzeremo per il progetto sarà virtuale ed eseguirà quindi all'interno di un ambiente virtuale.
+
+
+
+
+
+
+
+
+<!-- ------------------ANALISI DEL PROBLEMA---------------------- -->
+<!-- ------------------------------------------------------------ -->
+<!-- ------------------------------------------------------------ -->
+<h2>Analisi del Problema</h2>
+
+
+
+<h3>Core-Business Software</h3>
+<h4>ServiceAccesGUI-Simulator</h4>
+Il simulatore sarà realizzato come un QAK actor in grado di generare storerequest consecutive, intervallate da richieste di tipo verifyticket.<br>
+In questo modo potremo testare il funzionamento della business logic della nostra applicazione senza dover sviluppare una GUI stand alone apposita.<br>
+L'analisi e il progetto di quest'ultima verranno affrontati nello sprint3.<br>
+
+
+
+
+<h4>ColdStorageService</h4>
+Questo è il componente centrale del sistema e dovrà occuparsi di varie operazioni (interfacciamento con GUI e raspberry, generazione e gestione dei ticket, controllo del transporttrolley...).<br>
+Per questo motivo risulta vantaggioso scomporlo in più sotto-componenti, in primis per rispettare il principio di singola responsabilità e, in secondo luogo, per rendere l'applicazione più modulare e migliorarne reusability e maintainability in visione di futuri aggiornamenti.<br>
+Ogni parte sarà implementata come un attore QAK poichè dovrà essere in grado sia di ricevere che inviare messaggi.<br>
+Introduciamo i due componenti della ColdStorageService <ksi>TicketManager</ksi> e <ksi>Coldroommanager</ksi>, il loro funzionamento dettagliato sarà esplicitato meglio in fase di progettazione.
+<div class="remark">
+Una prima suddivisione può comprendere i seguenti attori:
+<ul>
+    <li>ColdStorageService</li>si occupa di interfacciarsi con gli altri contesti e di inoltrare eventuali richieste ai giusti attori. E' quindi l'access point dell'applicazione
+    <li>Transporttrolley</li>rappresenta l'astrazione logica del DDR robot, si occupa di inoltrare i comandi di movimento al basic robot e funge quindi da unità di controllo di alto livello
+    <li>Ticketmanager</li>si occupa della generazione, memorizzazione e verifa dei ticket legati a ogni storerequest andata a buon fine
+    <li>Coldroommanager</li>si occupa di gestire i contatori della cold room ed, eventualmente, svuotarla periodicamente
+</ul>
+</div>
+<h4>Service area</h4>
+Nonostante la zona INDOOR e la porta della cold room occupino due celle ciascuna nel nostro modello di service area, abbiamo deciso di scegliere soltanto una delle due come destinazione dei movimenti del DDR robot, in modo da poterle cablare direttamente nel codice.<br>
+Questo per tre motivi principali:
+<ul>
+    <li>semplicità e velocità di implementazione</li>
+    <li>non prevediamo che la forma della stanza possa cambiare in futuro</li>
+    <li>il basic robot è già dotato di un componente in grado di calcolare il miglior path dato un punto di partenza e un goal. Tenere conto del fatto che il goal potrebbe essere composto da due posizioni invece di una non inficia considerevolmente l'efficienza dei movimenti del robot</li>
+</ul>
+<br>
+<div class="remark">
+    In alternativa si potrebbe estendere la libreria unibo.planner23-1.0 in modo da rappresentare le celle corrispondenti all'INDOOR e alla porta con degli specifici nomi logici invece delle semplici coordinate (x,y).<br>
+    Valuteremo se implementare questa soluzione in uno sprint futuro.
+</div>
+
+<h4>DDR robot</h4>
+Il DDR robot è l'end point finale dell'applicazione: è il componente fisico che effettuerà i movimenti e le azioni di deposito all'interno della service area.<br>
+Lo si può pensare come un robot fisico reale o come, nel caso di questo progetto, un robot virtuale.<br>
+Infatti il committente ci ha fornito, oltre al software già citato, anche un'implementazione di tale robot virtuale, compatibile con il modello Qak a scambio di messaggi .<br>
+Il progetto unibo.basicrobot23 rappresenta lo strato software da interporre tra la nostra applicazione e l'implementazione del robot ed è esso stesso basato sul modello qak, quindi facilmente integrabile al nostro sistema.<br>
+Il transporttrolley si occuperà di comunicare al basic robot i movimenti da effettuare.<br>
+Una caratteristica importante del basic robot è la sua completa indipendenza dalla realizzazione sottostante del DDR robot, per questo motivo in futuro sarà possibile sostituire il virtual robot con uno fisico senza cambiare nulla del codice della nostra applicazione.
+
+
+<h3>Interazioni</h3>
+<h4>Formato dei Messaggi</h4>
+Per il formato dei messaggi abbiamo pensato di utilizzare il linguaggio Prolog poichè esso è anche il formato dei messaggi del linguaggio a meta-modello <b>QAK</b>.
+<br>
+<h4 id="Messages">Lista Messaggi della Core Business</h4>
+<table class="dictionary">
+    <tr>
+        <td>Messaggio</td>
+        <td>Tipo</td>
+        <td>Mittente</td>
+        <td>Destinatario</td>
+        <td>Descrizione</td>
+    </tr>
+    <tr>
+        <td>storeRequest</td>
+        <td>Richiesta</td>
+        <td>ServiceAcessGUI</td>
+        <td>ColdStorageService</td>
+        <td>Chiede se il foodload kg può essere scaricato nella ColdStorageService</td>
+    <tr>
+        <td>loadaccepted</td>
+        <td>Risposta</td>
+        <td>ColdStorageService</td>
+        <td>ServiceAccesGUI</td>
+        <td>Informa il fridge truck driver(ServiceAcessGUI) che c'è abbastanza spazio per il suo foodload.</td>
+    </tr>
+    <tr>
+        <td>loadrejected</td>
+        <td>Risposta</td>
+        <td>ColdStorageService</td>
+        <td>ServiceAcessGUI</td>
+        <td>Non è possibile depositare il nuovo foodload poichè potrebbe non esserci disponibilità nella ColdRoom.</td>
+    </tr>
+    <tr>
+        <td>deposit</td>
+        <td>Richiesta</td>
+        <td>ColdStorageService</td>
+        <td>TransportTrolley</td>
+        <td>Chiede al TransportTrolley di eseguire un'azione di deposito (Indoor->scarico->cold room->deposito)</td>
+    </tr>
+    <tr>
+        <td>verifyticket</td>
+        <td>Richiesta</td>
+        <td>ServiceAcessGUI</td>
+        <td>ColdStorageService</td>
+        <td>una volta arrivato all'indoor, il driver inserisce il suo ticket tramite la gui per verificare che sia valido e poter procedere con il deposito</td>
+    </tr>
+    <tr>
+        <td>pickupCompleted</td>
+        <td>Risposta</td>
+        <td>TransportTrolley</td>
+        <td>ColdStorageService</td>
+        <td>Informa il ColdStorageServiceche il foodload è stato prelevato dalla porta Indoor.</td>
+    </tr>
+    <tr>
+        <td>depositCompleted</td>
+        <td>Dispatch</td>
+        <td>TransportTrolley</td>
+        <td>ColdStorageService</td>
+        <td>Informa il ColdStorageService che il foodload è stato scaricato nella coldroom</td>
+    </tr>
+    <tr>
+        <td>chargetaken/invalidTicket</td>
+        <td>Risposta</td>
+        <td>ColdStorageService</td>
+        <td>ServiceAcessGUI</td>
+        <td>Possibili messaggi di risposta (da parte del service) che il driver riceve a seguito di una <b>verifyticket</b></td>
+    </tr>
+    <tr>
+        <td>goaway</td>
+        <td>Risposta</td>
+        <td>ColdStorageService</td>
+        <td>ServiceAcessGUI</td>
+        <td>Messaggio destinato al driver per indicargli di liberare la porta INDOOR e andar via. Viene inviato alla fine di un operazione di pickup avvenuta con successo. </td>
+    </tr>
+
+    </table>
+
+    Abbiamo introdotto i due messaggi "depositcomplted e pickupcompleted" e il terzo messaggio "deposit" 
+
+    <h4 id="ServiceAcessGUI-ColdStorageService">ServiceAcessGUI &harr; ColdStorageService</h4>
+    Le richieste del cliente non specificano se vi sono regole di priorità per quanto riguarda le richieste dei vari <b>fridge-truck</b>, pertanto si presuppone che verranno serviti in ordine di arrivo.
+    <problem>Validazione della storeRequest </problem>
+    <b>Problema</b>: cosa succede se l'utente inserisce un carattere al posto di un numero o se inserisce un qualsiasi altro parametro in formato errato (anche aggiunto in futuro) nella ServiceAcessGUI? Oppure cosa succede se alla ColdStorageService arriva una <b>storeRequest</b> non valida? <br>
+    <div class="remark">
+
+        <b>Soluzione</b>:
+        <ul>
+            <li>
+                <ksi>convalida latoclient</ksi>:  se l'utente inserisce un parametro in formato errato, la ServiceAcessGUI ritorna un errore e la richiesta non verrà inviata.
+                <br>
+                <ksi>convalida latoserver</ksi>: se la ColdStorageService riceve una storeRequest non valida, allora risponde con un loadrejected. <br>
+            </li>
+        </ul>
+        <br>
+        <b>Motivazione soluzione:</b>
+        <ul>
+            <li>
+                Questa soluzione è la più semplice da implementare e la più efficiente, poichè le storeRequest non valide vengono semplicemente ignorate e sprecando meno tempo e risorse computazionali.
+            </li>
+            <li>
+                Allo stato attuale del progetto, il livello di sicurezza del sistema non impedisce a un malintenzionato di inviare storeRequest non valide ed una <emni>convalida latoserver</emni> dovrebbe rendere più sicuro il sistema.
+
+            </li>
+        </ul>
+    </div>
+    Viene riportato qui un esempio delle possibili interazioni tra i vari attori del sistema a seguito di una storeRequest: <br>
+    <br>
+    <div class="img-container"> <!-- Elemento genitore a blocco -->
+        <img src="./resources/imgs/diagInterazioneSprint1StoreRequest_v8.drawio.png" alt="storeRequestdrawio"> <br>
+      </div>
+    
+
+    <problem>Congedare il fridgeTruck</problem>
+    <b>Problema</b>: 
+    Quando e che tipo di messaggio bisogna inviare per congedare il fridge-truck ? Bisogna introdurre nuovi messaggi? Cosa accade se il fridge-truck driver dalla ServiceAcessGUI invia una storeRequest al TicketManager/ColdStorageService mentre vi è in corso una <b>Deposit-Action</b> ?
+    <div class="remark"><b>Soluzione</b>:
+        <ul>
+            <li>La <ksi>loadaccepted</ksi> viene inviata quando l'azione di prelievo da parte del TransportTrolley è terminata (invio del messaggio <ksi>pickupCompleted</ksi> ). <br> La riposta viene inviata solo quando il fridgeTruck può essere congedato (per fare spazio e liberare la porta INDOOR e quindi proseguire con le successive richieste da parte di altri fridgeTruck-driver).</li>
+            <li>L' introduzione del nuovo attore <ksi>TicketManager</ksi> che si occuperà validare o meno i ticket (in base alla loro scadenza <b>TICKETTIME</b>) e di eventualmente eliminare un ticket, mentre al TransportTrolley lasciamo gestire/eseguire la Deposit-Action.<br>
+            </li>             
+            <li> Se il fridge-truck driver, dalla ServiceAcessGUI, invia una storeRequest mentre vi è in corso una Deposit-Action,  questa potrà essere tranquillamente gestita dal coldroom manager dato che è il transport trolley a occuparsi del deposito.</li>
+        </ul>
+     </div>
+        
+
+   
+   
+    <h4 id="ColdStorageService TransportTrolley">DDR Robot &harr; TransportTrolley</h4>
+    L'interazione tra le due componenti avviene tramite l'utilizzo dei messaggi messi a dispozione dall'interfaccia di BasicRobot. <br>
+    <h4 id="ColdStorageService TicketManager">ColdStorageService &harr; TicketManager </h4>
+    <problem>Convalida ticket</problem>
+    <b>Problema</b>:
+    Cosa accade se l'utente inserisce un numero di ticket non valido o con TICKETTIME scaduto? Cosa fare per evitare di far attendere per molto tempo il driver che è in attesa di una risposta di validazione o meno del ticket? 
+    <div class="remark"><b>Soluzione</b>:
+        Dopo una discussione con il committente, vedi <a href="../commons/html/DiscussioniTF23.html">DiscussioniTemaFinale23</a>, ipotizziamo che nessun driver cerchi di imbrogliare (rubando ticket,etc.). <br>
+        La ServiceAccesGUI-Simulator invia un <ksi>verifyticket</ksi> al ColdStorageService, che lo inoltra al <b>TicketManager</b> ed è quest'ultimo che verifca effettivamente se il ticket sia valido o meno. <br>
+
+        Il ticket potrebbe risultare non valido per due ragioni:
+        <ul>
+            <li>Il fridgeTruck-driver ha inserito un codice ticket errato portandolo  sul reinserimento del ticket.</li>
+            <li>Il TICKETTIME è scaduto e il driver viene mandato via.</li>
+        </ul>
+        <br>
+        Per evitare di far attendere per molto tempo il driver, dopo aver discusso col cliente ( vedi <a href="../commons/html/DiscussioniTF23.html">DiscussioniTemaFinale23</a>), si può risolvere il problema impostando una interazione a DUE-FASI tra driver e service (compito che può svolgere la serviceAcessGui): <br>
+
+        <ul>
+            <li>    FASE1: il driver invia il ticket e attenda una risposta (immediata) come ad esempio ticketaccepted/ticketrejected (sarebbero le nostre <ksi>chargetaken/invalidticket</ksi>) <br></li>
+            <li>  FASE2: il driver invia la richiesta <ksi>loaddone</ksi> e attenda una seconda risposta (chargeTaken o fallimento per cause legate al servizio) (chargeTaken sarebbe la nostra <ksi>goaway</ksi>)</li>
+        </ul>
+    
+       </div>
+<img src="../sprint1/resources/imgs/diagInteraSprint1VerifyTicket_AnalisiProbv2-Pagina-2.drawio.png" height="600" weight="600"> <br>
+<h4 id="notesNouns">Nota</h4>
+<div>
+    <ol>
+        <li>Per semplicità in questa fase non abbiamo analizzato nel dettaglio le interazioni a seguito di una risposta da parte del service di <ksi>invalidticket</ksi>, ovvero la diversa gestione dei casi in cui l'invalid ticket è causato da un inserimento errato del ticket o dal ticket scaduto(<b>TICKETTIME</b> scaduto). <br></li>
+    </ol>
+</div>
+
+    
+</div>
+<h3 id="Architettura Logica"> Architettura Logica</h3>
+Grazie alla funzione <b>delegate</b> del linguaggio QAK, è possibile far gestire i messaggi inviati dalla gui al cold storage service direttamente agli opportuni attori, senza dover generare nuovi messaggi.<br>
+
+Inoltre, in questo modo, i vari attori possono rispondere alle richieste senza dover passare nuovamente per il cold storage service.<br>
+Ciò permette di risparmiare sulla quantità di messaggi da inviare, oltre che consetire la scrittura di codice più pulito e leggibile.<br>
+
+I messaggi che ci serviranno per implementare i comportamenti mostrati nei diagrammi di sequenza precedenti sono:<br>
+<table class="dictionary">
+    <tr>
+        <td>Messaggio</td>
+        <td>Tipo</td>
+        <td>Mittente</td>
+        <td>Destinatario</td>
+        <td>Descrizione</td>
+    </tr>
+
+    <tr>
+        <td>storerequest</td>
+        <td>request</td>
+        <td>serviceaccessGUI-simulator</td>
+        <td>coldstorageservice</td>
+        <td>richiesta di deposito di un certo numero di kg di cibo</td>
+    </tr>
+
+    <tr>
+        <td>loadaccepted/loadrejected</td>
+        <td>reply</td>
+        <td>coldroommanager</td>
+        <td>serviceaccessGUI-simulator</td>
+        <td>accept/reject del carico richiesto dal driver</td>
+    </tr>
+
+    <tr>
+        <td>verifyticket</td>
+        <td>request</td>
+        <td>serviceaccessGUI-simulator</td>
+        <td>coldstorageservice</td>
+        <td>richiesta di verifica del ticket inserito dal driver una volta arrivato all'indoor</td>
+    </tr>
+
+    <tr>
+        <td>chargetaken/invalidticket</td>
+        <td>reply</td>
+        <td>ticketmanager</td>
+        <td>serviceaccessGUI-simulator</td>
+        <td>accept/reject del ticket inserito dal driver</td>
+    </tr>
+
+    <tr>
+        <td>loaddone</td>
+        <td>request</td>
+        <td>serviceaccessGUI-simulator</td>
+        <td>coldstorageservice</td>
+        <td>richiesta inviata dal driver per sapere quando potrà liberare l'indoor </td>
+    </tr>
+
+    <tr>
+        <td>goaway/depositfailed</td>
+        <td>reply</td>
+        <td>transporttrolley</td>
+        <td>serviceaccessGUI-simulator</td>
+        <td>completamento/fallimento dell'azione di scarico dal camion, in entrambi i casi il driver dovrà liberare l'indoor</td>
+    </tr>
+
+    <tr>
+        <td>generateticket</td>
+        <td>request</td>
+        <td>coldroommanager</td>
+        <td>ticketmanager</td>
+        <td>richiesta di generazione di un nuovo ticket per completare la risposta positiva a una storerequest</td>
+    </tr>
+
+    <tr>
+        <td>ticket</td>
+        <td>reply</td>
+        <td>ticketmanager</td>
+        <td>coldroommanager</td>
+        <td>invio del ticket generato richiesto dal cold room manager</td>
+    </tr>
+
+    <tr>
+        <td>depositdone/depositfailed</td>
+        <td>dispatch</td>
+        <td>transporttrolley</td>
+        <td>coldroommanager</td>
+        <td>messaggio di successo/fallimento dell'azione di deposito per l'eventuale aggiornamento dello stato della cella</td>
+    </tr>
+
+    <tr>
+        <td>expiredticket</td>
+        <td>dispatch</td>
+        <td>ticketmanager</td>
+        <td>coldroommanager</td>
+        <td>notifica al cold room manager il fatto che il tickt inserito è scaduto in modo da poter aggiornare lo stato della cella</td>
+    </tr>
+
+</table>
+
+<br>
+
+l'architettura logica risultante è la seguente:<br>
+<img src="./sprint1_analisiproblema/coldstorageservicearch.png" height="640" weight="480"> <br>
+<a href="./sprint1_analisiproblema/src/sprint1_analisiproblema.qak" >file qak architettura logica</a><br>
+<br>
+
+
+<!-- ------------------Progettazione e sviluppo---------------------- -->
+<!-- ------------------------------------------------------------ -->
+<!-- ------------------------------------------------------------ -->
+<h2>Progettazione e sviluppo</h2>
+Il progetto contiene tutto il software sviluppato dal nostro team per la Core-Business dell'applicazione finale.
+<h3>PATTERN FACADE</h3>
+Decidiamo di utilizzare e introdurre il modello del <b>PATTERN FACADE</b>. 
+<br>Nell'immagine dell'architettura logica vi è l'attore intermedio denominato "coldstorageservice" che funge da controller per il pattern FACADE . <br>
+<div class="remark">
+    <b>MOTIVAZIONE SCELTA:</b>
+    Il <ksi>pattern FACADE</ksi> è un design pattern strutturale che fornisce un'interfaccia semplificata a un sottosistema complesso.<br>Lo scopo è rendere più facile l'utilizzo di un sistema complesso fornendo un'interfaccia unica e di alto livello che renda la complessità sottostante più gestibile.
+    <br><br><ksi>VANTAGGI:</ksi>
+    <ul>
+        <li>Nasconde le complessità di un sistema più ampio e fornisce un'interfaccia più semplice al client. Ciò rende il sistema più facile da usare, capire e testare.</li>
+        <li>Minimizza le dipendenze tra il client e il sottosistema, riducendo il <ksi>coupling</ksi>. I client devono essere consapevoli solo del <i>controller FACADE</i>, non della complessità sottostante.</li>
+        <li>Viene spesso utilizzato quando un sistema è molto complesso o difficile da capire perché il sistema ha molte classi interdipendenti o il suo codice sorgente non è disponibile.</li>
+    </ul>
+</div>
+<h3>ServiceAccesGUI-Simulator</h3>
+E' un simulatore della ServiceAccesGUI,modellato come un attore QAK per interagire con il service e viene utilizzato per:
+<div class="remark"> 
+    <ol>
+        <li>simulare l'arrivo del fridgeTruck-driver: invia al ColdStorageService una storerequest e attende una risposta dal ColdRoomManager che verifica se la richiesta può essere presa in carica o meno in quel determinanto momento. Riceverà dal service un <ksi>loadaccepted</ksi> o una <ksi>loadrejected</ksi> nel caso in cui in quel momento è impossibile depositare altro cibo, riportando così la SAG(simulator) nello stato iniziale.  </li>
+        <li>simulare l'interazione con il ColdStorageService: una volta che il servizio ha preso in carico la richiesta invia alla SAG(simulator) un loadaccepted e un intero corrispondente al numero del ticket. A questo punto il ServiceAccesGUI-Simulator inserisce il ticket e attende che il service verifichi che il ticket inserito sia corretto e ancora valido. Nel caso in cui il ticket sia ancora valido, il service risponderà con un <ksi>chargetaken</ksi>; il SAG-simulator invierà un <ksi>loaddone</ksi> (con parametro il numero del ticket) e attenderà che l'azione di deposito da parte del service sia completata o fallita. Il service invierà:<ol>-o un <ksi>goaway</ksi> nel caso di azione di pickup avvenuta successo, quindi che il robot ha scaricato la merce dal camion. Il service continuerà con l'azione di deposito, per completare la richiesta fatta dal driver che è appena andato via<br>-o un <ksi>depositfailed</ksi> nel caso contrario. </ol>
+
+    </ol>
+    In entrambi i casi verrà visualizzato a video il messaggio di liberare la porta INDOOR per procedere con nuove richieste. <br>
+
+</div>
+
+
+<h4>NOTA: </h4><br>E' un simulatore per ora poichè non deve andare a complicare la realizzazione della Core-Business.<br>
+ 
+    La ServiceAcessGUI la andremo a realizzare nello sprint successivo, ovvero nello sprint2. <a href="../sprint2/">(Link allo sprint2)</a> 
+<h3>ColdStorageService</h3>
+E' il cuore del progetto. E' l' elemento principale della core-business ma anche l'elemento principale del sistema distribuito nel complesso. <br>
+In questa fase pensiamo alla gestione corretta nell' invio di <ksi>invalidticket</ksi> che potrebbe essere inviato o a causa dell'errato inserimento del numero del ticket o causa di un ticket scaduto.<br>
+<img src="../sprint1/resources/imgs/diagInteraSprint1_progettoVerifyTicket_v3.drawio.png" height="800" weight="800">
+
+<br>
+
+
+<h4>ColdStorageService</h4>
+Riceve le richieste provenienti dalla ServiceAccesGUI (simulator per ora) e gestisce le interazioni con gli altri componenti (come ticketmanager, coldroomManager,transportTrolley).
+
+<h4>TransportTrolley</h4>
+Riceve la richiesta di deposito, inoltrata dalla ColdStorageService, e la inoltra al basicRobot.
+Una volta che il basicrobot può essere ingaggiato per eseguire le azioni di prelievo e di deposito si mette in attesa che arrivi una loaddone da parte del SAG(-simulator) per poi inviare la richiesta al basicrobot di spostarsi nella cella corrispondente alla porta INDOOR (0,4).
+<div class="remark">Per semplicità abbiamo pensato di cablare come cella fissa della porta INDOOR, la cella situata in posizione (0,4) escludendo l'utilizzo della seconda cella adiacente in posizione(0,5) e di cablare la cella fissa della porta della ColdRoom quella presente in posizione (4,3) escludendo la seconda cella disponibile in (5,3) per eseguire il deposito nella ColdRoom.<br></div>
+Se il <b>basicrobot</b> non è impegnato con altre richieste, si muove verso la porta INDOOR e inizia a scaricare la merce dal camion e rispondendo alla richiesta di loaddone(inviata dalla SAG-simulator) con un <ksi>goaway</ksi>; il transportTrolley chiederà nuovamente al basicrobot di muoversi, questa volta nella posizione associata alla cella della ColdRoom e se il basicRobot ha eseguito anche questa azione con successo, invierà al transportTrolley un <ksi>moverobotdone</ksi> per dire che il basicrobot è arrivato davanti alla coldroom e che sta completando la fase di deposito.
+<br>Solo in seguito a un'azione di deposito completata con successo, il transportTrolley inoltra il messaggio di <ksi>depositdone</ksi> al ColdRoomManager in modo tale da aggiornare il peso corrente <b>CurrentWeight</b> della ColdRoom.
+
+<h4>ColdRoomManager</h4>
+Abbiamo introdotto le variabili contatore <b>CurrentWeight</b> e <b>FreeSpace</b> per una gestione migliore della disponibilità corrente della ColdRoom. <br>
+
+  
+    
+
+
+
+<table class="dictionary">
+    <tr>
+        <td>Nome</td>
+        <td>Tipo</td>
+        <td>Descrizione</td>
+    </tr>
+    <tr>
+        <td>CurrentWeight</td>
+        <td>variabile intera > 0</td>
+        <td>Indica il peso realmente disponibile per le varie richieste di deposito, inizializzato con il valore <b>0</b> e si aggiorna solo nel momento in cui la richiesta di deposito viene eseguita con successo.</td>
+    </tr>
+    <tr>
+        <td>FreeSpace</td>
+        <td>variabile intera > 0</td>
+        <td>è un indicatore fittizio di CurrentWeight ,inizializzato con il valore <b>100</b> che simula la disponibilità reale nella ColdRoom.<br>Si aggiorna solo dopo aver verificato che il truckLoad della richiesta sia inferiore a <b>FreeSpace</b> stesso, quindi viene usato nelle prime fasi di validazione della richiesta.</td>
+    </tr>
+</table>
+Per gestire le varie richieste di deposito, abbiamo utilizzato una lista del tipo <b>hashMapOf&lt;Int,Int&gt;</b> dove il primo intero è associato al <b>TruckTicket</b> ovvero l'id del ticket e il secondo intero al <b>truckLoad</b> ovvero il foodload espresso in KG. <br>
+Riceve la <ksi>storeRequest</ksi> inoltrata dal ColdStorageService e valuta se la richiesta di deposito possa essere accettata o meno: <br>
+<div class="remark"><ol>
+
+    -se non c'è abbastanza spazio,rifiuta la richiesta rispondendo con un <ksi>loadrejected</ksi> .<br>
+    -se c'è abbastanza spazio, aggiorna il contatore fittizio <b>FreeSpace</b> sottraendo ad esso il foodload della storeRequest corrente, invia una richiesta al ticketmanager di generare un nuovo ticket,attende che gli venga inviato e lo inoltra alla SAG(simulator); inserisce la richiesta(passandogli il TruckTicket e il truckLoad) nella lista Requests e risponde alla storeRequest della SAG-simulator con una loadaccepted (e il Truckticket ad esso associato);solo  quando il transportTrolley invia un <ksi>depositdone</ksi> il ColdRoomManager aggiorna il reale contatore <b>CurrentWeight</b> sommandogli il foodload corrente e rimuove la richiesta dalla lista .<br> 
+
+</ol> </div>
+
+
+<h4>Ticket Manager</h4>
+Ogni ticket è composto da due interi: id del ticket e TICKETTIME e viene mantenuto in una <b>hashMapOf&lt;Int,Long&gt;</b>. <br>
+Il Ticket Manager riceve due tipi di richieste (inoltrate dal coldstorageservice) :
+<ol>
+    <li>di generazione di un nuovo ticket <ksi>generateticket</ksi>. <br> Il ticket sarà composto da due interi: il primo intero viene assocciato all'id del ticket e viene utilizzata la classe Random per generare un intero compreso tra 1 e 10000; il secondo intero viene usato per associare al ticket un <b>TICKETTIME</b> calcolato dalla somma del tempo attuale, più 10 secondi, più 0,5 secondi per ogni kg del truckLoad.  </li>
+    <li>di verificare che il ticket inserito sia valido, quindi <ksi>verifyTicket</ksi> e risponderà direttamente alla SAG (simulator in questo sprint) con invalidTicket o chargeTaken. </li>
+</ol>
+
+
+
+
+
+<h3>Architettura Logica</h3>
+Di seguito viene riportata l'immagine dell'architettura logica corrispondente al progetto:<br>
+<img src="./sprint1_progetto/coldstorageservicearch.png" height="600" weight="600"></a> <br>
+LINK al modello qak del progetto: <a href="./sprint1_progetto/src/sprint1_progetto.qakx">sprint1_progetto.qakx</a>
+
+<!-- ------------------Test plan---------------------- -->
+<!-- ------------------------------------------------------------ -->
+<!-- ------------------------------------------------------------ -->
+
+<h2>Test plan</h2>
+Il qak di riferimento per l'escuzione dei seguenti test è <a href="./sprint1_progetto/src/test_coldstorageservice_sprint1.qak" >test_coldstorageservice_sprint1.qak</a><br>
+La classe java che implementa gli unit test è <a href="./sprint1_progetto/test/sprint1_progetto/sprint1_test.java" >sprint1_test.java</a><br><br>
+<table class="dictionary">
+    <tr>
+        <td>Test</td>
+        <td>Descrizione</td>
+        <td>Risultato</td>
+    </tr>
+
+    <tr>
+        <td>testLoadAccepted</td>
+        <td>verifica che, in caso di una storerequest da parte dell'accessgui e se c'è abbastanza spazio nella cold room, l'applicazione risponda con un messaggio di loadaccepted</td>
+        <td><a href="./resources/imgs/test_loadaccepted.png" >output testloadaccepted</a></td>
+    </tr>
+
+    <tr>
+        <td>testLoadRejected</td>
+        <td>verifica che, in caso di una storerequest da parte dell'accessgui e se non c'è abbastanza spazio nella cold room, l'applicazione risponda con un messagio di loadrejected</td>
+        <td><a href="./resources/imgs/test_loadrejected.png" >output testloadrejected</a></td>
+    </tr>
+
+    <tr>
+        <td>testValidTicket</td>
+        <td>verifica che, in seguito a una verifyticket da parte dell'accessgui, l'applicazione risponda con un messaggio di chargetaken se il ticket inserito esiste e non è scaduto</td>
+        <td><a href="./resources/imgs/test_validticket.png" >output testvalidticket</a></td>
+    </tr>
+
+    <tr>
+        <td>testWrongTicket</td>
+        <td>verifica che, in seguito a una verifyticket da parte dell'accessgui, l'applicazione risponda con  un messaggio di invalidticket con parametro wrong_ticket se il ticket inserito non esiste</td>
+        <td><a href="./resources/imgs/test_wrongticket.png" >output testwrongticket</a></td>
+    </tr>
+
+    <tr>
+        <td>testExpiredTicket</td>
+        <td>verifica che, in seguito a una verifyticket da parte dell'accessgui, l'applicazione risponda con un messaggio di invalidticket con parametro expired_ticket se il ticket inserito esiste ma è scaduto</td>
+        <td><a href="./resources/imgs/test_expiredticket.png" >output testexpiredticket</a></td>
+    </tr>
+
+</table>
+<br>
+<br>
+
+
+Per testare il movimento del virtual robot durante l'esecuzione di una deposit action è stato predisposto uno specifico qak:<a href="./sprint1_progetto/src/test_deposit_sprint1.qak" >test_deposit_sprint1.qak</a><br>
+Il test si basa sul fatto che gli attori qak sono anche risorse CoAP, quindi è stato implementato un CoapObserver per tenere traccia degli aggiornamenti di stato notificati dal transporttrolley tramite la funzione updateResource.<br>
+In questo modo è possibile verificare che la lista delle azioni compiute dal robot è uguale a una serie di azioni che ci aspettiamo vengano svolte (spostamento verso indoor, scarico, movimento verso port, deposito, ritorno in home).<br>
+La classe kotlin che implementa il test è: <a href="./sprint1_progetto/test/sprint1_progetto/sprint1_test_deposit.kt" >sprint1_test_deposit.kt</a><br>
+
+<table class="dictionary">
+    <tr>
+        <td>Test</td>
+        <td>Descrizione</td>
+        <td>Risultato</td>
+    </tr>
+
+    <tr>
+        <td>test deposit</td>
+        <td>simulazione di invio di una richiesta di loaddone per verificare che il transporttrolley risponda con una goaway e che il robot esegua una specifica serie di azioni</td>
+        <td><a href="./resources/imgs/test_deposit.png" >output testdeposit</a></td>
+    </tr>
+</table>
+
+
+
+
+
+<h2>Conclusioni</h2>
+
+<h3>Deployment</h3>
+<!--
+<h4>Setup sul PC</h4>
+            
+            <ol>
+                <li>Installa Java (>8);</li>
+                <li>Installa docker.</li>
+                <li>Installa gradle (>= 7.4).</li>
+                
+                        <li>Scarica l'immagine docker del VirtualRobot (<code>virtualRobotOnly4.0.yaml</code>).</li>
+                        
+                    
+                </li>
+            </ol>
+
+           
+
+
+            <h4>Execution</h4>
+            <ol>
+                <li>Run sull' immagine docker del virtual robot </li>
+                <li>Apri un browser e digita: http://localhost:8090/</li>
+                <li>Run sul ColdStorageService-contexts (ColdStorageService, TransportTrolley, TicketManager, ColdRoomManager) e sul basicRobot;</li>
+                
+            </ol>
+-->
+
+
+<h3>WorkPlan</h3>
+<h4>Sprint2 - ServiceAccesGUI</h4> 
+Lo sprint2 prevede la realizzazione dell' interfaccia grafica <ksi>ServiceAccessGUI</ksi> utile per:
+<ul>
+    <li>vedere lo stato corrente (<b>CurrentWeight</b>) della ColdRoom, ovvero il peso in KG depositato in quel momento. </li>
+    <li>inviare una richiesta di deposito (<b>storeRequest</b>) alla ColdStorageService </li>
+    <li>inserimento numero del ticket (precedentemente inviato dal service) </li>
+    <li>visualizzazione del messaggio di liberare l'INDOOR</li>
+</ul>
+<h4>Sprint3 - RaspberryPi</h4>
+<!--
+Lo sprint coinvolgerà l'utilizzo di RaspberryPi:
+<ul>
+    <li>Verrà implementata la parte relativa agli alarm devices (SONAR)</li>
+    <li>Verrà implementata la parte relativa ai warning devices (LED)</li>
+    <li>Inoltre verrà implementata la gestione dello stop del Transport Trolley che potrà essere stoppato solo se sono trascorsi MINT (msecs) dallo stop precedente </li>
+</ul>
+
+-->
+<br>
+<br>
+E' stato deciso che la quantità di tempo che sarà dedicata al completamento dello Sprint2 sarà di circa <b>15 ore umane</b> . <br>
+<a href="../sprint2/">Sprint2</a> link per lo sprint2 (ServiceAccesGUI).
+
+<br>
+<br>
+<br>
+<br>
+
+<div style="background-color:rgba(137, 129, 186, 0.9); width:60%;text-align:left;color:white">
+By
+ andrea.isernio@studio.unibo.it & fabio.gentili3@studio.unibo.it <br>
+<br>
+GIT repo: <a href="https://github.com/FabioGentili99/ColdStorageService">https://github.com/FabioGentili99/ColdStorageService </a>
+
+</div> 
+</body>
+</html>

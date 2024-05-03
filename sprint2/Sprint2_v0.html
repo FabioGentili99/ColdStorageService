@@ -1,0 +1,470 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<style type="text/css">
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+	font-size: 93%;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+	border-radius: 10px;
+	padding: 5px;
+}
+
+top {
+	width: 100%;
+}
+
+
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 90%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #abe876;
+    color: #1632cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 90%;
+	font-weight: bold;
+    color: #990000;
+	background-color: #fcf8c7;
+}
+ks{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #0000CD	;
+	font-size: 90%;
+}
+kc{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #008000	;
+	font-size: 90%;
+}
+pre{
+	font-family: "Consolas";
+	font-size: 85%;
+	background-color: #f5f5f5;
+	border: 1.5px solid silver;
+	padding: 5px;
+}
+m{
+	font-family: "Helvetica";
+	line-height: 100%;
+ 	font-size: 75%;
+}
+div.body{
+	 
+    font-size: 18px;
+}
+k{
+    color: #990000;
+	font-weight: bold;
+	font-size: 90%;
+}
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+	padding: 10px;
+}
+
+h2 {
+    background-color: #9ed8ff;
+    font-size: 130%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 100%;
+}
+h4 {
+    background-color: #ccffcc;
+    font-size: 100%;
+	width: 95%;
+	border-radius: 5px;
+	padding: 2px;
+}
+h5 {
+    background-color: #d5ffb0;
+    font-size: 100%;
+
+}
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+	width: 700px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}
+div.remark{
+	background-color: #E3F2FD;
+    border: 1.5px solid #d5f2ed;
+    padding: 15px;
+    margin: 10px;
+	border-radius: 25px;
+}
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+ol, ul, li {
+  margin: 0;
+  margin-left: 10px;
+  padding: 0;
+  padding-bottom: 5px;
+}
+
+table, th, td {
+	border: 1px solid black;
+}
+
+img {
+	border: 1.5px solid #d5f2ed
+
+}
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+div.wrapdesc{
+	width: 90%;
+	margin: auto;
+}
+
+div.imagedesc{
+	width: 85%;
+	margin: auto;
+}
+</style>
+    
+<head>
+   
+<title>Sprint2</title>
+<link rel="stylesheet" type="text/css" href="../commons/resources/styles/templateISS.css">
+<link rel="stylesheet" type="text/css" href="../commons/resources/styles/main.css">
+<link rel="stylesheet" type="text/css" href="../commons/resources/styles/navbar.css">
+<link rel="stylesheet" type="text/css" href="../commons/resources/styles/table.css">
+<link rel="stylesheet" type="text/css" href="../commons/resources/styles/code.css">
+<script type="text/javascript" src="../commons/resources/scripts/myScripts.js"></script>
+<style>
+    .img-container {
+      text-align: center;
+    }
+  </style>
+
+</head>
+    
+<body>
+<div id="top">
+<h1>Cold Storage Service: Sprint2 <font size="5"></font> </h1>
+</div>  
+
+<div class="body"> 
+<h2>Introduzione</h2>
+<div class="remark">
+Sprint2 del progetto finale del corso di Ingegneria dei Sistemi Software M.<br>
+In questa fase ci concentreremo sui requisiti riguardanti la ServiceAccessGUI analizzati nello <a href="../sprint0/Sprint0_v1.html"><ksi>sprint0</ksi></a> con l'obiettivo di implementare una GUI dedicata ai camionisti per interagire con il Cold Storage Service.
+</div>
+</div>
+
+<h2>Requisiti</h2>
+<a href="../commons/html/TemaFinale23.html">Requisiti del TemaFinale23</a><br>
+In particolare, ci concentreremo sull'analisi e progettazione delle entità coinvolte nella catena "richiesta di deposito - verifica ticket - load done".<br>
+
+
+
+<h2 >Analisi dei requisiti</h2>
+ 
+ Il componente che dovrà essere realizzato in questo Sprint dovrebbe inviare  le varie richieste  (messe a disposizione per i driver nella GUI) al ColdStorageService tramite protocollo <i>TCP</i>. <br>
+ <br>Supponiamo che il driver non menta sul peso dichiarato nella <ksi>storequest</ksi> e che invii la richiesta di verifica del ticket solo quando è
+ effettivamente sulla porta <b>INDOOR</b> e infine che vada via solo quando riceve il messaggio <ksi>goaway</ksi> da parte del ColdStorageService. <br> 
+ <br>
+ Come punto du partenza della realizzazione di questo componentem, rispettiamo i messaggi definiti nello sprint precedente con la differenza che la ServiceAccessGUI non è più un <b>MOCK</b> ma un attore esterno al contesto.<br>
+ 
+<div class="remark">
+    Non prenderemo in considerazione l'esistenza del raspberry e non implementeremo le funzionalità di stop/resume del transporttrolley, le quali verranno trattate nell'ultimo sprint <a href="../sprint3/">(Sprint3)</a>.
+
+</div>
+
+<h3>Architettura Logica del Progetto dello Sprint1</h3>
+Riportiamo di seguito l'immagine dell'Architettura Logica dello Sprint1, come base di partenza per la realizzazione di questo Sprint: <br>
+<p><img src="../sprint2/resources/coldstorageservicearch.png"height="640" weight="480"></p> 
+
+
+<!-- ------------------ANALISI DEL PROBLEMA---------------------- -->
+<!-- ------------------------------------------------------------ -->
+<!-- ------------------------------------------------------------ -->
+<h2>Analisi del Problema</h2>
+Realizzeremo la GUI non più come un simulatore e come attore interno  ma come un <ksi>componente alieno</ksi> al sistema.<br>
+
+<h3>Aggiornamento peso nella Service Access GUI</h3>
+<p>La soluzione migliore sarebbe metterlo in ascolto dei cambiamenti a ColdRoom, ColdRoom diventa così un Observable (<b>vedi: <a href="../sprint2/serviceaccessgui/src/main/java/unibo/springIntro23/ColdRoomObserver.java">ColdRoomObserver.java</a></b>).<br>
+In alternativa Req/Resp di <ksi>storequest</ksi> fa una richiesta per sapere il peso nella coldRoom.</p>
+
+<p><strong style="color:#ef7089">PROBLEMA:</strong> Usando pagine html statiche, anche mantenendo aggiornato il peso corrente nel server spring l'utente deve ricaricare la pagina per visualizzare il nuovo peso.<br>
+    <div class="remark">
+    <b>Soluzione</b>:
+        <ul>
+            <ksi>Utilizzo di pagine html dinamiche</ksi>: Grazie alla classe <b>dinamic.js</b> e grazie
+            alla classe controller <b>ApiController.java</b>  rendiamo l'aggiornamento del peso nella coldroom automatico, senza
+            effettuare il refresh del browser  <br>
+        </ul>
+    </div>
+
+
+
+
+<!-- ------------------Progettazione e sviluppo---------------------- -->
+<!-- ------------------------------------------------------------ -->
+<!-- ------------------------------------------------------------ -->
+<h2>Progettazione e sviluppo</h2>
+
+<h3>SPRING</h3>
+<p>Progettare le GUI come attori non è ottimale, dobbiamo progettarla come un<ksi> componente alieno</ksi>   al sistema che si interfacci con esso.<br>
+Per fare ciò ci appoggiamo alla tecnologia di SPRING che permette l'interazione tramite web e la gestione di molti utenti collegati contemporaneamente.</p>
+<p>Nello schema iniziale il server Spring prenderà quindi il posto dell'attore ServiceAccessGUI, l'interazione con l'utente avverrà tramite pagine html fornite dal server ad ogni utente che si collega.</p>
+
+<div style="text-align: center">
+    <p><img src="../sprint2/resources/archServerSpring_v1.drawio.png"> </p>
+</div>
+<h3>Definizione messaggi e contesti </h3>
+<pre>
+    <code>
+        System coldstorageservice
+
+//MESSAGGI
+
+//serviceaccessGUI -> coldstorageservice
+Request getweight : getweight(NO_PARAM)
+Reply 	currentweight : currentweight(CurrentWeight,FreeSpace)  for getweight
+
+Request storerequest : storerequest(TruckLoad)
+Reply loadaccepted : loadaccepted(Ticket,FreeSpace) for storerequest
+Reply loadrejected : loadrejected(_) for storerequest 
+
+Request verifyticket : verifyticket(TruckTicket)
+Reply chargetaken : chargetaken(_) for verifyticket
+Reply invalidticket : invalidticket(REASON) for verifyticket
+
+Request loaddone : loaddone(TruckTicket)
+Reply goaway : goaway(_)for loaddone
+Reply depositfailed : depositfailed(_) for loaddone
+
+
+//------------------------------------------------------------
+...
+//------------------------------------------------------------
+
+//CONTESTI
+Context ctxcoldstorageservice ip [host="localhost" port=9990]
+Context ctxbasicrobot ip [host="127.0.0.1" port=8020]
+
+//------------------------------------------------------------
+    </code>
+</pre>
+<p>Link del modello .qak: <a href="../sprint2/ColdStorageSprint2/src/ColdStorageSprint2.qak" >ColdStorageSprint2.qak</a></p>
+
+<h3>Abilitazione/disabilitazione pulsanti della GUI</h3>
+<b>Azioni dei Pulsanti</b>
+<br>
+    All'interno di <a href="../sprint2/serviceaccessgui/src/main/resources/static/dinamic.js">dinamic.js</a> viene definita la funzione <b>enablebuttons</b> 
+    per gestire lo stato dei pulsanti in base a diversi scenari all'interno dell'applicazione, consentendo di abilitare o disabilitare i pulsanti in modo
+     dinamico in base allo stato corrente del sistema.<br>
+    Riportiamo di seguito lo snippet di dinamic.js che realizza l'abilitazione e la disabilitazione dei vari pulsanti: <br>
+    <pre>
+        <code>
+            function enableButtons(mode){
+                &emsp;switch(mode){
+            
+        &emsp;&emsp;case"requestaccepted":
+        &emsp;&emsp;&emsp;document.getElementById("checkbutton").removeAttribute("disabled");
+        &emsp;&emsp;&emsp;break;
+        &emsp;&emsp;case "ticketaccepted":
+        &emsp;&emsp;&emsp;document.getElementById("checkbutton").setAttribute("disabled", "disabled");
+        &emsp;&emsp;&emsp;document.getElementById("loadbutton").removeAttribute("disabled");
+        &emsp;&emsp;&emsp;break;
+        &emsp;&emsp;default:
+        &emsp;&emsp;&emsp;document.getElementById("checkbutton").setAttribute("disabled", "disabled");
+        &emsp;&emsp;&emsp;document.getElementById("loadbutton").setAttribute("disabled", "disabled");
+                }
+        </code>
+    </pre>
+
+    <ul>
+        <li><ksi>checkbutton</ksi>: Viene abilitato solo a seguito di una storerequest avvenuta con successo.<br> Viene disabilitato dopo aver inviato una sola volta la richiesta di verifyticket e dopo aver ricevuto la conferma da parte del service che il ticket è valido ovvero quando si riceve un <i>chargetaken</i> (ticket valido). Questo pulsante viene disabilito per evitare di mandare due volte una richiesta di <i>verifyticket</i> sullo stesso ticket </li>
+        <li><ksi>loadbutton</ksi>: Viene abilitato solo a seguito di una verifyticket avvenuta con successo e disabilitato in tutti gli altri casi.<br>Questo pulsante viene disabilitato per evitare di mandare più volte la richiesta di loaddone al tranpsorttrolley </li>
+        
+    </ul>
+ 
+
+
+
+<h3>Spring Server: socket e osbserver</h3>
+
+			<p>Il server si collegherà agli attori tramite socket o come coapObserver.<br>
+			Le richieste ajax provenienti dai client verranno inoltrate tramite socket.</p>
+			<p>Il server è composto di un <a href="../sprint2/serviceaccessgui/src/main/java/unibo/springIntro23/ApiController.java">ApiController.java</a> che sfrutta
+            la classe <a  href="../sprint2/serviceaccessgui/src/main/java/unibo/springIntro23/MessageSender.java">MessageSender.java</a> per inviare messaggi. <br>
+           <br> Lato client rendiamo le pagine dinamiche tramite <a href="../sprint2/serviceaccessgui/src/main/java/unibo/springIntro23/ApiController.java">ApiController.java</a>
+            tramite l'annotazione <ksi>@RestController</ksi>.
+            
+        Questa annotazione viene utilizzata per creare un controller RESTful in Spring, il quale gestisce le richieste HTTP e produce direttamente il corpo della risposta come dati JSON o XML. In questo contesto, l'annotazione @RestController è fondamentale per rendere dinamiche le pagine, poiché consente al controller di generare risposte dinamiche in base alle richieste ricevute. <br>
+        <br><p>Gli eventi degli attori osservati tramite observer verranno inoltrati ai client tramite websocket, create all'inizio di ogni sessione. Vedi <a href="../sprint2/serviceaccessgui/src/main/resources/static/dinamic.js">dinamic.js</a>.</p>    
+        <br> Di seguito riportiamo uno snippet riguardante la classe <b>ApiController.java</b>  che sfrutta la classe <b>MessageSender.java</b> per inviare una richiesta di <i><b>storequest</b></i>.
+        all'interno di <b>dinamic.js</b>   
+        <pre>
+                <code>
+                    document.getElementById("depositsubmit").addEventListener("submit", function(e){
+                        &emsp;&emsp;e.preventDefault();
+                        &emsp;&emsp;var fw = document.getElementById("foodweight").value;
+                        &emsp;&emsp;sendMessage("depositreq", "fw="+fw);
+                });
+            
+                </code>
+            </pre>
+            e una volta ricevuta la risposta dal coldstorageservice, sarà sempre <b>dinamic.js</b> a gestire i messaggi da visualizzare nella ServiceAccessGUI in base al tipo di risposta ricevuto dal ColdStorageService.<br>
+            <pre>
+                <code>
+                    case "depositreq":
+                    &emsp;var responsebutton = getMsgType(response);
+                    &emsp;var weights=getMsgValue(response).split(",");
+                    &emsp;document.getElementById("freespace").innerHTML=weights[1];
+                    &emsp;if(responsebutton == "loadaccepted"){
+                        &emsp;&emsp;document.getElementById("maintext").innerHTML= "Richiesta di deposito accettata" ;
+                        &emsp;&emsp;enableButtons("requestaccepted");
+                        &emsp;&emsp;document.getElementById("varticket").value = weights[0];
+                        &emsp;}else{
+                            &emsp;&emsp;document.getElementById("maintext").innerHTML= "Richiesta di deposito rifiutata" ;
+                            &emsp;&emsp;enableButtons("default");
+                            &emsp;}
+                    break;
+                </code>
+            </pre>   
+			
+			<h3> HTML page</h3>
+			<p><a href="../sprint2/serviceaccessgui/src/main/resources/templates/homeCSS.html">homeCSS.html</a></p>
+<h3>Architettura Logica</h3>
+Di seguito riportiamo un diagramma delle classi UML riguardante l'applicazione scritta in SpringBoot, dove si possono notare le dipendenze e l'eriditarietà delle classi: <br>
+<img src="../sprint2/resources/diagrammClassiSpring.png">
+			
+<!-- ------------------Test plan---------------------- -->
+<!-- ------------------------------------------------------------ -->
+<!-- ------------------------------------------------------------ -->
+
+<h2>Test plan</h2>
+
+			<p>Durante la fase di testing dovranno essere verificati i seguenti casi:</p>
+			<ol>
+			<li>Test del processo in condizioni normali</li>
+			<li>Test con ticket scaduto </li>
+			<li>Test con ticket ripetuto</li>
+			<li>Test con peso superiore al disponibile</li>
+			Ciascuno dei test deve essere superato con più utenti collegati contemporaneamente da uno stesso browser o da browser diversi.</li>
+			</ol>
+
+<h2>Conclusioni</h2>
+
+<h3>Deployment</h3>
+<!--
+<h4>Setup sul PC</h4>
+            
+            <ol>
+                <li>Installa Java (>8);</li>
+                <li>Installa docker.</li>
+                <li>Installa gradle (>= 7.4).</li>
+                
+                        <li>Scarica l'immagine docker del VirtualRobot (<code>virtualRobotOnly4.0.yaml</code>).</li>
+                        
+                    
+                </li>
+            </ol>
+
+           
+
+
+            <h4>Execution</h4>
+            <ol>
+                <li>Run sull' immagine docker del virtual robot </li>
+                <li>Apri un browser e digita: http://localhost:8090/</li>
+                <li>Run sul ColdStorageService-contexts (ColdStorageService, TransportTrolley, TicketManager, ColdRoomManager) e sul basicRobot;</li>
+                
+            </ol>
+-->
+
+
+<h3>WorkPlan</h3>
+
+<h4>Sprint3 - RaspberryPi</h4>
+Lo sprint 3 coinvolgerà l'utilizzo di <ksi>RaspberryPi</ksi>:
+<ul>
+    <li>Verrà implementata la parte relativa agli alarm devices (SONAR)</li>
+    <li>Verrà implementata la parte relativa ai warning devices (LED)</li>
+    <li>Inoltre verrà implementata la gestione dello stop del Transport Trolley che potrà essere stoppato solo se sono trascorsi MINT (msecs) dallo stop precedente </li>
+</ul>
+
+<br>
+<br>
+E' stato deciso che la quantità di tempo che sarà dedicata al completamento dello Sprint3 sarà di circa <b>XX ore umane</b> . <br>
+<a href="../sprint3/">Sprint3</a> link per lo sprint3 (Raspberry).
+
+<br>
+<br>
+<br>
+<br>
+
+<div style="background-color:rgba(137, 129, 186, 0.9); width:60%;text-align:left;color:white">
+By
+ andrea.isernio@studio.unibo.it & fabio.gentili3@studio.unibo.it <br>
+<br>
+GIT repo: <a href="https://github.com/FabioGentili99/ColdStorageService">https://github.com/FabioGentili99/ColdStorageService </a>
+
+</div> 
+</body>
+</html>

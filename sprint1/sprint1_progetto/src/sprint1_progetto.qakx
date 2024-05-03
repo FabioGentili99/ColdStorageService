@@ -71,7 +71,7 @@ Reply moverobotfailed : moverobotfailed(PLANDONE,PLANTODO)
 
 Context ctxcoldstorageservice ip [host="localhost" port=9990]
 Context ctxbasicrobot ip [host="127.0.0.1" port=8020]
-Context ctxaccessgui ip [host="10.201.7.226" port=9993]
+
 
 
 
@@ -80,7 +80,7 @@ Context ctxaccessgui ip [host="10.201.7.226" port=9993]
 ExternalQActor basicrobot context ctxbasicrobot
 
 
-QActor serviceaccessgui_simulator context ctxaccessgui{
+QActor serviceaccessgui_simulator context ctxcoldstorageservice{
 	
 	[#
 		var TruckTicket : Int= 0
@@ -437,11 +437,10 @@ QActor transporttrolley context ctxcoldstorageservice {
 	
 	State s0 initial {
 		println("TRANSPORT TROLLEY STARTING") color green
-		request basicrobot -m engage : engage(transporttrolley,330)
+		request basicrobot -m engage : engage(transporttrolley,200)
 	}
 	Transition t0 whenReply engagedone -> waiting
 				  whenReply engagerefused -> errorengage
-				  
 				  
 	
 	State errorengage{

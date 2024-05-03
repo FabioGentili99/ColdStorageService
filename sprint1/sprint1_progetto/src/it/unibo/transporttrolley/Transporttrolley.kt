@@ -24,7 +24,7 @@ class Transporttrolley ( name: String, scope: CoroutineScope, isconfined: Boolea
 				state("s0") { //this:State
 					action { //it:State
 						CommUtils.outgreen("TRANSPORT TROLLEY STARTING")
-						request("engage", "engage(transporttrolley,330)" ,"basicrobot" )  
+						request("engage", "engage(transporttrolley,250)" ,"basicrobot" )  
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002

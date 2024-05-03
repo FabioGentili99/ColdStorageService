@@ -46,8 +46,10 @@ class Coldroommanager ( name: String, scope: CoroutineScope, isconfined: Boolean
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t00",targetState="handlestorerequest",cond=whenRequest("storerequest"))
-					transition(edgeName="t01",targetState="handleexpire",cond=whenDispatch("expiredticket"))
+					 transition(edgeName="t06",targetState="handlestorerequest",cond=whenRequest("storerequest"))
+					transition(edgeName="t07",targetState="handledepositok",cond=whenDispatch("depositdone"))
+					transition(edgeName="t08",targetState="handledepositfail",cond=whenDispatch("depositfailed"))
+					transition(edgeName="t09",targetState="handleexpire",cond=whenDispatch("expiredticket"))
 				}	 
 				state("handlestorerequest") { //this:State
 					action { //it:State
@@ -86,7 +88,7 @@ class Coldroommanager ( name: String, scope: CoroutineScope, isconfined: Boolean
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t02",targetState="requestaccepted",cond=whenReply("ticket"))
+					 transition(edgeName="t010",targetState="requestaccepted",cond=whenReply("ticket"))
 				}	 
 				state("requestaccepted") { //this:State
 					action { //it:State
@@ -100,6 +102,42 @@ class Coldroommanager ( name: String, scope: CoroutineScope, isconfined: Boolean
 						}
 						CommUtils.outgreen("è stato generato il ticket $TruckTicket per il driver")
 						answer("storerequest", "loadaccepted", "loadaccepted($TruckTicket)"   )  
+						//genTimer( actor, state )
+					}
+					//After Lenzi Aug2002
+					sysaction { //it:State
+					}	 	 
+					 transition( edgeName="goto",targetState="waiting", cond=doswitch() )
+				}	 
+				state("handledepositok") { //this:State
+					action { //it:State
+						if( checkMsgContent( Term.createTerm("depositdone(Ticket)"), Term.createTerm("depositdone(Ticket)"), 
+						                        currentMsg.msgContent()) ) { //set msgArgList
+								 TruckTicket = payloadArg(0).toInt()  
+						}
+						CommUtils.outgreen("il deposito del carico portato dal driver $(TruckTicket) è avvenuto con successo, aggiornamento del current weight in corso...")
+						
+									CurrentWeight = CurrentWeight + Requests.get(TruckTicket)!!
+									Requests.remove(TruckTicket)
+						CommUtils.outgreen("il nuovo current weight è di $CurrentWeight kg")
+						//genTimer( actor, state )
+					}
+					//After Lenzi Aug2002
+					sysaction { //it:State
+					}	 	 
+					 transition( edgeName="goto",targetState="waiting", cond=doswitch() )
+				}	 
+				state("handledepositfail") { //this:State
+					action { //it:State
+						if( checkMsgContent( Term.createTerm("depositfailed(_)"), Term.createTerm("depositfailed(Ticket)"), 
+						                        currentMsg.msgContent()) ) { //set msgArgList
+								 TruckTicket = payloadArg(0).toInt()  
+						}
+						CommUtils.outred("il deposito del carico portato dal driver $TruckTicket è fallito, aggiornamento di free space in corso...")
+						
+									FreeSpace = FreeSpace - Requests.get(TruckTicket)!!	
+									Requests.remove(TruckTicket)
+						CommUtils.outred("il nuovo free space è di $FreeSpace kg")
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002

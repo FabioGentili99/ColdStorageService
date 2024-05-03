@@ -24,7 +24,7 @@ class Test_deposit_transporttrolley ( name: String, scope: CoroutineScope, iscon
 				state("s0") { //this:State
 					action { //it:State
 						CommUtils.outgreen("TRANSPORT TROLLEY STARTING")
-						request("engage", "engage(transporttrolley,450)" ,"basicrobot" )  
+						request("engage", "engage(transporttrolley,200)" ,"basicrobot" )  
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002

@@ -22,14 +22,13 @@ with Diagram('coldstorageserviceArch', show=False, outformat='png', graph_attr=g
      sys = Custom('','./qakicons/system.png')
 ### see https://renenyffenegger.ch/notes/tools/Graphviz/attributes/label/HTML-like/index
      with Cluster('ctxcoldstorageservice', graph_attr=nodeattr):
+          serviceaccessgui_simulator=Custom('serviceaccessgui_simulator','./qakicons/symActorSmall.png')
           coldstorageservice=Custom('coldstorageservice','./qakicons/symActorSmall.png')
           coldroommanager=Custom('coldroommanager','./qakicons/symActorSmall.png')
           ticketmanager=Custom('ticketmanager','./qakicons/symActorSmall.png')
           transporttrolley=Custom('transporttrolley','./qakicons/symActorSmall.png')
      with Cluster('ctxbasicrobot', graph_attr=nodeattr):
           basicrobot=Custom('basicrobot(ext)','./qakicons/externalQActor.png')
-     with Cluster('ctxaccessgui', graph_attr=nodeattr):
-          serviceaccessgui_simulator=Custom('serviceaccessgui_simulator','./qakicons/symActorSmall.png')
      transporttrolley >> Edge(color='magenta', style='solid', decorate='true', label='<engage &nbsp; moverobot &nbsp; >',  fontcolor='magenta') >> basicrobot
      serviceaccessgui_simulator >> Edge(color='magenta', style='solid', decorate='true', label='<storerequest &nbsp; verifyticket &nbsp; loaddone &nbsp; >',  fontcolor='magenta') >> coldstorageservice
      coldroommanager >> Edge(color='magenta', style='solid', decorate='true', label='<generateticket &nbsp; >',  fontcolor='magenta') >> ticketmanager
