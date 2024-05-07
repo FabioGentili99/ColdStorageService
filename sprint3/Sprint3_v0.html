@@ -1,0 +1,443 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <!--
+<link rel="stylesheet" type="text/css" href="../css/issStyle1.css">
+<script type="text/javascript" src="../css/issStyle.js"></script>
+-->
+<style type="text/css">
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+	font-size: 93%;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+	border-radius: 10px;
+	padding: 5px;
+}
+
+top {
+	width: 100%;
+}
+
+
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 90%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #abe876;
+    color: #1632cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 90%;
+	font-weight: bold;
+    color: #990000;
+	background-color: #fcf8c7;
+}
+ks{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #0000CD	;
+	font-size: 90%;
+}
+kc{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #008000	;
+	font-size: 90%;
+}
+pre{
+	font-family: "Consolas";
+	font-size: 85%;
+	background-color: #f5f5f5;
+	border: 1.5px solid silver;
+	padding: 5px;
+}
+m{
+	font-family: "Helvetica";
+	line-height: 100%;
+ 	font-size: 75%;
+}
+div.body{
+	 
+    font-size: 18px;
+}
+k{
+    color: #990000;
+	font-weight: bold;
+	font-size: 90%;
+}
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+	padding: 10px;
+}
+
+h2 {
+    background-color: #9ed8ff;
+    font-size: 130%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 100%;
+}
+h4 {
+    background-color: #ccffcc;
+    font-size: 100%;
+	width: 95%;
+	border-radius: 5px;
+	padding: 2px;
+}
+h5 {
+    background-color: #d5ffb0;
+    font-size: 100%;
+
+}
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+	width: 700px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}
+div.remark{
+	background-color: #E3F2FD;
+    border: 1.5px solid #d5f2ed;
+    padding: 15px;
+    margin: 10px;
+	border-radius: 25px;
+}
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+ol, ul, li {
+  margin: 0;
+  margin-left: 10px;
+  padding: 0;
+  padding-bottom: 5px;
+}
+
+table, th, td {
+	border: 1px solid black;
+}
+
+img {
+	border: 1.5px solid #d5f2ed
+
+}
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+div.wrapdesc{
+	width: 90%;
+	margin: auto;
+}
+
+div.imagedesc{
+	width: 85%;
+	margin: auto;
+}
+</style>
+    
+<head>
+   
+<title>Sprint3</title>
+<link rel="stylesheet" type="text/css" href="../commons/resources/styles/templateISS.css">
+<link rel="stylesheet" type="text/css" href="../commons/resources/styles/main.css">
+<link rel="stylesheet" type="text/css" href="../commons/resources/styles/navbar.css">
+<link rel="stylesheet" type="text/css" href="../commons/resources/styles/table.css">
+<link rel="stylesheet" type="text/css" href="../commons/resources/styles/code.css">
+<script type="text/javascript" src="../commons/resources/scripts/myScripts.js"></script>
+
+
+</head>
+    
+<body>
+<div id="top">
+<h1>Cold Storage Service: Sprint3 <font size="5"></font> </h1>
+</div>  
+
+<div class="body"> 
+<h2>Introduzione</h2>
+<div class="remark">
+Sprint3 del progetto finale del corso di Ingegneria dei Sistemi Software M.<br>
+In questa fase ci concentreremo sui requisiti riguardanti il sistema di allarme composto da sonar e led collegati a un RaspberryPi.
+</div>
+</div>
+
+<h2>Requisiti</h2>
+<a href="../commons/html/TemaFinale23.html">TemaFinale23</a><br>
+In particolare, ci concentreremo sull'analisi e progettazione dell'alarmDevice e del warningDevice, componenti astratti da installare sul RaspeberryPi e che sfruttano sonar e led per implementare il sistema di allarme.
+<br>
+Inoltre, tratteremo il requisito che richiede di non far tornare il robot in HOME alla fine di un'azione di deposito se è già presente una nuova richiesta di deposito.
+<br>
+ 
+
+
+
+
+ 
+ 
+
+<h2 >Analisi dei requisiti</h2>
+<h3>System abstract</h3>
+Lo Sprint3 coinvolge le seguenti unità funzionali:
+<ul>
+    <li>ColdStorageService</li>
+    <li>DDR Robot</li>
+    <li>RaspberryPi</li>
+</ul>
+<br>
+
+Al fine di comprendere meglio i requisiti e di testare lo sprint in un ambiente locale, per prima cosa implementeremo un simulatore del sistema di allarme tramite i soliti attori qak.
+<br>
+In un secondo momento procederemo con la realizzazione del sistema reale e il suo deployment sul RaspberryPi a nostra disposizione.
+
+
+<h3>Formalizzazione dei requisiti</h3>
+<h4 id="Entities">Entità</h4>
+<table class="dictionary">
+    <tr>
+        <th>Entità</th>
+        <th>Attvità</th>
+        <th>Tipo</th>
+        <th>Descrizione</th>
+    </tr>
+    <tr>
+        <td>ColdStorageService</td>
+        <td>Proattivo & Reattivo</td>
+        <td>Attore</td>
+        <td>Gestisce le richieste di fridgeTruck e gestice le azioni del Transport Trolley. Inoltre invia aggiornamenti agli Alarm Devices .</td>
+    </tr>
+    <tr>
+        <td>basicRobot</td>
+        <td>Reattivo</td>
+        <td>Attore</td>
+        <td>Entità che riceve comandi dal TransportTrolley e guida il DDR robot.</td>
+    </tr>
+    <tr>
+        <td>alarmDevice (sonar)</td>
+        <td>Proattivo</td>
+        <td>-</td>
+        <td>Entità connessa al RaspberryPi che si occupa di rilevare la distanza da eventuali ostacoli e di segnalare al ColdStorageService quando tale distanza diventa inferiore a DLIMIT</td>
+    </tr>
+    <tr>
+        <td>warningDevice (led)</td>
+        <td>Reattivo</td>
+        <td>-</td>
+        <td>Entità connessa al RaspberryPi che si occupa di modificare lo stato del led durante gli spostamenti del DDR robot:
+            <ul>
+                <li>il led è OFF quando il transportTrolley si trova in HOME</li>
+                <li>il led è in stato BLINK quando il transportTrolley si sta muovendo</li>
+                <li>il led è ON quando il transportTrolley viene stoppato</li>
+            </ul>
+        </td>
+    </tr>
+    
+</table>
+<br>
+Sonar e led sono due componenti di basso livello:
+<ul>
+    <li>Il sonar è un componente in grado di valutare la distanza di ostacoli posti di fronte ad esso calcolando il round trip time di un segnale a ultrasuoni ogni X secondi.</li>
+    <li>Il led è un componente di solo output in grado di accendersi quando viene attraversato da corrente elettrica.<br>
+    Presenta quindi solo 2 stati possibili (ON/OFF), ma è possibile ottenere il Blink alternando velocemente tali stati.</li>  
+</ul>
+Da requisito, led e sonar sono collegati a un RaspeberryPi che posizioniamo all'esterno del contesto del cold storage service.<br>
+Per questo motivo, warningDevice e alarmDevice dovranno comunicare con il sistema tramite scambio di messaggi.<br>
+
+<h4 id="Data">Dati</h4>
+
+
+<table class="dictionary">
+    <tr>
+        <td>Dati</td>
+        <td>Tipo</td>
+        <td>Descrizione</td>
+    </tr>
+    <tr>
+        <td>LedState</td>
+        <td>Enumerative</td>
+        <td>indica uno dei 3 possibili stati del led (OFF, ON, Blink)</td>
+    </tr>
+
+    <tr>
+        <td>RobotState</td>
+        <td>Enumerative</td>
+        <td>Indica i 3 possibili stati del DDR robot (HOME, STOPPED, MOVING) associati agli stati del led</td>
+    </tr>
+    
+    <tr>
+        <td>DLIMT</td>
+        <td>Float > 0</td>
+        <td>Distanza limite entro il quale si attiva l'alarmDevice.</td>
+    </tr>
+    <tr>
+        <td>MINT</td>
+        <td>Float > 0</td>
+        <td>Intervallo di tempo espresso in msecs entro il quale il TransportTrolley non deve essere fermato in seguito al precedente stop. </td>
+    </tr>
+    
+</table>
+
+<h4 id="Messages">Messaggi</h4>
+<table class="dictionary">
+    <tr>
+        <td>Messaggio</td>
+        <td>Tipo</td>
+        <td>Mittente</td>
+        <td>Destinatario</td>
+        <td>Descrizione</td>
+    </tr>
+    <tr>
+        <td>stop</td>
+        <td>Dispatch</td>
+        <td>alarmDevice</td>
+        <td>ColdStorageService</td>
+        <td>questo messaggio viene inviato quando il sonar rileva una distanza minore di DLIMIT</td>
+    </tr>
+    <tr>
+        <td>resume</td>
+        <td>Dispatch</td>
+        <td>alarmDevice</td>
+        <td>ColdStorageService</td>
+        <td>questo messaggio viene inviato quando il sonar torna a rilevare una distanza inferiore a DLIMIT in seguito a uno stop</td>
+    </tr>
+    <tr>
+        <td>updateLed</td>
+        <td>Dispatch</td>
+        <td>ColdStorageService</td>
+        <td>warningDevice</td>
+        <td>messaggio che indica come aggiornare il led in base allo stato corrente del robot</td>
+    </tr>
+
+    </table>
+	
+<br/><br/> 	
+</div>  
+
+
+
+<!-- ------------------ANALISI DEL PROBLEMA---------------------- -->
+<!-- ------------------------------------------------------------ -->
+<!-- ------------------------------------------------------------ -->
+<h2>Analisi del Problema</h2>
+
+
+<h3>RaspberryPi</h3>
+Il primo problema da affrontare è quello di decidere dove posizionare il RaspberryPi all'interno del sistema.<br>
+Fisicamente, esso è un dispositivo a sè stante, dotato della propria capacità di calcolo e della propria memoria, che può essere posizionato ovunque all'interno della service area.<br>
+Logicamente, il RaspberryPi ospiterà il sistema di allarme del progetto e i dispositivi di basso livello che lo compongono.<br>
+Quello che vogliamo è che questo sistema sia indipendente dal cold storage service e che sia riusabile.<br>
+Per questi motivi, decidiamo di introdurre un nuovo contesto <ksi>ctxraspberrypi</ksi> per ospitare il sistema di allarme che eseguirà direttamente sul RaspberryPi<br>
+
+
+<h3>Sonar e led</h3>
+Sonar e led sono i due componenti di basso livello collegati al RaspberryPi.<br>
+L'unico modo per interagire con essi è quello di comandare i Pin del RaspberryPi ai quali sono collegati.<br>
+Il committente ha fornito il codice Python per leggere le distanze rilevate dal sonar e per accendere/spegnere il led.<br>
+Per fare in modo che essi possano riceve e inviare messaggi da/verso il cold storage service, è necessario introdurre due attori qak di alto livello che si interpongano tra essi e il cold storage service.<br>
+Dal punto di vista logico, l'attore relativo al sonar dovrà ricevere costantemente la distanza rilevata e inviare un messaggio di <ksi>stop</ksi> al cold storage service quando tale distanza è inferiore a <ksi>DLIMIT</ksi>.<br>
+L'attore relativo al led dovrà rimanere in attesa di messaggi di <ksi>updateLed</ksi> dal cold storage service e aggiornare di conseguenza il suo stato.<br>
+Il committente ha fornito il progetto <ksi>sonarqak23</ksi> che mostra come implementare attori qak in grado di utilizzare gli script python per gestire i dispositivi di basso livello.<br>
+<div class="remark">
+    Dove posizionare questi attori?
+</div>
+Due opzioni:
+<ol>
+    <li>posizionare tali attori all'interno di <ksi>ctxcoldstorageservice</ksi>: soluzione non ottimale perchè ciò comporterebbe un sovraccarico nell'utilizzo della rete per lo scambio dei messaggi contenenti la distanza rilevata dal sonar</li>
+    <li>posizionare tali attori all'interno di <ksi>ctxraspberrypi</ksi>: ciò permette di limitare il numero di messaggi inviati e di mantenere tutta la logica di business del sistema di allarme sul RaspberryPi</li>
+</ol>
+Scegliamo di implementare la seconda soluzione.
+<br>
+
+
+<h3>Stop e resume</h3>
+Da requisito, il robot dovrebbe essere stoppato immediatamente all'arrivo di un messaggio di stop.<br>
+Per come abbiamo implementato la logica di business del transporttrolley e del basicrobot ciò non è possibile.<br>
+Infatti, per ottenere tale risultato è necessario spezzare l'esecuzione del movimento del robot dal punto di partenza a quello di arrivo in diversi step.<br>
+In questo modo è possibile verificare l'arrivo di messagi di stop prima dell'esecuzione di ogni step.<br>
+Per ottenere questo risultato è necessario modificare il basic robot in modo che <ksi>planner</ksi> e <ksi>pathexecutor</ksi> seguano il comportamento descritto.<br>
+
+
+<h3>Fine deposito</h3>
+Alla fine di un'azione di deposito, per fare in modo che il robot non torni in HOME se è presente una nuova richiesta di <ksi>loaddone</ksi>, è sufficiente aggiungere una guardia alla transazione di stato:<br>
+<ksi>Transition t whenTime 2000 -> goHome whenRequest loaddone -> movetoindoor</ksi><br>
+
+
+<h3>Architettura logica</h3>
+L'archietettura logica risultante è la seguente:<br>
+<img src="./sprint3_analisiproblema/coldstorageservicearch.png" height="640" weight="480"> <br>
+<a href="./sprint3_analisiproblema/src/sprint3_analisi.qak" >file qak architettura logica</a><br>
+<br>
+
+
+<!-- ------------------Progettazione e sviluppo---------------------- -->
+<!-- ------------------------------------------------------------ -->
+<!-- ------------------------------------------------------------ -->
+<h2>Progettazione e sviluppo</h2>
+
+
+<!-- ------------------Test plan---------------------- -->
+<!-- ------------------------------------------------------------ -->
+<!-- ------------------------------------------------------------ -->
+
+<h2>Test plan</h2>
+
+
+<div style="background-color:rgba(137, 129, 186, 0.9); width:60%;text-align:left;color:white">
+By
+ andrea.isernio@studio.unibo.it & fabio.gentili3@studio.unibo.it <br>
+<br>
+GIT repo: <a href="https://github.com/FabioGentili99/ColdStorageService">https://github.com/FabioGentili99/ColdStorageService </a>
+
+</div> 
+</body>
+</html>

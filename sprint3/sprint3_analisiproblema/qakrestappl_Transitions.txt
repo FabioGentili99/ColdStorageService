@@ -1,0 +1,5 @@
+{"actor":"coldroommanager", "msgType":"dispatch", "curstate":"waiting", "nextstate":"handledepositok", "msgId":"depositdone"}
+{"actor":"coldroommanager", "msgType":"dispatch", "curstate":"waiting", "nextstate":"handledepositfail", "msgId":"depositfailed"}
+{"actor":"coldroommanager", "msgType":"dispatch", "curstate":"waiting", "nextstate":"handleexpire", "msgId":"expiredticket"}
+{"actor":"transporttrolley", "msgType":"dispatch", "curstate":"movetoindoor", "nextstate":"handlestop", "msgId":"stop"}
+{"actor":"warningdevice", "msgType":"dispatch", "curstate":"updateled", "nextstate":"updateled", "msgId":"updateled"}
