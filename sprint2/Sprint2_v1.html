@@ -226,7 +226,7 @@ In particolare, ci concentreremo sull'analisi e progettazione delle entità coin
  <br>Supponiamo che il driver non menta sul peso dichiarato nella <ksi>storequest</ksi> e che invii la richiesta di verifica del ticket solo quando è
  effettivamente sulla porta <b>INDOOR</b> e infine che vada via solo quando riceve il messaggio <ksi>goaway</ksi> da parte del ColdStorageService. <br> 
  <br>
- Come punto du partenza della realizzazione di questo componentem, rispettiamo i messaggi definiti nello sprint precedente con la differenza che la ServiceAccessGUI non è più un <b>MOCK</b> ma un attore esterno al contesto.<br>
+ Come punto di partenza della realizzazione di questo componentem, rispettiamo i messaggi definiti nello sprint precedente con la differenza che la ServiceAccessGUI non è più un <b>MOCK</b> ma un attore esterno al contesto.<br>
  
 <div class="remark">
     Non prenderemo in considerazione l'esistenza del raspberry e non implementeremo le funzionalità di stop/resume del transporttrolley, le quali verranno trattate nell'ultimo sprint <a href="../sprint3/">(Sprint3)</a>.
@@ -244,20 +244,27 @@ Riportiamo di seguito l'immagine dell'Architettura Logica dello Sprint1, come ba
 <h2>Analisi del Problema</h2>
 Realizzeremo la GUI non più come un simulatore e come attore interno  ma come un <ksi>componente alieno</ksi> al sistema.<br>
 
-<h3>Aggiornamento peso nella Service Access GUI</h3>
-<p>La soluzione migliore sarebbe metterlo in ascolto dei cambiamenti a ColdRoom, ColdRoom diventa così un Observable (<b>vedi: <a href="../sprint2/serviceaccessgui/src/main/java/unibo/springIntro23/ColdRoomObserver.java">ColdRoomObserver.java</a></b>).<br>
-In alternativa Req/Resp di <ksi>storequest</ksi> fa una richiesta per sapere il peso nella coldRoom.</p>
+<problem> Come avviene lo scambio dei dati</problem>
+<b>PROBLEMA:</b> Come avviene lo scambio di dati tra il ColdStorageService(controller FACADE) e la ServiceAccessGUI? Quale protocollo utilizzare per il trasferimento dati?
+<solution>
+    <b>Possibile soluzione</b>:  
+    Il server si collegherà agli attori tramite socket o come coapObserver. <br>
+    <br>Le richieste ajax provenienti dai client verranno inoltrate tramite socket. <br>
+    <br> Potremmo usare il protocollo <ksi>CoAP</ksi> e rendere il <i>controller FACADE</i> un CoAP <b> observable</b>: in 
+    questo modo la ServiceAccessGUI potrebbe osservarlo e ottenere aggiornamenti immediati ogni volta che si verifica un cambiamento all'interno del ColdStorageService. <br>
+   <br>Quindi gli eventi degli attori osservati tramite observer verranno inoltrati ai client tramite websocket, create all'inizio di ogni sessione. 
+     <br>
+     <br>
+     <b>Ragioni</b>:
+     <ul>
+        <li>Il protocollo CoAP è già fortemente supportato da QAK;</li>
+        <li>Non c'è bisogno di fare polling costante, permettendoci di ridurre l'overhead;</li>
+     </ul>
+    </solution>
 
-<p><strong style="color:#ef7089">PROBLEMA:</strong> Usando pagine html statiche, anche mantenendo aggiornato il peso corrente nel server spring l'utente deve ricaricare la pagina per visualizzare il nuovo peso.<br>
-    <div class="remark">
-    <b>Soluzione</b>:
-        <ul>
-            <ksi>Utilizzo di pagine html dinamiche</ksi>: Grazie alla classe <b>dinamic.js</b> e grazie
-            alla classe controller <b>ApiController.java</b>  rendiamo l'aggiornamento del peso nella coldroom automatico, senza
-            effettuare il refresh del browser  <br>
-            
-        </ul>
-    </div>
+    <br>
+
+
 
 
 
@@ -388,12 +395,29 @@ Context ctxbasicrobot ip [host="127.0.0.1" port=8020]
                     break;
                 </code>
             </pre>   
-			
+			<h3>Aggiornamento peso nella Service Access GUI</h3>
+<p>La soluzione migliore sarebbe metterlo in ascolto dei cambiamenti a ColdRoom, ColdRoom diventa così un Observable (<b>vedi: <a href="../sprint2/serviceaccessgui/src/main/java/unibo/springIntro23/ColdRoomObserver.java">ColdRoomObserver.java</a></b>).<br>
+In alternativa Req/Resp di <ksi>storequest</ksi> fa una richiesta per sapere il peso nella coldRoom.</p>
+
+<p> Usando pagine html statiche, anche mantenendo aggiornato il peso corrente nel server spring l'utente <strong style="color:#ef7089">deve ricaricare la pagina</strong> per visualizzare il nuovo peso.<br>
+   
+    <br>
+        
+             Grazie alla classe <b>dinamic.js</b> e grazie
+            alla classe controller <b>ApiController.java</b>  rendiamo   <strong style="color: green"> l'aggiornamento del peso nella coldroom automatico </strong>
+            
+
+    <br>
+
 			<h3> HTML page</h3>
 			<p><a href="../sprint2/serviceaccessgui/src/main/resources/templates/homeCSS.html">homeCSS.html</a></p>
-<h3>Architettura Logica</h3>
+<h3>Diagramma delle classi</h3>
 Di seguito riportiamo un diagramma delle classi UML riguardante l'applicazione scritta in SpringBoot, dove si possono notare le dipendenze e l'eriditarietà delle classi: <br>
 <img src="../sprint2/resources/diagrammClassiSpring.png">
+
+<h3>Architettura Logica</h3>
+Riportiamo infine l'Architettura logica finale risultante: <br>
+<img src="../sprint2/resources/architettura_v3.drawio.png">
 			
 <!-- ------------------Test plan---------------------- -->
 <!-- ------------------------------------------------------------ -->
