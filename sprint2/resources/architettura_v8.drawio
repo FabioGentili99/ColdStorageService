@@ -1,4 +1,4 @@
-<mxfile host="Electron" modified="2024-05-09T16:06:31.985Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.2.5 Chrome/120.0.6099.109 Electron/28.1.0 Safari/537.36" etag="OXD5xeNqB8GSvagmCvGc" version="24.2.5" type="device">
+<mxfile host="Electron" modified="2024-05-09T16:10:45.640Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.2.5 Chrome/120.0.6099.109 Electron/28.1.0 Safari/537.36" etag="nCGUSzEI7m-99pAZxgyT" version="24.2.5" type="device">
   <diagram name="Pagina-1" id="2z8MdK_rds_FzZH4PgVI">
     <mxGraphModel dx="-200" dy="310" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -442,17 +442,17 @@
             <mxGeometry x="1040" y="961.31" width="100" height="28" as="geometry" />
           </mxCell>
         </UserObject>
-        <mxCell id="nOyLcocmXqzmwkCXaEq5-1" value="&lt;font style=&quot;font-size: 10px;&quot;&gt;B:storerequest&lt;/font&gt;" style="text;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="nOyLcocmXqzmwkCXaEq5-1" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;B:storerequest&lt;/font&gt;" style="text;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="998" y="612" width="69" height="24" as="geometry" />
         </mxCell>
-        <mxCell id="nOyLcocmXqzmwkCXaEq5-2" value="&lt;font style=&quot;font-size: 10px;&quot;&gt;D: loadDone&lt;/font&gt;" style="text;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="997.25" y="648" width="59.5" height="6" as="geometry" />
+        <mxCell id="nOyLcocmXqzmwkCXaEq5-2" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;D: loadDone&lt;/font&gt;" style="text;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="997.25" y="648" width="92.75" height="6" as="geometry" />
         </mxCell>
-        <mxCell id="nOyLcocmXqzmwkCXaEq5-6" value="&lt;font style=&quot;font-size: 10px;&quot;&gt;A:getweight&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="997" y="596" width="60" height="20" as="geometry" />
+        <mxCell id="nOyLcocmXqzmwkCXaEq5-6" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;A:getweight&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="1006" y="596" width="60" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="nOyLcocmXqzmwkCXaEq5-7" value="&lt;font style=&quot;font-size: 10px;&quot;&gt;C: verifyticket&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="992" y="639" width="76" height="10" as="geometry" />
+        <mxCell id="nOyLcocmXqzmwkCXaEq5-7" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;C: verifyticket&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="997" y="639" width="88" height="10" as="geometry" />
         </mxCell>
         <UserObject label="" tags="Sfondo" id="nOyLcocmXqzmwkCXaEq5-9">
           <mxCell style="vsdxID=53;edgeStyle=none;dashed=1;dashPattern=12.00 6.00;startArrow=none;endArrow=open;startSize=5;endSize=5;strokeWidth=2;strokeColor=#000000;spacingTop=0;spacingBottom=0;spacingLeft=0;spacingRight=0;verticalAlign=middle;html=1;labelBackgroundColor=#ffffff;rounded=0;exitX=0.044;exitY=0.982;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="kZNqer2ItSsOgNp0ve4C-52">
@@ -463,21 +463,21 @@
             </mxGeometry>
           </mxCell>
         </UserObject>
-        <mxCell id="nOyLcocmXqzmwkCXaEq5-10" value="&lt;font face=&quot;Helvetica&quot; style=&quot;font-size: 10px;&quot;&gt;R ad A:currentweight&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="1005.25" y="693" width="95.5" height="20" as="geometry" />
+        <mxCell id="nOyLcocmXqzmwkCXaEq5-10" value="&lt;font face=&quot;Helvetica&quot; style=&quot;font-size: 14px;&quot;&gt;R ad A:currentweight&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="982.25" y="693" width="144.75" height="20" as="geometry" />
         </mxCell>
-        <UserObject label="&lt;div style=&quot;&quot;&gt;&lt;font style=&quot;color: rgb(0, 0, 0); direction: ltr; letter-spacing: 0px; line-height: 120%; opacity: 1;&quot;&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;font-size: 10px;&quot;&gt;R a D:goaway/depositfailed&lt;/font&gt;&lt;br&gt;&lt;/font&gt;&lt;/div&gt;" tags="Sfondo" id="nOyLcocmXqzmwkCXaEq5-11">
+        <UserObject label="&lt;div style=&quot;&quot;&gt;&lt;font style=&quot;color: rgb(0, 0, 0); direction: ltr; letter-spacing: 0px; line-height: 120%; opacity: 1;&quot;&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;font-size: 14px;&quot;&gt;R a D:goaway/depositfailed&lt;/font&gt;&lt;br&gt;&lt;/font&gt;&lt;/div&gt;" tags="Sfondo" id="nOyLcocmXqzmwkCXaEq5-11">
           <mxCell style="verticalAlign=middle;align=center;overflow=width;vsdxID=54;fillColor=none;gradientColor=none;shape=stencil(nZBLDoAgDERP0z3SIyjew0SURgSD+Lu9kMZoXLhwN9O+tukAlrNpJg1SzDH4QW/URgNYgZTkjA4UkwJUgGXng+6DX1zLfmoymdXo17xh5zmRJ6Q42BWCfc2oJfdAr+Yv+AP9Cb7OJ3H/2JG1HNGz/84klThPVCc=);strokeColor=none;points=[];labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;" vertex="1" parent="1">
-            <mxGeometry x="998" y="741.25" width="138.5" height="17.5" as="geometry" />
+            <mxGeometry x="984" y="742.25" width="182" height="17.5" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="&lt;div style=&quot;&quot;&gt;&lt;font style=&quot;color: rgb(0, 0, 0); direction: ltr; letter-spacing: 0px; line-height: 120%; opacity: 1;&quot;&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;font-size: 10px;&quot;&gt;R a B: loadaccepted/loadrejected&lt;/font&gt;&lt;br&gt;&lt;/font&gt;&lt;/div&gt;" tags="Sfondo" id="nOyLcocmXqzmwkCXaEq5-12">
+        <UserObject label="&lt;div style=&quot;&quot;&gt;&lt;font style=&quot;color: rgb(0, 0, 0); direction: ltr; letter-spacing: 0px; line-height: 120%; opacity: 1;&quot;&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;font-size: 14px;&quot;&gt;R a B: loadaccepted/loadrejected&lt;/font&gt;&lt;br&gt;&lt;/font&gt;&lt;/div&gt;" tags="Sfondo" id="nOyLcocmXqzmwkCXaEq5-12">
           <mxCell style="verticalAlign=middle;align=center;overflow=width;vsdxID=41;fillColor=none;gradientColor=none;shape=stencil(nZBLDoAgDERP0z3SIyjew0SURgSD+Lu9kMZoXLhwN9O+tukAlrNpJg1SzDH4QW/URgNYgZTkjA4UkwJUgGXng+6DX1zLfmoymdXo17xh5zmRJ6Q42BWCfc2oJfdAr+Yv+AP9Cb7OJ3H/2JG1HNGz/84klThPVCc=);strokeColor=none;points=[];labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;" vertex="1" parent="1">
-            <mxGeometry x="1004.25" y="712.5" width="151.75" height="15" as="geometry" />
+            <mxGeometry x="984.25" y="713.5" width="215.75" height="15" as="geometry" />
           </mxCell>
         </UserObject>
-        <mxCell id="nOyLcocmXqzmwkCXaEq5-13" value="&lt;font face=&quot;Helvetica&quot; style=&quot;font-size: 10px;&quot;&gt;&lt;font style=&quot;&quot;&gt;R a C: chargetaken/&lt;/font&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;invalidticket&lt;/span&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="1000" y="726.5" width="153.5" height="18" as="geometry" />
+        <mxCell id="nOyLcocmXqzmwkCXaEq5-13" value="&lt;font face=&quot;Helvetica&quot; style=&quot;font-size: 14px;&quot;&gt;&lt;font style=&quot;&quot;&gt;R a C: chargetaken/&lt;/font&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;invalidticket&lt;/span&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="988" y="726.5" width="200" height="18" as="geometry" />
         </mxCell>
         <UserObject label="" tags="Sfondo" id="nOyLcocmXqzmwkCXaEq5-14">
           <mxCell style="vsdxID=64;fillColor=none;gradientColor=none;shape=stencil(vVHLDsIgEPwajiQU4hfU+h8bu7RELM2CFv9eyMZYjCcP3mZ2Zh/ZEaaPM6wotIqJwgU3N6ZZmKPQ2i0zkksFCTMI09tAOFG4LSPzFaqzomu41wmZ+1Tt0OrB7MD0xE6gc5EoN5qi1vsa1Kmvo1SWkF2UFBIkF5ZmqweaUJY10nqYGiluiOuu3P182P/OKuD9Zuu855T2+mcspcSRmuEJ);strokeColor=#f96;strokeWidth=3;points=[[0.5,0,0],[0.5,0.5,0],[0.5,0.5,0],[0.5,0.5,0],[1,0.5,0]];labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;" vertex="1" parent="1">
