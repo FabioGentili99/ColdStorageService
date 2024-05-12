@@ -21,7 +21,7 @@ public class ApiController {
 
     @PostMapping("/depositreq")
     public String depositreq(@RequestParam String fw, Model model){
-
+        this.aggiornaPesoCorrente(model);
         String msg = "msg(storerequest,request,accessgui,coldstorageservice,storerequest(" + fw + "),1)\n";
         return sender.sendMessage(msg);
     }
