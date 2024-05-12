@@ -4,10 +4,10 @@ System coldstorageservice
 
 //serviceaccessGUI -> coldstorageservice
 Request getweight : getweight(NO_PARAM)
-Reply 	currentweight : currentweight(CurrentWeight,FreeSpace)  for getweight
+Reply 	currentweight : currentweight(CurrentWeight,FreeSpace)  for getweight 
 
 Request storerequest : storerequest(TruckLoad)
-Reply loadaccepted : loadaccepted(Ticket,FreeSpace) for storerequest
+Reply loadaccepted : loadaccepted(Ticket,FreeSpace,CurrentWeight) for storerequest
 Reply loadrejected : loadrejected(_) for storerequest 
 
 Request verifyticket : verifyticket(TruckTicket)
@@ -256,12 +256,12 @@ QActor coldroommanager context ctxcoldstorageservice{
 				Requests.put(TruckTicket, TruckLoad)
 			#]
 			println("generato il ticket $TruckTicket per la richiesta di deposito di $TruckLoad kg") color green
-			replyTo storerequest with loadaccepted : loadaccepted($TruckTicket,$FreeSpace)
+			replyTo storerequest with loadaccepted : loadaccepted($TruckTicket,$FreeSpace,$CurrentWeight)
 		}
 		
 		
 		println("è stato generato il ticket $TruckTicket per il driver") color green
-		replyTo storerequest with loadaccepted : loadaccepted($TruckTicket,$FreeSpace)
+		replyTo storerequest with loadaccepted : loadaccepted($TruckTicket,$FreeSpace,$CurrentWeight)
 	}
 	Goto waiting
 	

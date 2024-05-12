@@ -1,5 +1,7 @@
+
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:form="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<!-- ... rest of your HTML code ... -->
 <link rel="stylesheet" href="/css/mystyleAndrea2.css">
 <head>
     <style>
@@ -18,7 +20,11 @@
 <label style="font-size:100%;" id="freespace" th:text="${freespace}"></label>
 <p style="..."/><b>Current Weight </b>:
 <label style="font-size:100%;" id="currentweight" th:text="${currentweight}"></label>
+<br>
+<p style="..."/><b>Peso prenotato ma non ancora depositato </b>:
+<label style ="font-size:100%;" id="pesoPrenotatoNoDepositato" th:text="${pesoPrenotatoNoDepositato}"></label>
 
+<br>
 <div class="row">
     <div class="column" >
         <form id="depositsubmit">
@@ -54,6 +60,7 @@
     <!--<textarea style="font-size:150%;" id="outputText" rows=10 cols=40 wrap=on readonly>Welcome to Christmas's service.</textarea>-->
 
 </div>
+
 </div>
 
 

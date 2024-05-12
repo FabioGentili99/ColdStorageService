@@ -4,11 +4,23 @@ var ticket = "";
 
 var IP = "http://localhost:8085/api/";
 
+function updateDepositedWeight() {
+  var freespaceElement = document.getElementById("freespace");
+  var currentweightElement = document.getElementById("currentweight");
+  var depositedWeightElement = document.getElementById("pesoPrenotatoNoDepositato");
+
+  var freespace = parseInt(freespaceElement.innerHTML);
+  var currentweight = parseInt(currentweightElement.innerHTML);
+
+  var depositedWeight = 100 - freespace - currentweight;
+  depositedWeightElement.innerHTML = depositedWeight;
+}
 document.getElementById("depositsubmit").addEventListener("submit", function(e)
 {
     e.preventDefault();
     var fw = document.getElementById("foodweight").value;
     sendMessage("depositreq", "fw="+fw);
+    updateDepositedWeight();
 });
 
 document.getElementById("checksubmit").addEventListener("submit", function(e)
@@ -31,14 +43,21 @@ function responsehandler(type, response){
     switch (type){
         case "weightreq":
             var weights=getMsgValue(response).split(",");
-            document.getElementById("freespace").innerHTML=weights[0];
-            document.getElementById("currentweight").innerHTML=weights[1];
+            //test per capire se il weights[0] corrisponde al freespace
+            document.getElementById("freespace").innerHTML= weights[1];
+            document.getElementById("currentweight").innerHTML=weights[0];
+
+
+
             enableButtons("default");
             break;
         case "depositreq":
             var responsebutton = getMsgType(response);
             var weights=getMsgValue(response).split(",");
+
             document.getElementById("freespace").innerHTML=weights[1];
+            document.getElementById("currentweight").innerHTML=weights[2];
+                updateDepositedWeight();
             if(responsebutton == "loadaccepted"){
                 document.getElementById("maintext").innerHTML= "Richiesta di deposito accettata" ;
                 enableButtons("requestaccepted");

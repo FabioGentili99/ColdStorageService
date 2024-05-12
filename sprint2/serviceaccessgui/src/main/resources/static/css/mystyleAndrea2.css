@@ -59,7 +59,11 @@ input[type="submit"]:hover {
   font-weight: bold;
   color: #4a86e8;
 }
-
+#pesoPrenotatoNoDepositato {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #4a86e8; /* Blue color */
+}
 
 #maintext {
   font-size: 1.5em;

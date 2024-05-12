@@ -19,6 +19,7 @@ public class HIControllerAppl {
     @Value("${spring.application.name}")
     String appName;
     MessageSender sender = new MessageSender();
+
     @GetMapping("/home")
     public String homePage(Model model) {
         this.aggiornaPesoCorrente(model);
@@ -35,11 +36,18 @@ public class HIControllerAppl {
                 responseHeaders, HttpStatus.CREATED);
     }
 
+
     private void aggiornaPesoCorrente(Model model){
         String msg = "msg(getweight,request,accessgui,coldstorageservice,getweight(NO_PARAM),1)\n";
         String response = sender.sendMessage(msg);
         String[] weights = response.split("\\(|\\)")[2].split(",");
-        model.addAttribute("freespace", Integer.valueOf(weights[1]));
-        model.addAttribute("currentweight", Integer.valueOf(weights[0]));
+
+        int freespace = Integer.valueOf(weights[1]);
+        int currentweight = Integer.valueOf(weights[0]);
+        int pesoPrenotatoNoDepositato = 100 - freespace - currentweight;
+
+        model.addAttribute("freespace", freespace);
+        model.addAttribute("currentweight", currentweight);
+        model.addAttribute("pesoPrenotatoNoDepositato", pesoPrenotatoNoDepositato);
     }
 }

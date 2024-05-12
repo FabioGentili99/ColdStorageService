@@ -294,7 +294,7 @@ Request getweight : getweight(NO_PARAM)
 Reply 	currentweight : currentweight(CurrentWeight,FreeSpace)  for getweight
 
 Request storerequest : storerequest(TruckLoad)
-Reply loadaccepted : loadaccepted(Ticket,FreeSpace) for storerequest
+Reply loadaccepted : loadaccepted(Ticket,FreeSpace,CurrentWeight) for storerequest
 Reply loadrejected : loadrejected(_) for storerequest 
 
 Request verifyticket : verifyticket(TruckTicket)
@@ -373,17 +373,20 @@ Context ctxbasicrobot ip [host="127.0.0.1" port=8020]
                         &emsp;&emsp;e.preventDefault();
                         &emsp;&emsp;var fw = document.getElementById("foodweight").value;
                         &emsp;&emsp;sendMessage("depositreq", "fw="+fw);
+                        &emsp;&emsp;updateDepositedWeight();
                 });
             
                 </code>
             </pre>
-            e una volta ricevuta la risposta dal coldstorageservice, sarà sempre <b>dinamic.js</b> a gestire i messaggi da visualizzare nella ServiceAccessGUI in base al tipo di risposta ricevuto dal ColdStorageService.<br>
+            e una volta ricevuta la risposta dal coldstorageservice, sarà sempre <a href="../sprint2/serviceaccessgui/src/main/resources/static/dinamic.js"><b>dinamic.js</b></a> a gestire i messaggi da visualizzare nella ServiceAccessGUI in base al tipo di risposta ricevuto dal ColdStorageService.<br>
             <pre>
                 <code>
                     case "depositreq":
                     &emsp;var responsebutton = getMsgType(response);
                     &emsp;var weights=getMsgValue(response).split(",");
                     &emsp;document.getElementById("freespace").innerHTML=weights[1];
+                    &emsp;document.getElementById("currentweight").innerHTML=weights[2];
+                    &emsp;updateDepositedWeight();
                     &emsp;if(responsebutton == "loadaccepted"){
                         &emsp;&emsp;document.getElementById("maintext").innerHTML= "Richiesta di deposito accettata" ;
                         &emsp;&emsp;enableButtons("requestaccepted");
@@ -403,8 +406,38 @@ In alternativa Req/Resp di <ksi>storequest</ksi> fa una richiesta per sapere il 
    
     <br>
         
-             Grazie alla classe <b>dinamic.js</b> e grazie
-            alla classe controller <b>ApiController.java</b>  rendiamo   <strong style="color: green"> l'aggiornamento del peso nella coldroom automatico </strong>
+             Grazie alla funzione <b>updateDepositedWeight</b> della classe <a href="../sprint2/serviceaccessgui/src/main/resources/static/dinamic.js">dinamic.js</a> che viene chiamata ogni volta che si invia una <ksi>storerequest</ksi> ...
+             <pre>
+                <code> function updateDepositedWeight() {
+                    &emsp;var freespaceElement = document.getElementById("freespace");
+                    &emsp;var currentweightElement = document.getElementById("currentweight");
+                    &emsp;var depositedWeightElement = document.getElementById("pesoPrenotatoNoDepositato");
+                  
+                    &emsp;var freespace = parseInt(freespaceElement.innerHTML);
+                    &emsp;var currentweight = parseInt(currentweightElement.innerHTML);
+                  
+                    &emsp;var depositedWeight = 100 - freespace - currentweight;
+                    &emsp;depositedWeightElement.innerHTML = depositedWeight;
+                  }</code>
+             </pre>
+             
+            ... e grazie al metodo <b>aggiornaPesoCorrente</b> della classe controller <a href="../sprint2/serviceaccessgui/src/main/java/unibo/springIntro23/ApiController.java">ApiController.java</a> <br>
+            <pre>
+                <code> private void aggiornaPesoCorrente(Model model){
+                    &emsp;&emsp;String msg = "msg(getweight,request,accessgui,coldstorageservice,getweight(NO_PARAM),1)\n";
+                    &emsp;&emsp;String response = sender.sendMessage(msg);
+                    &emsp;&emsp;String[] weights = response.split("\\(|\\)")[2].split(",");
+            
+                    &emsp;&emsp;int freespace = Integer.valueOf(weights[1]);
+                    &emsp;&emsp;int currentweight = Integer.valueOf(weights[0]);
+                    &emsp;&emsp;int pesoPrenotatoNoDepositato = 100 - freespace - currentweight;
+            
+                    &emsp;&emsp;model.addAttribute("freespace", freespace);
+                    &emsp;&emsp;model.addAttribute("currentweight", currentweight);
+                    &emsp;&emsp;model.addAttribute("pesoPrenotatoNoDepositato", pesoPrenotatoNoDepositato);
+                }</code>
+            </pre>
+             rendiamo   <strong style="color: green"> l'aggiornamento dei vari pesi nella coldroom automatico </strong> senza dover ricaricare la pagina manualmente.
             
 
     <br>

@@ -99,10 +99,10 @@ class Coldroommanager ( name: String, scope: CoroutineScope, isconfined: Boolean
 												TruckTicket = payloadArg(0).toInt()
 												Requests.put(TruckTicket, TruckLoad)
 								CommUtils.outgreen("generato il ticket $TruckTicket per la richiesta di deposito di $TruckLoad kg")
-								answer("storerequest", "loadaccepted", "loadaccepted($TruckTicket,$FreeSpace)"   )  
+								answer("storerequest", "loadaccepted", "loadaccepted($TruckTicket,$FreeSpace,$CurrentWeight)"   )  
 						}
 						CommUtils.outgreen("è stato generato il ticket $TruckTicket per il driver")
-						answer("storerequest", "loadaccepted", "loadaccepted($TruckTicket,$FreeSpace)"   )  
+						answer("storerequest", "loadaccepted", "loadaccepted($TruckTicket,$FreeSpace,$CurrentWeight)"   )  
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
