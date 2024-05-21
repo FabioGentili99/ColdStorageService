@@ -1,0 +1,1153 @@
+System coldstorageservice
+
+//MESSAGGI
+
+//serviceaccessGUI -> coldstorageservice
+Request getweight : getweight(NO_PARAM)
+Reply 	currentweight : currentweight(CurrentWeight,FreeSpace)  for getweight
+
+Request storerequest : storerequest(TruckLoad)
+Reply loadaccepted : loadaccepted(Ticket,FreeSpace) for storerequest
+Reply loadrejected : loadrejected(_) for storerequest 
+
+Request verifyticket : verifyticket(TruckTicket)
+Reply chargetaken : chargetaken(_) for verifyticket
+Reply invalidticket : invalidticket(REASON) for verifyticket
+
+Request loaddone : loaddone(TruckTicket)
+Reply goaway : goaway(_)for loaddone
+Reply depositfailed : depositfailed(_) for loaddone
+
+
+
+//coldroommanager -> ticketmanager
+
+Request generateticket : generateticket(TruckLoad)
+Reply ticket : ticket(Ticket)
+
+
+
+//transporttrolley -> coldroommanager
+
+Dispatch depositdone : depositdone(Ticket)
+Dispatch depositfailed : depositfailed(Ticket)
+
+//ticketmanager -> coldroommanager
+Dispatch expiredticket : expiredticket(Ticket)
+
+/*basic robot */
+Dispatch cmd       	: cmd(MOVE)      
+Dispatch end       	: end(ARG)   
+
+Request step       : step(TIME)	
+Reply stepdone     : stepdone(V) for step
+Reply stepfailed   : stepfailed(DURATION, CAUSE) for step
+
+/*planexec */
+Request  doplan     : doplan( PATH, STEPTIME )
+Reply doplandone    : doplandone( ARG ) for doplan 
+Reply doplanfailed  : doplanfailed( ARG ) for doplan
+
+
+
+Dispatch nextmove     : nextmove(M)
+Dispatch nomoremove   : nomoremove(M)
+
+Dispatch robotready : robotready(BOOL)
+
+
+/*robotpos */
+
+Dispatch setdirection : dir( D )  //D =up|down!left|right
+
+Request moverobot    :  moverobot(TARGETX, TARGETY)  
+Reply moverobotdone  :  moverobotok(ARG) for moverobot
+Reply moverobotfailed:  moverobotfailed(PLANDONE, PLANTODO) for moverobot
+Reply robotDead : robotDead(NO_PARAM) 
+
+
+Request getrobotstate : getrobotstate(ARG)
+Reply robotstate      : robotstate(POS,DIR) for getrobotstate
+
+
+Dispatch stopplan : stopplan(NO_PARAM)
+Dispatch continueplan : continueplan(NO_PARAM)
+
+Dispatch setrobotstate: setpos(X,Y,D)
+
+
+
+//alarmDevice(sonar) -> coldstorageservice
+Dispatch stop : stop(_)
+Dispatch resume : resume(_)
+
+
+//transporttrolley -> warningDevice(led)
+Dispatch updateled : updateled(RobotState)
+
+
+
+
+//CONTESTI
+
+Context ctxcoldstorageservice ip [host="localhost" port=9990]
+Context ctxraspberrypi ip [host="localhost" port=9999]
+
+
+
+//ATTORI
+
+ExternalQActor warningdevice context ctxraspberrypi
+ExternalQActor alarmdevice context ctxraspberrypi
+	
+	
+	
+QActor coldstorageservice context ctxcoldstorageservice{
+	
+	State s0 initial{
+		delay 1000
+		println("COLD STORAGE SERVICE STARTING, waiting for requests...") color green
+		delegate "storerequest" to coldroommanager
+		delegate "verifyticket" to ticketmanager
+		delegate "loaddone" to transporttrolley
+		delegate "getweight" to coldroommanager
+		delegate "stop" to transporttrolley
+		delegate "resume" to transporttrolley
+		delay 1000
+	}
+	
+}
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+QActor coldroommanager context ctxcoldstorageservice{
+	
+	[#
+		val MAXW : Int = 100
+		var CurrentWeight : Int = 0
+		var FreeSpace : Int = 100
+		var TruckLoad : Int = 0
+		var TruckTicket : Int = 0
+		var Requests = hashMapOf<Int,Int>()
+		var Response : Boolean = false
+	#]
+	
+	State s0 initial{
+		println("COLD ROOM STARTING,capienza: $MAXW, free space: $FreeSpace") color green
+		
+		delay 1000
+	}
+	Goto waiting
+	
+	
+	
+	State waiting {
+		println("waiting for requests...") color green
+	}
+	Transition t0 whenRequest storerequest -> handlestorerequest
+				  whenMsg depositdone -> handledepositok
+				  whenMsg depositfailed -> handledepositfail
+				  whenMsg expiredticket -> handleexpire
+				 whenRequest getweight -> returnweight
+				 
+	
+	State handlestorerequest{
+		println("richiesta di deposito in fase di valutazione...") color green 
+		onMsg(storerequest: storerequest(KG)){
+			[# TruckLoad = payloadArg(0).toInt() #]
+		}	
+			if [# TruckLoad<= FreeSpace #]{
+				[# 
+					FreeSpace -= TruckLoad 
+				#]
+				println("richiesta di deposito accettata, carico: $TruckLoad kg, spazio libero nel frigo: $FreeSpace kg. In attesa di generare un ticket univoco...") color green
+				//replyTo storerequest with loadaccepted : loadaccepted(Ticket)
+				[# Response = true #]
+				request ticketmanager -m generateticket : generateticket($TruckLoad)
+			}
+			else {
+				println("richiesta di deposito rifiutata, non c'e spazio sufficiente") color green
+				[# Response = false #]
+				replyTo storerequest with loadrejected : loadrejected(_)
+			}
+			
+	}
+	Goto waiting if [# !Response #] else waitingticket
+	
+	
+	
+	State waitingticket{
+		println("in attesa della generazione del ticket...") color green
+	}
+	Transition t0 whenReply ticket -> requestaccepted
+
+				  
+	
+	State requestaccepted{
+		onMsg(ticket: ticket(Ticket)) {
+			[#
+				TruckTicket = payloadArg(0).toInt()
+				Requests.put(TruckTicket, TruckLoad)
+			#]
+			println("generato il ticket $TruckTicket per la richiesta di deposito di $TruckLoad kg") color green
+			replyTo storerequest with loadaccepted : loadaccepted($TruckTicket,$FreeSpace)
+		}
+		
+		
+		println("è stato generato il ticket $TruckTicket per il driver") color green
+		replyTo storerequest with loadaccepted : loadaccepted($TruckTicket,$FreeSpace)
+	}
+	Goto waiting
+	
+	
+	
+	State handledepositok{
+		onMsg(depositdone: depositdone(Ticket)){
+			[# TruckTicket = payloadArg(0).toInt() #]
+		}
+		println("il deposito del carico portato dal driver $(TruckTicket) è avvenuto con successo, aggiornamento del current weight in corso...") color green
+		
+		[#
+			CurrentWeight = CurrentWeight + Requests.get(TruckTicket)!!
+			Requests.remove(TruckTicket)
+		#]
+		
+		println("il nuovo current weight è di $CurrentWeight kg") color green
+	}
+	Goto waiting
+	
+	
+	
+	
+	State handledepositfail{
+		onMsg(depositfailed: depositfailed(Ticket)){
+			[# TruckTicket = payloadArg(0).toInt() #]
+		}
+		
+		println("il deposito del carico portato dal driver $TruckTicket è fallito, aggiornamento di free space in corso...") color red
+		
+		[#
+			FreeSpace = FreeSpace - Requests.get(TruckTicket)!!	
+			Requests.remove(TruckTicket)
+		#]
+		
+		println("il nuovo free space è di $FreeSpace kg") color red
+	}
+	Goto waiting
+	
+	
+	
+	State handleexpire{
+		onMsg(expiredticket : expiredticket(Ticket)){
+			[#	TruckTicket = payloadArg(0).toInt()	#]
+		}
+		
+		println("il ticket $TruckTicket è scaduto, aggiornamento di free space in corso...") color red
+		
+		[#
+			FreeSpace = FreeSpace - Requests.get(TruckTicket)!!
+			Requests.remove(TruckTicket)
+		#]
+		
+		println("il nuovo free space è di $FreeSpace kg") color red
+	}
+	Goto waiting
+	
+	State returnweight{
+		onMsg(getweight : getweight(NO_PARAM)){
+			println("ho mandato il valore di freespace in KG alla SAG") color red
+			replyTo getweight with currentweight : currentweight($CurrentWeight, $FreeSpace)
+		}
+	} Goto waiting
+	
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+QActor ticketmanager context ctxcoldstorageservice{
+	
+	[#
+		
+		
+		var Tickets = hashMapOf<Int,Long>()
+		var Ticket : Int = 0
+		var Now = 0L
+		var TruckLoad : Int = 0
+		var TICKETTIME = 0L
+		var TruckTicket : Int = 0
+	#]
+	
+	State s0 initial{
+		println("TICKET MANAGER STARTING") color green 
+		
+	}
+	Goto waiting
+	
+	
+	
+	State waiting{
+		println("waiting for requests...") color green
+	}
+	Transition t0 whenRequest generateticket -> handlegeneration
+				  whenRequest verifyticket -> handleverify
+	
+	
+	
+	State handlegeneration{
+		onMsg(generateticket: generateticket(KG)){
+			[# TruckLoad = payloadArg(0).toInt() #]
+		}
+		
+		println("ricevuta richiesta di generazione ticket, elaborazione in corso...") color green 
+		delay 500
+		[#
+			Ticket = Random.nextInt(10001)+ 1
+			while ( Tickets.keys.contains(Ticket)){
+				Ticket = Random.nextInt(10001) + 1
+			}
+		#]
+		
+		memoCurrentTime Now
+		[#
+			TICKETTIME = Now + 10000 + TruckLoad * 500
+			Tickets.put(Ticket,TICKETTIME)	
+		#]
+		replyTo generateticket with ticket : ticket($Ticket)
+		println("generato il ticket con codice $Ticket e scadenza $TICKETTIME") color green 
+	}
+	Goto waiting
+	
+	
+	
+	
+	State handleverify {
+		
+		println("ricevuta richiesta di verifica di ticket") color green
+		onMsg(verifyticket : verifyticket(T)){
+			[# TruckTicket = payloadArg(0).toInt() #]
+		}
+		
+		[# 
+			if (!Tickets.keys.contains(TruckTicket)){
+		#]
+		
+				println("il ticket $TruckTicket non esiste, inserire nuovamente il codice") color red
+				replyTo verifyticket with invalidticket : invalidticket(wrong_ticket)
+				
+		[# 
+			}
+		#]
+		
+		memoCurrentTime Now
+		[# 
+			if (!(Tickets.get(TruckTicket)!! > Now)){
+		#]
+		
+				println("il ticket $TruckTicket è scaduto, liberare l'Indoor e fare una nuova store request") color red
+				replyTo verifyticket with invalidticket : invalidticket(expired_ticket)
+				forward coldroommanager -m expiredticket : expiredticket($TruckTicket)
+				[#	Tickets.remove(TruckTicket)	#]
+				
+		[# 
+			} else{
+		#]
+		
+				println("il ticket $TruckTicket è valido, procedere con il deposito") color green
+				replyTo verifyticket with chargetaken : chargetaken(_)
+				[#	Tickets.remove(TruckTicket)	#]
+		[# 
+			}
+		#]
+				
+	}
+	Goto waiting
+	
+}
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+/*QActor transporttrolley context ctxcoldstorageservice {
+	[#
+		var TruckTicket : Int = 0	
+	#]
+	
+	State s0 initial {
+		println("TRANSPORT TROLLEY STARTING") color green
+		println("TRANSP sto provando a mandare una richiesta di engage al BASIC ROBOT") color green
+		request basicrobot -m engage : engage(transporttrolley,250)
+		forward warningdevice -m updateled : updateled(HOME)
+	}
+	Transition t0 whenReply engagedone -> waiting
+				  whenReply engagerefused -> errorengage
+				  
+				  
+	
+	State errorengage{
+		println("engage del basicrobot fallito") color red
+	}
+	Goto s0 
+	
+	
+	State waiting{
+		println("TRANSP: waiting for requests...") color green
+	}
+	Transition t0 whenRequest loaddone -> movetoindoor
+				  
+	
+	
+	State movetoindoor{
+		onMsg(loaddone : loaddone(T)){
+			[# TruckTicket = payloadArg(0).toInt() #]
+		}
+		println("il driver con ticket $TruckTicket è pronto all'indoor, avvio dell'operazione di scarico dal camion...") color green
+		request basicrobot -m moverobot : moverobot (0,4)
+				forward warningdevice -m updateled : updateled(MOVING)
+	}
+	Transition t0 whenReply moverobotdone -> handlecharge
+				  whenReply moverobotfailed -> errordeposit
+				  whenMsg stop -> handlestop
+				  
+	
+	State handlestop{
+		println("stop del robot, l'alarmDevice ha rilevato una distanza inferiore a DLIMIT") color green
+		forward warningdevice -m updateled : updateled(STOPPED)
+	}
+				  
+	State errordeposit{
+		println("operazione di deposito fallita, si procede con le prossime richieste...") color red
+		forward coldroommanager -m depositfailed : depositfailed($TruckTicket)
+	}
+	Goto waiting
+	
+	
+	
+	
+	State handlecharge{
+		println("il robot è arrivato all'indoor, inizio scarico della merce dal camion...") color green
+		delay 3000
+		replyTo loaddone with goaway : goaway(_)
+	}
+	Goto movetoport
+	
+	
+	
+	State movetoport{
+		println("il camion è stato scaricato, il robot si dirige verso la porta della cold room...") color green
+		request basicrobot -m moverobot : moverobot (4,3)
+	}
+	Transition t0 whenReply moverobotdone -> handledeposit
+				  whenReply moverobotfailed -> errordeposit
+				  
+				  
+				  
+				  
+	State handledeposit{
+		println("il robot è arrivato davanti alla cold room, inizia la fase di deposito...") color green
+		delay 3000
+		forward coldroommanager -m depositdone : depositdone($TruckTicket)
+		println("deposito effettuato con successo") color green
+	}
+	Goto gohome		//la gestione di eventuali richieste di deposito già arrivate verrà trattata nel prossimo sprint, in questo caso il robot torna sempre in home prima di eseguire nuovi depositi
+				 
+				  
+				  
+				  
+	State gohome {
+		println("ritorno del robot alla posizione home in corso...") color green
+		request basicrobot -m moverobot : moverobot (0,0)
+	}
+	Goto waiting
+	
+	
+}
+	
+*/
+
+
+/*
+QActor controller context ctxcoldstorageservice{
+	
+	[#	var TruckTicket : Int = 0	#]
+	
+	State s0 initial{
+		printCurrentMessage color yellow
+	}Goto waiting
+	
+	
+	State waitingHome{
+		println("controller waiting for requests, robot at home") color yellow
+	}Transition t0 whenMsg stop -> stoppedHome
+					whenMsg resume -> waiting
+					whenMsg loaddone -> startdeposit
+					
+	
+	State stoppedHome{
+		println("controller stopped, robot at home") color yellow
+		forward warningdevice -m updateled : updateled(HOME)
+		forward planexec -m stopplan : stopplan(_)
+	}Transition t0 whenMsg stop -> stoppedHome
+					whenMsg resume -> continueworking
+					
+	
+	State continueworking{
+		println("controller resumed, robot at home") color yellow
+		forward warningdevice -m updateled : updateled(HOME)
+		forward planexec -m continueplan : continueplan(_)
+	}Goto waitingHome
+	
+	
+	State startdeposit{
+		forward warningdevice -m updateled : updateled(MOVING)
+		onMsg(loaddone : loaddone(Ticket) ){
+			[# TruckTicket = payloadArg(0).toInt()
+				#]
+		}
+		replyTo loaddone with goaway : goaway(_)
+		request transporttrolley -m doDeposit : doDeposit($TruckTicket)
+	}Transition t0 whenMsg stop -> stoppedWhileDeposit
+					whenReply robotDead -> handleError
+					whenReply depositdone -> depositdone
+					
+					
+	State stoppedWhileDeposit{
+		forward planexec -m stopplan : stopplan(_)
+		println("controller stopped during deposit action") color yellow
+		forward warningdevice -m updateled : updateled(STOPPED)
+	}Transition t0 whenMsg resume -> resumedeposit
+	
+	
+	State resumedeposit{
+		forward planexec -m continueplan : continueplan(_)
+		println("controller resumed") color yellow
+		forward warningdevice -m updateled : updateled(MOVING)
+	}Transition t0 whenMsg stop -> stoppedWhileDeposit
+					whenReply robotDead -> handleError
+					whenReply depositdone -> depositdone
+					
+					
+	State depositdone{
+		onMsg(loaddone : loaddone(Ticket) ){
+			[# TruckTicket = payloadArg(0).toInt()
+				#]
+		}
+		println("deposit done")color yellow
+		forward coldroommanager -m depositdone : depositdone($TruckTicket)
+		
+	}
+}
+
+*/
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+QActor transporttrolley context ctxcoldstorageservice{
+	
+	[#	var TruckTicket : Int = 0	#]
+	
+	State s0 initial{
+		printCurrentMessage color yellow
+	}Transition t0 whenMsg robotready -> waitingHome
+	
+	
+	State waitingHome{
+		forward robotpos -m setrobotstate : setpos(0,0,down)
+		println("transport trolley waiting for requests, robot at home") color yellow
+	}Transition t0 whenMsg stop -> stoppedHome
+					whenMsg resume -> waitingHome
+					whenRequest loaddone -> startdeposit
+					
+	
+	State stoppedHome{
+		println("transport trolley stopped, robot at home") color yellow
+		forward warningdevice -m updateled : updateled(HOME)
+		forward planexec -m stopplan : stopplan(_)
+	}Transition t0 whenMsg stop -> stoppedHome
+					whenMsg resume -> continueworking
+					
+	
+	State continueworking{
+		println("transport trolley resumed, robot at home") color yellow
+		forward warningdevice -m updateled : updateled(HOME)
+		forward planexec -m continueplan : continueplan(_)
+	}Goto waitingHome
+	
+	
+	State startdeposit{
+	
+		onMsg(loaddone : loaddone(Ticket) ){
+			[# TruckTicket = payloadArg(0).toInt()
+				#]
+		}
+		forward warningdevice -m updateled : updateled(MOVING)
+		println("loaddone received, start moving to indoor") color yellow
+		forward warningdevice -m updateled : updateled(MOVING)
+		request robotpos -m moverobot : moverobot(0,4)
+	}Transition t0 whenMsg stop -> stoppedWhileMovingIndoor
+					whenReply robotDead -> handleError
+					whenReply moverobotdone -> handlecharge
+					
+	State handlecharge{
+		forward warningdevice -m updateled : updateled(STOPPED)
+		println("il robot è arrivato all'indoor, inizio scarico della merce dal camion...") color yellow
+		delay 3000
+		replyTo loaddone with goaway : goaway(_)
+	}Goto movetoport
+					
+					
+	State stoppedWhileMovingIndoor{
+		forward planexec -m stopplan : stopplan(_)
+		println("transport trolley stopped while moving to the indoor") color yellow
+		forward warningdevice -m updateled : updateled(STOPPED)
+	}Transition t0 whenMsg resume -> resumeIndoor
+	
+	
+	State resumeIndoor{
+		forward planexec -m continueplan : continueplan(_)
+		println("transport trolley resumed") color yellow
+		forward warningdevice -m updateled : updateled(MOVING)
+	}Transition t0 whenMsg stop -> stoppedWhileMovingIndoor
+					whenReply robotDead -> handleError
+					whenReply moverobotdone -> handlecharge
+					
+					
+	State movetoport{
+		request robotpos -m moverobot : moverobot(4,3)
+		println("transport trolley moving to the cold room") color yellow
+		forward warningdevice -m updateled : updateled(MOVING)
+	}Transition t0 whenMsg stop -> stoppedWhileMovingPort
+					whenReply robotDead -> handleError
+					whenReply moverobotdone -> handledeposit
+					
+					
+	State stoppedWhileMovingPort{
+		forward planexec -m stopplan : stopplan(_)
+		println("transport trolley stopped while moving to the cold room") color yellow
+		forward warningdevice -m updateled : updateled(STOPPED)
+	}Transition t0 whenMsg resume -> resumePort
+	
+	
+	
+	State resumePort{
+		forward planexec -m continueplan : continueplan(_)
+		println("transport trolley resumed") color yellow
+		forward warningdevice -m updateled : updateled(MOVING)
+	}Transition t0 whenMsg stop -> stoppedWhileMovingPort
+					whenReply robotDead -> handleError
+					whenReply moverobotdone -> handledeposit
+	
+					
+					
+	State handledeposit{
+		forward warningdevice -m updateled : updateled(STOPPED)
+		println("il robot è arrivato davanti alla cold room, inizio scarico della merce...") color yellow
+		delay 3000
+	}Goto depositdone
+					
+					
+	State depositdone{
+		println("deposit done")color yellow
+		forward coldroommanager -m depositdone : depositdone($TruckTicket)
+	}Transition t0 whenTime 2000 -> returnhome
+					whenRequest loaddone -> startdeposit
+					
+					
+	State returnhome{
+		println("no new requests, returning home...") color yellow
+		request robotpos -m moverobot : moverobot(0,0)
+		forward warningdevice -m updateled : updateled(MOVING)
+	}Transition t0 whenMsg stop -> stoppedWhileMovingHome
+					whenReply robotDead -> handleError
+					whenReply moverobotdone -> setDirectionHome
+					
+					
+	State stoppedWhileMovingHome{
+		forward planexec -m stopplan : stopplan(_)
+		println("transport trolley stopped while returning home") color yellow
+		forward warningdevice -m updateled : updateled(STOPPED)
+	}Transition t0 whenMsg resume -> resumeHome
+	
+	
+	
+	State resumeHome{
+		forward planexec -m continueplan : continueplan(_)
+		println("transport trolley resumed") color yellow
+		forward warningdevice -m updateled : updateled(MOVING)
+	}Transition t0 whenMsg stop -> stoppedWhileMovingHome
+					whenReply robotDead -> handleError
+					whenReply moverobotdone -> setDirectionHome
+					
+					
+	State setDirectionHome{
+		forward robotpos -m setdirection : dir(down)
+	}Goto waitingHome
+					
+					
+	State handleError{
+		println("problems with the robot, stopping the service...") color red
+	}
+	
+	
+	/*
+	[#
+		var TruckTicket : Int = 0	
+	#]
+	
+	State s0 initial{
+		forward robotpos -m setrobotstate : setpos(0,0,DOWN)
+	} Transition t0 whenMsg robotready -> waiting
+	
+	
+	State waiting{
+		println("transporttrolley is waiting for requests") color green
+	}Transition t0 whenRequest loaddone -> movetoindoor
+	
+	
+	State movotoindoor{
+		onMsg(loaddone : loaddone(Ticket)){
+			[# TruckTicket = payloadArg(0).toInt() #]
+		}
+		println("loaddone received, start moving to indoor") color green
+		forward warningdevice -m updateled : updateled(MOVING)
+		request robotpos -m moverobot : moverobot(0,4)
+	}Transition t0 whenReply moverobotdone -> handlecharge
+	
+	
+	State handlecharge{
+		println("il robot è arrivato all'indoor, inizio scarico della merce dal camion...") color green
+		delay 3000
+		replyTo loaddone with goaway : goaway(_)
+	}Goto movetoport
+	
+	
+	State movetoport{
+		
+	}
+	*/
+	
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+QActor planexec context ctxcoldstorageservice{
+	[#  var Plan          = ""
+		var PlanOrig      = ""
+		var CurMoveTodo   = ""		
+		var StepTime      = "500"
+		var Plantodo = ""
+		var AtHome = true
+   	#]
+   	
+	State s0 initial{
+		printCurrentMessage
+	}
+	Goto work
+	
+	State work{
+		
+	}Transition t0 whenMsg stopplan -> stoppedwhilenothing
+					whenMsg continueplan -> work
+					whenRequest doplan -> execplan
+ 				
+				
+ 	State stoppedwhilenothing{
+ 	}Transition t0 whenMsg stopplan -> stoppedwhilenothing
+ 					whenMsg continueplan -> work
+					
+					
+	State execplan{
+		onMsg( doplan : doplan(PLAN, STEPTIME)){
+    		[# Plan       = payloadArg(0).replace("[","").replace("]","").replace(",","").replace(" ","")
+			   PlanOrig   = Plan
+			   StepTime   = payloadArg(1) 
+    		#]
+    		println("plan ${Plan}")
+    	}
+	} Transition t0 whenTime 100  -> nextMove
+	  
+	
+	State nextMove{ 
+		[# 
+		   if( Plan.length > 0  ){
+		   	CurMoveTodo =  Plan.elementAt(0).toString() 
+		   	Plan        =  Plan.removePrefix(CurMoveTodo)
+		   }else CurMoveTodo = ""		   
+		#]
+		//println("$name | CurMoveTodo= $CurMoveTodo remain:$Plan" ) 
+		forward planexec -m nextmove : nextmove($CurMoveTodo)
+	} 	 
+	Transition t0 whenMsg nextmove  -> doMove
+		           
+	
+	State doMove{
+		//println("$name | domove $CurMoveTodo")  
+ 		if [# CurMoveTodo == "" #] { 
+ 			forward planexec -m nomoremove : nomoremove(end)
+ 		}
+		else{ if [# CurMoveTodo == "w" #] {
+	 			delay 300  //avoid too fast ...
+	 			//[# CurMoveTodo = "" #]
+	 			request basicrobot -m step : step($StepTime)		
+			}else{
+				//println("$name | doMoveTurn $CurMoveTodo")  
+				run uniborobots.robotSupport.move(  CurMoveTodo )
+				//[# CurMoveTodo = "" #]
+				forward planexec -m nextmove : nextmove(goon)
+			}
+		}
+ 	}
+	Transition t0  whenMsg stopplan     -> planinterruptedalarm
+	               whenMsg nomoremove  -> planend
+	               whenMsg nextmove    -> nextMove 
+	               whenReply stepdone   -> nextMove 
+	               whenReply stepfailed -> planinterruptedobstacle
+
+ 	
+	State planend{ 
+		println("$name | planend ok plan=$PlanOrig ") color blue
+		replyTo doplan with doplandone : doplandone($PlanOrig)
+		updateResource [# "plandone($PlanOrig)" #] 
+	}Goto work
+	
+	
+	State planinterruptedobstacle{  
+		//printCurrentMessage
+ 		println("$name |  planinterruptedobstacle $CurMoveTodo ")	color magenta
+ 		[# var Plantodo =  CurMoveTodo + Plan
+ 		#]
+ 		updateResource [# "planfailed($Plan,$Plantodo )" #] 
+ 		replyTo doplan with doplanfailed : doplanfailed( $Plantodo )
+ 	} Goto work 
+ 	
+ 	
+ 	State planinterruptedalarm{  
+		//printCurrentMessage
+		println("$name |  planinterruptedalarm $CurMoveTodo ")	color magenta
+		
+ 		
+ 		[#  Plantodo = CurMoveTodo + Plan
+ 		#]
+ 		//updateResource [# "planfailed($PlanOrig,$Plantodo )" #]
+ 		 
+ 		//replyTo doplan with doplanfailed : doplanfailed( $Plantodo )
+ 	} Goto stopped
+ 	
+ 	State stopped{
+ 			println("$name |  stopped")	color magenta
+ 	}Transition waitingforrestart whenMsg stopplan -> stopped
+ 								whenMsg continueplan -> moving
+ 	
+ 	State moving {
+ 		println("$name |  moving $Plantodo ")	color magenta
+ 	}Transition t1 whenReply stepdone   -> nextMove
+ 					whenMsg nextmove    -> nextMove
+ 					whenRequest doplan -> execplan
+
+ 					 
+}
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+QActor robotpos context ctxcoldstorageservice{
+	[# val planner = unibo.planner23.Planner23Util()
+	    val MapName = "mapCompleteWithObst23ok"
+	    val MyName    = name 
+	    var StepTime  = "500"
+		var Plan      = ""	
+		var TargetX   = ""
+		var TargetY   = ""
+		var X         = ""
+		var Y         = ""
+		var D         = ""
+	#]
+	
+	State s0 initial{
+        println("$name STARTS loading $MapName") 
+		[# planner.initAI()  
+		   planner.loadRoomMap(MapName) 
+		   planner.showMap()
+		#]
+	}
+	Goto waitclientrequest
+ 	
+             
+	State waitclientrequest{
+		println("$name | waiting the client request...")
+	}              
+	Transition t0 whenRequest getrobotstate -> getRobotState
+				  whenRequest moverobot -> planTheRobotmoves //elabClientRequest
+				  whenMsg setrobotstate -> setTheRobotState  //setTheRobotState
+				  whenMsg setdirection  -> setTheDirection  //setTheRobotState
+
+
+
+    State getRobotState{
+    	[# val PX   = planner.getPosX() 
+    		val PY  = planner.getPosY()
+    		val DIR = ""+planner.getDir()
+    	#]
+    	replyTo getrobotstate with robotstate : robotstate(pos($PX,$PY),$DIR)
+    	println("$name | replied to ropbotstate")
+    }
+    Goto waitclientrequest
+    
+    
+    State setTheDirection{
+ 		onMsg(setdirection : dir( D )){
+			[# D       = payloadArg(0)
+				#]						 
+		}
+    	
+    	[# Plan = planner.setTheDirection(D) #]  
+    	request planexec -m doplan : doplan( $Plan, $StepTime )
+    }
+ 	Transition t0 whenReply doplandone   -> planfordirok
+	              whenReply doplanfailed -> fatalerror
+    
+    State planfordirok{
+		[# planner.doPathOnMap(Plan) #]
+		[# planner.showCurrentRobotState(); #]
+		updateResource [# planner.robotOnMap() #] 
+	}
+	Goto waitclientrequest
+    
+    State fatalerror{
+    	println("fatalerror ") color red
+    }
+    Goto waitclientrequest
+    
+    
+	
+    State setTheRobotState	{
+		onMsg(setrobotstate : setpos(X,Y,D)){
+			[# X = payloadArg(0)
+			   Y = payloadArg(1)
+			   D = payloadArg(2)
+			#]			 
+		}
+		
+		[# planner.setRobotState(X,Y,D) #]
+		//println("setTheRobotState ($X, $Y, $D) ") color magenta
+		[# planner.showCurrentRobotState(); #]	 
+		delay 300 
+		//println("update resource for setTheRobotState") color magenta  
+		updateResource [# planner.robotOnMap() #] 
+	} 
+	Goto waitclientrequest
+	
+	
+	
+    State planTheRobotmoves{
+		onMsg( moverobot : moverobot(X,Y)){
+			[# TargetX = payloadArg(0)
+			   TargetY = payloadArg(1)
+		    #]
+		}
+		
+		[#  
+		   Plan = planner.planForGoal(""+TargetX,""+TargetY).toString()
+		   println("planTheRobotmoves $Plan")
+		   Plan = planner.planCompacted(Plan) 
+		   if( Plan.isEmpty()) Plan="''"
+		#]
+		println("$name | Plan to reach pos: $Plan")  color blue
+		//chiedo al basicrobot di eseguire  Plan
+		request planexec -m doplan : doplan($Plan,  $StepTime)
+	}
+	Transition t0 whenReply doplandone   -> endok
+	              whenReply doplanfailed -> endko
+	  
+	State endok{
+		//println("pos reached") 
+		//Aggiorno il path sulla mappa
+		[# planner.doPathOnMap(Plan) #]
+		[# planner.showCurrentRobotState(); #]
+		updateResource [# planner.robotOnMap() #] 
+		replyTo moverobot with moverobotdone : moverobotdone(ok)
+	}
+	Goto waitclientrequest
+	
+	State endko{
+		onMsg( doplanfailed : doplanfailed(ARG) ){
+			[# val PathTodo = payloadArg(0) #]
+			println("pos NOT reached - PathTodo = ${PathTodo} vs. $Plan") color red			 
+			[#   var PathDone = Plan.substring(0, Plan.lastIndexOf(PathTodo)+1)
+				 if( PathDone == "" ) PathDone ="n"				 
+				 else planner.doPathOnMap(PathDone)
+			#]
+			updateResource [# planner.robotOnMap() #]
+			//println(" ${PathDone}") 
+			//[# planner.doPathOnMap(PathDone) #]
+			[# planner.showCurrentRobotState(); #]
+			replyTo moverobot with moverobotfailed : moverobotfailed($PathDone,$PathTodo)
+		}
+	}
+	Goto waitclientrequest
+	
+}
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+QActor basicrobot context ctxcoldstorageservice{
+[#  
+  var StepTime      = 0L
+  var StartTime     = 0L     
+  var Duration      = 0L   
+  var RobotType     = "" 
+  var CurrentMove   = "unknown"
+  var StepSynchRes  = false
+#]      
+ 	State ss0 initial { 	
+ 		//printCurrentMessage       
+ 		discardMsg On  //In the intial phase ...
+ 		
+ 		
+ 		delegate "doplan" to planexec
+ 		
+ 		delegate "getrobotstate" to robotpos
+ 		delegate "setrobotstate" to robotpos
+ 		delegate "moverobot" to robotpos
+ 		delegate "setdirection" to robotpos
+ 		
+ 		
+ 		[# uniborobots.robotSupport.create(myself,"basicrobotConfig.json")	
+ 		
+ 		 RobotType = uniborobots.robotSupport.robotKind #]  
+ 		
+ 		delay 3000
+ 		
+ 		println("basicrobot | STARTING ... ") color magenta	
+  		//run uniborobots.robotSupport.move( "a" )    //synch
+ 		//run uniborobots.robotSupport.move( "d" )	//synch
+  		
+ 	}  
+ 	Goto work
+ 
+  	
+	State work{ 
+		//printCurrentMessage   
+        updateResource [# "basicrobot(started)" #]
+		discardMsg Off 
+		println("basicrobot  | waiting ")  color magenta
+		forward transporttrolley -m robotready : robotready(TRUE) 
+	} 
+	Transition t0   whenRequest  step      -> doStep		
+					whenMsg     cmd        -> execcmd
+				  	whenMsg     end        -> endwork			  
+	                
+	
+	State execcmd{ 
+		printCurrentMessage
+		
+		onMsg( cmd : cmd(MOVE) ){  
+	  	  	[# CurrentMove = payloadArg(0) #] 
+			run uniborobots.robotSupport.move( payloadArg(0 ) )
+			updateResource [# "moveactivated(${payloadArg(0)})" #]
+		}
+		
+	}
+	Goto work   
+	
+   	State doStep{ 
+		onMsg( step : step( T ) ){  
+			
+			[#	StepTime     = payloadArg(0).toLong()  	
+				#]    
+			updateResource [# "step(${StepTime})" #]
+	  	}  
+	    memoCurrentTime StartTime  
+	    [# StepSynchRes = uniborobots.robotSupport.dostep( StepTime )
+	    	#]          
+	}  	
+	Goto stepok if [# StepSynchRes #] else stepKo 
+ 
+     	 
+	State stepok{   
+		[# StepSynchRes = false #]
+ 		run uniborobots.robotSupport.move( "h" )  //stop the (real) robot 
+		updateResource [# "stepDone($StepTime)" #]
+   		//emit info : info( stepdone($StepTime) )
+   		replyTo step with stepdone : stepdone($StepTime)
+		//println("basicrobot | stepDone reply done")
+  	}
+	Goto work  
+ 
+	State stepKo{  
+		
+		setDuration Duration from StartTime
+		
+		run uniborobots.robotSupport.move( "h" )  //stop the (real) robot
+		[# var TunedDuration   = StepTime - ((Duration * 0.80)).toLong()   #]
+		println("basicrobot | stepKo $StepTime  duration=$Duration  TunedDuration=$TunedDuration") color magenta
+		replyTo step with stepfailed : stepfailed($Duration, obst)
+	 	
+    } 
+	Goto work 
+
+					
+	State endwork{ 
+		//printCurrentMessage
+		updateResource [# "basicrobot(end)" #]	 		
+ 		//terminate 1
+	}   
+   
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+QActor warningdevice context ctxraspberrypi{
+	State s0 initial{
+		
+	}
+}
+
+
+QActor alarmdevice context ctxraspberrypi{
+	State s0 initial{
+		
+	}
+}
+
+
+
+
+
