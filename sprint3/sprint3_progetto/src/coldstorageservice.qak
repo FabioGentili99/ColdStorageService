@@ -754,7 +754,7 @@ QActor planexec context ctxcoldstorageservice{
 	[#  var Plan          = ""
 		var PlanOrig      = ""
 		var CurMoveTodo   = ""		
-		var StepTime      = "500"
+		var StepTime      = "450"
 		var Plantodo = ""
 		var AtHome = true
    	#]
@@ -877,7 +877,7 @@ QActor robotpos context ctxcoldstorageservice{
 	[# val planner = unibo.planner23.Planner23Util()
 	    val MapName = "mapCompleteWithObst23ok"
 	    val MyName    = name 
-	    var StepTime  = "500"
+	    var StepTime  = "450"
 		var Plan      = ""	
 		var TargetX   = ""
 		var TargetY   = ""
@@ -952,10 +952,8 @@ QActor robotpos context ctxcoldstorageservice{
 		}
 		
 		[# planner.setRobotState(X,Y,D) #]
-		//println("setTheRobotState ($X, $Y, $D) ") color magenta
 		[# planner.showCurrentRobotState(); #]	 
 		delay 300 
-		//println("update resource for setTheRobotState") color magenta  
 		updateResource [# planner.robotOnMap() #] 
 	} 
 	Goto waitclientrequest
