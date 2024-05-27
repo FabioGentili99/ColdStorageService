@@ -47,7 +47,7 @@ class Transporttrolley ( name: String, scope: CoroutineScope, isconfined: Boolea
 				state("stoppedHome") { //this:State
 					action { //it:State
 						CommUtils.outyellow("transport trolley stopped, robot at home")
-						forward("updateled", "updateled(HOME)" ,"warningdevice" ) 
+						forward("home", "home(_)" ,"warningdevice" ) 
 						forward("stopplan", "stopplan(_)" ,"planexec" ) 
 						//genTimer( actor, state )
 					}
@@ -60,7 +60,7 @@ class Transporttrolley ( name: String, scope: CoroutineScope, isconfined: Boolea
 				state("continueworking") { //this:State
 					action { //it:State
 						CommUtils.outyellow("transport trolley resumed, robot at home")
-						forward("updateled", "updateled(HOME)" ,"warningdevice" ) 
+						forward("home", "home(_)" ,"warningdevice" ) 
 						forward("continueplan", "continueplan(_)" ,"planexec" ) 
 						//genTimer( actor, state )
 					}
@@ -75,9 +75,8 @@ class Transporttrolley ( name: String, scope: CoroutineScope, isconfined: Boolea
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								 TruckTicket = payloadArg(0).toInt()
 						}
-						forward("updateled", "updateled(MOVING)" ,"warningdevice" ) 
 						CommUtils.outyellow("loaddone received, start moving to indoor")
-						forward("updateled", "updateled(MOVING)" ,"warningdevice" ) 
+						forward("moving", "moving(_)" ,"warningdevice" ) 
 						request("moverobot", "moverobot(0,4)" ,"robotpos" )  
 						//genTimer( actor, state )
 					}
@@ -90,7 +89,7 @@ class Transporttrolley ( name: String, scope: CoroutineScope, isconfined: Boolea
 				}	 
 				state("handlecharge") { //this:State
 					action { //it:State
-						forward("updateled", "updateled(STOPPED)" ,"warningdevice" ) 
+						forward("stopped", "stopped(_)" ,"warningdevice" ) 
 						CommUtils.outyellow("il robot è arrivato all'indoor, inizio scarico della merce dal camion...")
 						delay(3000) 
 						answer("loaddone", "goaway", "goaway(_)"   )  
@@ -105,7 +104,7 @@ class Transporttrolley ( name: String, scope: CoroutineScope, isconfined: Boolea
 					action { //it:State
 						forward("stopplan", "stopplan(_)" ,"planexec" ) 
 						CommUtils.outyellow("transport trolley stopped while moving to the indoor")
-						forward("updateled", "updateled(STOPPED)" ,"warningdevice" ) 
+						forward("stopped", "stopped(_)" ,"warningdevice" ) 
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
@@ -117,7 +116,7 @@ class Transporttrolley ( name: String, scope: CoroutineScope, isconfined: Boolea
 					action { //it:State
 						forward("continueplan", "continueplan(_)" ,"planexec" ) 
 						CommUtils.outyellow("transport trolley resumed")
-						forward("updateled", "updateled(MOVING)" ,"warningdevice" ) 
+						forward("moving", "moving(_)" ,"warningdevice" ) 
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
@@ -131,7 +130,7 @@ class Transporttrolley ( name: String, scope: CoroutineScope, isconfined: Boolea
 					action { //it:State
 						request("moverobot", "moverobot(4,3)" ,"robotpos" )  
 						CommUtils.outyellow("transport trolley moving to the cold room")
-						forward("updateled", "updateled(MOVING)" ,"warningdevice" ) 
+						forward("moving", "moving(_)" ,"warningdevice" ) 
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
@@ -145,7 +144,7 @@ class Transporttrolley ( name: String, scope: CoroutineScope, isconfined: Boolea
 					action { //it:State
 						forward("stopplan", "stopplan(_)" ,"planexec" ) 
 						CommUtils.outyellow("transport trolley stopped while moving to the cold room")
-						forward("updateled", "updateled(STOPPED)" ,"warningdevice" ) 
+						forward("stopped", "stopped(_)" ,"warningdevice" ) 
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
@@ -157,7 +156,7 @@ class Transporttrolley ( name: String, scope: CoroutineScope, isconfined: Boolea
 					action { //it:State
 						forward("continueplan", "continueplan(_)" ,"planexec" ) 
 						CommUtils.outyellow("transport trolley resumed")
-						forward("updateled", "updateled(MOVING)" ,"warningdevice" ) 
+						forward("moving", "moving(_)" ,"warningdevice" ) 
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
@@ -169,7 +168,7 @@ class Transporttrolley ( name: String, scope: CoroutineScope, isconfined: Boolea
 				}	 
 				state("handledeposit") { //this:State
 					action { //it:State
-						forward("updateled", "updateled(STOPPED)" ,"warningdevice" ) 
+						forward("stopped", "stopped(_)" ,"warningdevice" ) 
 						CommUtils.outyellow("il robot è arrivato davanti alla cold room, inizio scarico della merce...")
 						delay(3000) 
 						//genTimer( actor, state )
@@ -197,7 +196,7 @@ class Transporttrolley ( name: String, scope: CoroutineScope, isconfined: Boolea
 					action { //it:State
 						CommUtils.outyellow("no new requests, returning home...")
 						request("moverobot", "moverobot(0,0)" ,"robotpos" )  
-						forward("updateled", "updateled(MOVING)" ,"warningdevice" ) 
+						forward("moving", "moving(_)" ,"warningdevice" ) 
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
@@ -211,7 +210,7 @@ class Transporttrolley ( name: String, scope: CoroutineScope, isconfined: Boolea
 					action { //it:State
 						forward("stopplan", "stopplan(_)" ,"planexec" ) 
 						CommUtils.outyellow("transport trolley stopped while returning home")
-						forward("updateled", "updateled(STOPPED)" ,"warningdevice" ) 
+						forward("stopped", "stopped(_)" ,"warningdevice" ) 
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
@@ -223,7 +222,7 @@ class Transporttrolley ( name: String, scope: CoroutineScope, isconfined: Boolea
 					action { //it:State
 						forward("continueplan", "continueplan(_)" ,"planexec" ) 
 						CommUtils.outyellow("transport trolley resumed")
-						forward("updateled", "updateled(MOVING)" ,"warningdevice" ) 
+						forward("moving", "moving(_)" ,"warningdevice" ) 
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002

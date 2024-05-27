@@ -22,7 +22,6 @@ class Ticketmanager ( name: String, scope: CoroutineScope, isconfined: Boolean=f
 		val interruptedStateTransitions = mutableListOf<Transition>()
 		
 				
-				
 				var Tickets = hashMapOf<Int,Long>()
 				var Ticket : Int = 0
 				var Now = 0L

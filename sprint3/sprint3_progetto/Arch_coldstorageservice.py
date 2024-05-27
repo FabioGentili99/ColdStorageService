@@ -30,8 +30,6 @@ with Diagram('coldstorageserviceArch', show=False, outformat='png', graph_attr=g
           robotpos=Custom('robotpos','./qakicons/symActorSmall.png')
           basicrobot=Custom('basicrobot','./qakicons/symActorSmall.png')
      with Cluster('ctxraspberrypi', graph_attr=nodeattr):
-          warningdevice=Custom('warningdevice','./qakicons/symActorSmall.png')
-          alarmdevice=Custom('alarmdevice','./qakicons/symActorSmall.png')
           warningdevice=Custom('warningdevice(ext)','./qakicons/externalQActor.png')
           alarmdevice=Custom('alarmdevice(ext)','./qakicons/externalQActor.png')
      transporttrolley >> Edge(color='magenta', style='solid', decorate='true', label='<moverobot<font color="darkgreen"> moverobotdone moverobotfailed</font> &nbsp; >',  fontcolor='magenta') >> robotpos
@@ -39,7 +37,7 @@ with Diagram('coldstorageserviceArch', show=False, outformat='png', graph_attr=g
      planexec >> Edge(color='magenta', style='solid', decorate='true', label='<step<font color="darkgreen"> stepdone stepfailed</font> &nbsp; >',  fontcolor='magenta') >> basicrobot
      coldroommanager >> Edge(color='magenta', style='solid', decorate='true', label='<generateticket &nbsp; >',  fontcolor='magenta') >> ticketmanager
      basicrobot >> Edge(color='blue', style='solid',  label='<robotready &nbsp; >',  fontcolor='blue') >> transporttrolley
-     transporttrolley >> Edge(color='blue', style='solid',  label='<updateled &nbsp; >',  fontcolor='blue') >> warningdevice
+     transporttrolley >> Edge(color='blue', style='solid',  label='<home &nbsp; moving &nbsp; stopped &nbsp; >',  fontcolor='blue') >> warningdevice
      planexec >> Edge(color='blue', style='solid',  label='<nextmove &nbsp; nomoremove &nbsp; >',  fontcolor='blue') >> planexec
      transporttrolley >> Edge(color='blue', style='solid',  label='<depositdone &nbsp; >',  fontcolor='blue') >> coldroommanager
      transporttrolley >> Edge(color='blue', style='solid',  label='<stopplan &nbsp; continueplan &nbsp; >',  fontcolor='blue') >> planexec

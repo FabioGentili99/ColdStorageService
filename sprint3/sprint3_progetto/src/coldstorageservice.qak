@@ -83,7 +83,9 @@ Dispatch resume : resume(_)
 
 
 //transporttrolley -> warningDevice(led)
-Dispatch updateled : updateled(RobotState)
+Dispatch home: home(_)
+Dispatch moving : moving(_)
+Dispatch stopped : stopped(_)
 
 
 
@@ -91,7 +93,7 @@ Dispatch updateled : updateled(RobotState)
 //CONTESTI
 
 Context ctxcoldstorageservice ip [host="localhost" port=9990]
-Context ctxraspberrypi ip [host="localhost" port=9999]
+Context ctxraspberrypi ip [host="192.168.232.244" port=9999]
 
 
 
@@ -274,8 +276,8 @@ QActor coldroommanager context ctxcoldstorageservice{
 
 QActor ticketmanager context ctxcoldstorageservice{
 	
+	
 	[#
-		
 		
 		var Tickets = hashMapOf<Int,Long>()
 		var Ticket : Int = 0
@@ -578,7 +580,7 @@ QActor transporttrolley context ctxcoldstorageservice{
 	
 	State stoppedHome{
 		println("transport trolley stopped, robot at home") color yellow
-		forward warningdevice -m updateled : updateled(HOME)
+		forward warningdevice -m home : home(_)
 		forward planexec -m stopplan : stopplan(_)
 	}Transition t0 whenMsg stop -> stoppedHome
 					whenMsg resume -> continueworking
@@ -586,7 +588,7 @@ QActor transporttrolley context ctxcoldstorageservice{
 	
 	State continueworking{
 		println("transport trolley resumed, robot at home") color yellow
-		forward warningdevice -m updateled : updateled(HOME)
+		forward warningdevice -m home : home(_)
 		forward planexec -m continueplan : continueplan(_)
 	}Goto waitingHome
 	
@@ -597,16 +599,16 @@ QActor transporttrolley context ctxcoldstorageservice{
 			[# TruckTicket = payloadArg(0).toInt()
 				#]
 		}
-		forward warningdevice -m updateled : updateled(MOVING)
 		println("loaddone received, start moving to indoor") color yellow
-		forward warningdevice -m updateled : updateled(MOVING)
+		forward warningdevice -m moving : moving(_)
+		
 		request robotpos -m moverobot : moverobot(0,4)
 	}Transition t0 whenMsg stop -> stoppedWhileMovingIndoor
 					whenReply robotDead -> handleError
 					whenReply moverobotdone -> handlecharge
 					
 	State handlecharge{
-		forward warningdevice -m updateled : updateled(STOPPED)
+		forward warningdevice -m stopped : stopped(_)
 		println("il robot è arrivato all'indoor, inizio scarico della merce dal camion...") color yellow
 		delay 3000
 		replyTo loaddone with goaway : goaway(_)
@@ -616,14 +618,14 @@ QActor transporttrolley context ctxcoldstorageservice{
 	State stoppedWhileMovingIndoor{
 		forward planexec -m stopplan : stopplan(_)
 		println("transport trolley stopped while moving to the indoor") color yellow
-		forward warningdevice -m updateled : updateled(STOPPED)
+		forward warningdevice -m stopped : stopped(_)
 	}Transition t0 whenMsg resume -> resumeIndoor
 	
 	
 	State resumeIndoor{
 		forward planexec -m continueplan : continueplan(_)
 		println("transport trolley resumed") color yellow
-		forward warningdevice -m updateled : updateled(MOVING)
+		forward warningdevice -m moving : moving(_)
 	}Transition t0 whenMsg stop -> stoppedWhileMovingIndoor
 					whenReply robotDead -> handleError
 					whenReply moverobotdone -> handlecharge
@@ -632,7 +634,7 @@ QActor transporttrolley context ctxcoldstorageservice{
 	State movetoport{
 		request robotpos -m moverobot : moverobot(4,3)
 		println("transport trolley moving to the cold room") color yellow
-		forward warningdevice -m updateled : updateled(MOVING)
+		forward warningdevice -m moving : moving(_)
 	}Transition t0 whenMsg stop -> stoppedWhileMovingPort
 					whenReply robotDead -> handleError
 					whenReply moverobotdone -> handledeposit
@@ -641,7 +643,7 @@ QActor transporttrolley context ctxcoldstorageservice{
 	State stoppedWhileMovingPort{
 		forward planexec -m stopplan : stopplan(_)
 		println("transport trolley stopped while moving to the cold room") color yellow
-		forward warningdevice -m updateled : updateled(STOPPED)
+		forward warningdevice -m stopped : stopped(_)
 	}Transition t0 whenMsg resume -> resumePort
 	
 	
@@ -649,7 +651,7 @@ QActor transporttrolley context ctxcoldstorageservice{
 	State resumePort{
 		forward planexec -m continueplan : continueplan(_)
 		println("transport trolley resumed") color yellow
-		forward warningdevice -m updateled : updateled(MOVING)
+		forward warningdevice -m moving : moving(_)
 	}Transition t0 whenMsg stop -> stoppedWhileMovingPort
 					whenReply robotDead -> handleError
 					whenReply moverobotdone -> handledeposit
@@ -657,7 +659,7 @@ QActor transporttrolley context ctxcoldstorageservice{
 					
 					
 	State handledeposit{
-		forward warningdevice -m updateled : updateled(STOPPED)
+		forward warningdevice -m stopped : stopped(_)
 		println("il robot è arrivato davanti alla cold room, inizio scarico della merce...") color yellow
 		delay 3000
 	}Goto depositdone
@@ -673,7 +675,7 @@ QActor transporttrolley context ctxcoldstorageservice{
 	State returnhome{
 		println("no new requests, returning home...") color yellow
 		request robotpos -m moverobot : moverobot(0,0)
-		forward warningdevice -m updateled : updateled(MOVING)
+		forward warningdevice -m moving : moving(_)
 	}Transition t0 whenMsg stop -> stoppedWhileMovingHome
 					whenReply robotDead -> handleError
 					whenReply moverobotdone -> setDirectionHome
@@ -682,7 +684,7 @@ QActor transporttrolley context ctxcoldstorageservice{
 	State stoppedWhileMovingHome{
 		forward planexec -m stopplan : stopplan(_)
 		println("transport trolley stopped while returning home") color yellow
-		forward warningdevice -m updateled : updateled(STOPPED)
+		forward warningdevice -m stopped : stopped(_)
 	}Transition t0 whenMsg resume -> resumeHome
 	
 	
@@ -690,7 +692,7 @@ QActor transporttrolley context ctxcoldstorageservice{
 	State resumeHome{
 		forward planexec -m continueplan : continueplan(_)
 		println("transport trolley resumed") color yellow
-		forward warningdevice -m updateled : updateled(MOVING)
+		forward warningdevice -m moving : moving(_)
 	}Transition t0 whenMsg stop -> stoppedWhileMovingHome
 					whenReply robotDead -> handleError
 					whenReply moverobotdone -> setDirectionHome
@@ -1121,29 +1123,6 @@ QActor basicrobot context ctxcoldstorageservice{
 } 
 
 
-
-
-
-
-
-
-
-
-
-
-
-QActor warningdevice context ctxraspberrypi{
-	State s0 initial{
-		
-	}
-}
-
-
-QActor alarmdevice context ctxraspberrypi{
-	State s0 initial{
-		
-	}
-}
 
 
 

@@ -38,10 +38,12 @@ dispatch( continueplan, continueplan(NO_PARAM) ).
 dispatch( setrobotstate, setpos(X,Y,D) ).
 dispatch( stop, stop(_) ).
 dispatch( resume, resume(_) ).
-dispatch( updateled, updateled(RobotState) ).
+dispatch( home, home(_) ).
+dispatch( moving, moving(_) ).
+dispatch( stopped, stopped(_) ).
 %====================================================================================
 context(ctxcoldstorageservice, "localhost",  "TCP", "9990").
-context(ctxraspberrypi, "localhost",  "TCP", "9999").
+context(ctxraspberrypi, "192.168.232.244",  "TCP", "9999").
  qactor( warningdevice, ctxraspberrypi, "external").
   qactor( alarmdevice, ctxraspberrypi, "external").
   qactor( coldstorageservice, ctxcoldstorageservice, "it.unibo.coldstorageservice.Coldstorageservice").
@@ -51,5 +53,3 @@ context(ctxraspberrypi, "localhost",  "TCP", "9999").
   qactor( planexec, ctxcoldstorageservice, "it.unibo.planexec.Planexec").
   qactor( robotpos, ctxcoldstorageservice, "it.unibo.robotpos.Robotpos").
   qactor( basicrobot, ctxcoldstorageservice, "it.unibo.basicrobot.Basicrobot").
-  qactor( warningdevice, ctxraspberrypi, "it.unibo.warningdevice.Warningdevice").
-  qactor( alarmdevice, ctxraspberrypi, "it.unibo.alarmdevice.Alarmdevice").
