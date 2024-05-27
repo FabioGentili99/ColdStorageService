@@ -21,7 +21,7 @@ with Diagram('alarm_systemArch', show=False, outformat='png', graph_attr=graphat
   with Cluster('env'):
      sys = Custom('','./qakicons/system.png')
 ### see https://renenyffenegger.ch/notes/tools/Graphviz/attributes/label/HTML-like/index
-     with Cluster('ctxalarmsystem', graph_attr=nodeattr):
+     with Cluster('ctxraspberrypi', graph_attr=nodeattr):
           alarmdevice=Custom('alarmdevice','./qakicons/symActorSmall.png')
           warningdevice=Custom('warningdevice','./qakicons/symActorSmall.png')
      with Cluster('ctxcoldstorageservice', graph_attr=nodeattr):

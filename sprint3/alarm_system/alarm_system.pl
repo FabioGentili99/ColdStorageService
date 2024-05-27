@@ -7,8 +7,8 @@ dispatch( stopped, stopped(_) ).
 dispatch( stop, stop(_) ).
 dispatch( resume, resume(_) ).
 %====================================================================================
-context(ctxalarmsystem, "localhost",  "TCP", "8300").
-context(ctxcoldstorageservice, "192.168.232.182",  "TCP", "8040").
+context(ctxraspberrypi, "localhost",  "TCP", "9999").
+context(ctxcoldstorageservice, "192.168.232.182",  "TCP", "9990").
  qactor( coldstorageservice, ctxcoldstorageservice, "external").
-  qactor( alarmdevice, ctxalarmsystem, "it.unibo.alarmdevice.Alarmdevice").
-  qactor( warningdevice, ctxalarmsystem, "it.unibo.warningdevice.Warningdevice").
+  qactor( alarmdevice, ctxraspberrypi, "it.unibo.alarmdevice.Alarmdevice").
+  qactor( warningdevice, ctxraspberrypi, "it.unibo.warningdevice.Warningdevice").

@@ -11,12 +11,12 @@ Dispatch resume : resume(_)
 
 
 
-Context ctxalarmsystem ip [host="localhost" port=8300]
+Context ctxraspberrypi ip [host="localhost" port=9999]
 
 
 //-----------------------------------------------------------------------
 
-Context ctxcoldstorageservice ip [host="192.168.232.182" port=8040]
+Context ctxcoldstorageservice ip [host="192.168.232.182" port=9990]
 
 ExternalQActor coldstorageservice context ctxcoldstorageservice
 
@@ -25,7 +25,7 @@ ExternalQActor coldstorageservice context ctxcoldstorageservice
 
 
 
-QActor alarmdevice context ctxalarmsystem{
+QActor alarmdevice context ctxraspberrypi{
 	
 	[# 	var Distanza = 20.0;
 		
@@ -59,7 +59,7 @@ QActor alarmdevice context ctxalarmsystem{
 
 
 
-QActor warningdevice context ctxalarmsystem{
+QActor warningdevice context ctxraspberrypi{
 	
 	
 	State s0 initial {
