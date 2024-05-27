@@ -1,9 +1,0 @@
-{"actor":"warningdevice", "msgType":"dispatch", "curstate":"athome", "nextstate":"athome", "msgId":"home"}
-{"actor":"warningdevice", "msgType":"dispatch", "curstate":"athome", "nextstate":"moving", "msgId":"moving"}
-{"actor":"warningdevice", "msgType":"dispatch", "curstate":"athome", "nextstate":"stopped", "msgId":"stopped"}
-{"actor":"warningdevice", "msgType":"dispatch", "curstate":"moving", "nextstate":"moving", "msgId":"moving"}
-{"actor":"warningdevice", "msgType":"dispatch", "curstate":"moving", "nextstate":"athome", "msgId":"home"}
-{"actor":"warningdevice", "msgType":"dispatch", "curstate":"moving", "nextstate":"stopped", "msgId":"stopped"}
-{"actor":"warningdevice", "msgType":"dispatch", "curstate":"stopped", "nextstate":"stopped", "msgId":"stopped"}
-{"actor":"warningdevice", "msgType":"dispatch", "curstate":"stopped", "nextstate":"athome", "msgId":"home"}
-{"actor":"warningdevice", "msgType":"dispatch", "curstate":"stopped", "nextstate":"moving", "msgId":"moving"}
