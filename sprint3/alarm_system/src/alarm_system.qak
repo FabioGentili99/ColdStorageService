@@ -1,0 +1,126 @@
+System alarm_system
+
+
+Dispatch home : home(_)
+Dispatch moving : moving(_)
+Dispatch stopped : stopped(_)
+
+
+Dispatch stop : stop(_)
+Dispatch resume : resume(_)
+
+
+
+Context ctxalarmsystem ip [host="localhost" port=8300]
+
+
+//-----------------------------------------------------------------------
+
+Context ctxcoldstorageservice ip [host="192.168.232.182" port=8040]
+
+ExternalQActor coldstorageservice context ctxcoldstorageservice
+
+//-----------------------------------------------------------------------
+
+
+
+
+QActor alarmdevice context ctxalarmsystem{
+	
+	[# 	var Distanza = 20.0;
+		
+		#]
+	
+	State s0 initial {
+		
+		println("alarm - sonar started") color green
+	} Goto work
+	
+	
+	
+	State work{
+		[#    
+			while(SonarService.getDistance() > Distanza){}
+ 		#]
+ 		
+		forward coldstorageservice -m stop : stop(1)
+		println("alarmdevice - sending stop message...") color green
+	}Goto stopped
+	
+	State stopped  {
+		[#    
+			while(SonarService.getDistance() < Distanza){}
+ 		#]
+		forward coldstorageservice -m resume : resume(_)
+		println("alarmdevice - sending resume message...") color green
+	} Transition t0 whenTime 3000 -> work
+	
+}
+
+
+
+QActor warningdevice context ctxalarmsystem{
+	
+	
+	State s0 initial {
+		
+	}Goto athome
+	
+	State athome {
+		
+		[#    
+			try{
+      			val p  = Runtime.getRuntime().exec("python3 ledOFF.py")
+      			
+    			}catch( e : Exception){
+      				println(e.message)
+    			}
+			#]
+		println("warningdevice - led OFF") color yellow
+		
+	} Transition t1 whenMsg home -> athome
+					whenMsg moving -> moving
+					whenMsg stopped -> stopped
+		
+					
+	
+	State moving {
+		println("warningdevice - start blinking") color yellow
+		[#    
+			try{
+      			val p  = Runtime.getRuntime().exec("python3 ledON.py")
+      			
+    			}catch( e : Exception){
+      				println(e.message)
+    			}
+			#]
+		[# Thread.sleep(500);
+			try{
+      			val p  = Runtime.getRuntime().exec("python3 ledOFF.py")
+      			
+    			}catch( e : Exception){
+      				println(e.message)
+    			}
+			
+			#]
+	} Transition t2 whenTime 500 -> moving
+					whenMsg moving -> moving
+					whenMsg home -> athome
+					whenMsg stopped -> stopped
+	
+	State stopped {
+		[#    
+			try{
+      			val p  = Runtime.getRuntime().exec("python3 ledON.py")
+      			
+    			}catch( e : Exception){
+      				println(e.message)
+    			}
+			#]
+		println("warningdevice - led ON") color yellow
+	} Transition t3 whenMsg stopped -> stopped
+					whenMsg home -> athome
+					whenMsg moving -> moving
+}
+
+
