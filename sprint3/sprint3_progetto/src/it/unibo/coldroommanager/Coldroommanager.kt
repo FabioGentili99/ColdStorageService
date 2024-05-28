@@ -119,6 +119,8 @@ class Coldroommanager ( name: String, scope: CoroutineScope, isconfined: Boolean
 									CurrentWeight = CurrentWeight + Requests.get(TruckTicket)!!
 									Requests.remove(TruckTicket)
 						CommUtils.outgreen("il nuovo current weight è di $CurrentWeight kg")
+						updateResourceRep("updateWeight-$FreeSpace-$CurrentWeight" 
+						)
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
@@ -137,6 +139,8 @@ class Coldroommanager ( name: String, scope: CoroutineScope, isconfined: Boolean
 									FreeSpace = FreeSpace - Requests.get(TruckTicket)!!	
 									Requests.remove(TruckTicket)
 						CommUtils.outred("il nuovo free space è di $FreeSpace kg")
+						updateResourceRep("updateWeight-$FreeSpace-$CurrentWeight" 
+						)
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
@@ -154,6 +158,8 @@ class Coldroommanager ( name: String, scope: CoroutineScope, isconfined: Boolean
 						
 									FreeSpace = FreeSpace - Requests.get(TruckTicket)!!
 									Requests.remove(TruckTicket)
+						updateResourceRep("updateWeight-$FreeSpace-$CurrentWeight" 
+						)
 						CommUtils.outred("il nuovo free space è di $FreeSpace kg")
 						//genTimer( actor, state )
 					}

@@ -20,7 +20,7 @@ public class HIControllerAppl {
     String appName;
     MessageSender sender = new MessageSender();
 
-    @GetMapping("/home")
+    @GetMapping("/")
     public String homePage(Model model) {
         this.aggiornaPesoCorrente(model);
         model.addAttribute("arg", appName);
