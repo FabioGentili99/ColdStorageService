@@ -117,7 +117,7 @@ eclipse {
 
 application {
     // Define the main class for the application.
-    mainClass = 'it.unibo.ctxcoldstorageservice.MainCtxcoldstorageserviceKt'
+    mainClassName = 'it.unibo.ctxraspberrypi.MainCtxraspberrypiKt'
 }
 
  jar {
@@ -125,5 +125,27 @@ application {
     from sourceSets.main.allSource
     manifest {
         attributes 'Main-Class': "$mainClassName"
+    }
+     baseName = project.findProperty('mainClassName')
+     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+     from ((configurations.compileClasspath.findAll{ !it.path.endsWith(".pom") }).collect { it.isDirectory() ? it : zipTree(it) }) {
+         exclude 'META-INF/MANIFEST.MF'
+         exclude 'META-INF/*.SF'
+         exclude 'META-INF/*.DSA'
+         exclude 'META-INF/*.RSA'
+     }
+
+}
+distributions{
+    main {
+        contents{
+            into('bin/'){
+                from "./alarm_system.pl"
+                from "./sysRules.pl"
+                from "./ledOFF.py"
+                from "./ledON.py"
+                from "./sonar.py"
+            }
+        }
     }
 }
