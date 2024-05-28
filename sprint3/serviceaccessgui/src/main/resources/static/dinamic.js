@@ -20,7 +20,7 @@ document.getElementById("depositsubmit").addEventListener("submit", function(e)
     e.preventDefault();
     var fw = document.getElementById("foodweight").value;
     sendMessage("depositreq", "fw="+fw);
-    updateDepositedWeight();
+    //updateDepositedWeight();
 });
 
 document.getElementById("checksubmit").addEventListener("submit", function(e)

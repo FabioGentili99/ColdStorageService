@@ -21,7 +21,7 @@ class Planexec ( name: String, scope: CoroutineScope, isconfined: Boolean=false 
 		  var Plan          = ""
 				var PlanOrig      = ""
 				var CurMoveTodo   = ""		
-				var StepTime      = "450"
+				var StepTime      = "330"
 				var Plantodo = ""
 				var AtHome = true
 				return { //this:ActionBasciFsm

@@ -4,7 +4,7 @@
 request( getweight, getweight(NO_PARAM) ).
 reply( currentweight, currentweight(CurrentWeight,FreeSpace) ).  %%for getweight
 request( storerequest, storerequest(TruckLoad) ).
-reply( loadaccepted, loadaccepted(Ticket,FreeSpace) ).  %%for storerequest
+reply( loadaccepted, loadaccepted(Ticket,FreeSpace,CurrentWeight) ).  %%for storerequest
 reply( loadrejected, loadrejected(_) ).  %%for storerequest
 request( verifyticket, verifyticket(TruckTicket) ).
 reply( chargetaken, chargetaken(_) ).  %%for verifyticket

@@ -35,6 +35,7 @@ class Transporttrolley ( name: String, scope: CoroutineScope, isconfined: Boolea
 					action { //it:State
 						forward("setrobotstate", "setpos(0,0,down)" ,"robotpos" ) 
 						CommUtils.outyellow("transport trolley waiting for requests, robot at home")
+						forward("home", "home(_)" ,"warningdevice" ) 
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002

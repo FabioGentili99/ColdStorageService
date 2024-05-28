@@ -7,7 +7,7 @@ Request getweight : getweight(NO_PARAM)
 Reply 	currentweight : currentweight(CurrentWeight,FreeSpace)  for getweight
 
 Request storerequest : storerequest(TruckLoad)
-Reply loadaccepted : loadaccepted(Ticket,FreeSpace) for storerequest
+Reply loadaccepted : loadaccepted(Ticket,FreeSpace,CurrentWeight) for storerequest
 Reply loadrejected : loadrejected(_) for storerequest 
 
 Request verifyticket : verifyticket(TruckTicket)
@@ -198,12 +198,10 @@ QActor coldroommanager context ctxcoldstorageservice{
 				Requests.put(TruckTicket, TruckLoad)
 			#]
 			println("generato il ticket $TruckTicket per la richiesta di deposito di $TruckLoad kg") color green
-			replyTo storerequest with loadaccepted : loadaccepted($TruckTicket,$FreeSpace)
+			replyTo storerequest with loadaccepted : loadaccepted($TruckTicket,$FreeSpace,$CurrentWeight)
 		}
 		
-		
-		println("è stato generato il ticket $TruckTicket per il driver") color green
-		replyTo storerequest with loadaccepted : loadaccepted($TruckTicket,$FreeSpace)
+	
 	}
 	Goto waiting
 	
@@ -573,6 +571,7 @@ QActor transporttrolley context ctxcoldstorageservice{
 	State waitingHome{
 		forward robotpos -m setrobotstate : setpos(0,0,down)
 		println("transport trolley waiting for requests, robot at home") color yellow
+		forward warningdevice -m home : home(_)
 	}Transition t0 whenMsg stop -> stoppedHome
 					whenMsg resume -> waitingHome
 					whenRequest loaddone -> startdeposit
@@ -756,7 +755,7 @@ QActor planexec context ctxcoldstorageservice{
 	[#  var Plan          = ""
 		var PlanOrig      = ""
 		var CurMoveTodo   = ""		
-		var StepTime      = "450"
+		var StepTime      = "330"
 		var Plantodo = ""
 		var AtHome = true
    	#]
@@ -879,7 +878,7 @@ QActor robotpos context ctxcoldstorageservice{
 	[# val planner = unibo.planner23.Planner23Util()
 	    val MapName = "mapCompleteWithObst23ok"
 	    val MyName    = name 
-	    var StepTime  = "450"
+	    var StepTime  = "330"
 		var Plan      = ""	
 		var TargetX   = ""
 		var TargetY   = ""
