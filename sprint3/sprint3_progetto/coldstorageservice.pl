@@ -33,8 +33,8 @@ reply( moverobotdone, moverobotok(ARG) ).  %%for moverobot
 reply( moverobotfailed, moverobotfailed(PLANDONE,PLANTODO) ).  %%for moverobot
 request( getrobotstate, getrobotstate(ARG) ).
 reply( robotstate, robotstate(POS,DIR) ).  %%for getrobotstate
-dispatch( stopplan, stopplan(NO_PARAM) ).
-dispatch( continueplan, continueplan(NO_PARAM) ).
+dispatch( stopplan, stopplan(_) ).
+dispatch( continueplan, continueplan(_) ).
 dispatch( setrobotstate, setpos(X,Y,D) ).
 dispatch( stop, stop(_) ).
 dispatch( resume, resume(_) ).

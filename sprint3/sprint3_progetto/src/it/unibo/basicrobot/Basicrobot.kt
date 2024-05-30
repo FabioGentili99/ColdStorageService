@@ -48,8 +48,6 @@ class Basicrobot ( name: String, scope: CoroutineScope, isconfined: Boolean=fals
 				}	 
 				state("work") { //this:State
 					action { //it:State
-						updateResourceRep( "basicrobot(started)"  
-						)
 						discardMessages = false
 						CommUtils.outmagenta("basicrobot  | waiting ")
 						forward("robotready", "robotready(TRUE)" ,"transporttrolley" ) 
@@ -60,7 +58,6 @@ class Basicrobot ( name: String, scope: CoroutineScope, isconfined: Boolean=fals
 					}	 	 
 					 transition(edgeName="t062",targetState="doStep",cond=whenRequest("step"))
 					transition(edgeName="t063",targetState="execcmd",cond=whenDispatch("cmd"))
-					transition(edgeName="t064",targetState="endwork",cond=whenDispatch("end"))
 				}	 
 				state("execcmd") { //this:State
 					action { //it:State
@@ -127,16 +124,6 @@ class Basicrobot ( name: String, scope: CoroutineScope, isconfined: Boolean=fals
 					sysaction { //it:State
 					}	 	 
 					 transition( edgeName="goto",targetState="work", cond=doswitch() )
-				}	 
-				state("endwork") { //this:State
-					action { //it:State
-						updateResourceRep( "basicrobot(end)"  
-						)
-						//genTimer( actor, state )
-					}
-					//After Lenzi Aug2002
-					sysaction { //it:State
-					}	 	 
 				}	 
 			}
 		}

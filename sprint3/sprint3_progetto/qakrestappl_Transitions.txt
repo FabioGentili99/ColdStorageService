@@ -29,4 +29,3 @@
 {"actor":"robotpos", "msgType":"dispatch", "curstate":"waitclientrequest", "nextstate":"setTheRobotState", "msgId":"setrobotstate"}
 {"actor":"robotpos", "msgType":"dispatch", "curstate":"waitclientrequest", "nextstate":"setTheDirection", "msgId":"setdirection"}
 {"actor":"basicrobot", "msgType":"dispatch", "curstate":"work", "nextstate":"execcmd", "msgId":"cmd"}
-{"actor":"basicrobot", "msgType":"dispatch", "curstate":"work", "nextstate":"endwork", "msgId":"end"}
