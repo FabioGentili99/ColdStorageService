@@ -419,17 +419,88 @@ L'archietettura logica risultante è la seguente:<br>
 <br>
 
 
+
+
+
+
+
+
 <!-- ------------------Progettazione e sviluppo---------------------- -->
 <!-- ------------------------------------------------------------ -->
 <!-- ------------------------------------------------------------ -->
 <h2>Progettazione e sviluppo</h2>
+
+<h3>BasicRobot</h3>
+Al fine di implementare la logica di stop/resume come descritto in precedenza, abbiamo preso il basic robot del progetto unibo.basicrobot23 fornito dal committente e abbiamo modificato e integrato i principali attori di cui è composto all'interno del cold storage service.
+<br>
+In particolare, <ksi>transporttrolley</ksi>, oltre a svolgere le operazioni degli scorsi sprint, si occupa di gestire i messaggi di stop e notificare il led riguardo lo stato del robot.<br>
+I comandi di movimento vengono inviati a <ksi>robotpos</ksi> che, tramite la libreria unibo.planner23, calcola i passi necessari ad arrivare alla cella desiderata.<br>
+Gli step vengono effettivamente eseguiti da <ksi>planexec</ksi>, il quale, tramite la classe di supporto alla comunicazione col robot fisico (<ksi>uniborobots.robotSupport</ksi>), riesce a procedere una mossa alla volta, in modo da lasciare la possibilità di stoppare il robot dopo ogni azione.<br>
+<a href="./sprint3_progetto/src/coldstorageservice.qak" >coldstorageservice.qak</a><br>
+
+
+<h3>Alarm system</h3>
+L'alarm system, composto da alarmdevice e warningdevice, è stato posizionato interamente nel contesto <ksi>ctxraspberrypi</ksi>, il quale esegue sul nodo del raspberry.<br>
+<ksi>alarmdevice</ksi> è l'attore qak che gestisce le distanze rilevate dal componente fisico <ksi>sonar</ksi>.<br>
+Per fare ciò, abbiamo utilizzato lo script python <a href="./alarm_system/sonar.py" >sonar.py</a> per attivare il sonar e scrivere su stdout quattro distanze al secondo.<br>
+La classe di supporto <a href="./alarm_system/resources/SonarService.kt" >SonarService.kt</a> viene utilizzato dall'alarmdevice per leggere le distanze e decidere se inviare o meno il messaggio di stop al coldstorageservie.<br>
+<ksi>warningdevice</ksi> è l'attore qak che si occupa di aggiornare lo stato del componente fisico <ksi>led</ksi> in base ai messaggi inviati dal coldstorage service.<br>
+Per modificare lo stato del led, utilizziamo due script python: <a href="./alarm_system/ledOFF.py" >ledOFF.py</a> e <a href="./alarm_system/ledON.py" >ledON.py</a>. <br>
+Per ottenere il blinking è sufficiente invocare questi due script consecutivamente.<br>
+<a href="./alarm_system/src/alarm_system.qak" >alarm_system.qak</a>
+<br>
+
+
+
+
+
 
 
 <!-- ------------------Test plan---------------------- -->
 <!-- ------------------------------------------------------------ -->
 <!-- ------------------------------------------------------------ -->
 
-<h2>Test plan</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ------------------Deployment-------------------------- -->
+
+<h2>Deployment</h2>
+<h3>Raspberry pi</h3>
+<img src="./resources/raspberry_pins.png" height="250" weight="150"> <br>
+LED:<br>
+- Anodo -> pin 22 <br>
+- Catodo -> pin 20 <br>
+SONAR:<br>
+- TRIG -> pin 11<br>
+- ECHO -> pin 13<br>
+- VCC -> pin 4<br>
+- GND -> pin 6<br>
+
+
+
+<h3>Alarm system</h3>
+Abbiamo modificato il file <a href="./alarm_system/build.gradle" >build.gradle</a> per fare in modo di includere tutti i file necessari all'esecuzione nel pacchetto di distribuzione.<br>
+Tramite comando <ksi>./gradlew distZip</ksi> abbiamo generato il pacchetto di distribuzione <a href="./alarm_system/build/distributions/" >unibo.alarm_system-1.0</a> da trasferire sul Raspberry.<br>
+
+
+<h3>Deployment finale</h3>
+<ol>
+    <li>Avviare il container itunibovirtualrobot23 su docker</li>
+    <li>In intellij, eseguire <a href="./sprint3_progetto/src/it/unibo/ctxcoldstorageservice/MainCtxcoldstorageservice.kt" >MainCtxcoldstorageservice.kt</a></li>
+    <li>Sul Raspberry, eseguire lo script all'interno della cartella unibo.alarm_system-1.0/bin </li>
+    <li>In intellij, eseguire <a href="./serviceaccessgui/src/main/java/unibo/springIntro23/SpringIntro23Application.java" >SpringIntro23Application.java</a></li>
+</ol>
+
 
 
 <div style="background-color:rgba(137, 129, 186, 0.9); width:60%;text-align:left;color:white">
