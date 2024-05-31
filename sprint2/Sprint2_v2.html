@@ -248,9 +248,9 @@ Realizzeremo la GUI non più come un simulatore e come attore interno  ma come u
 <b>PROBLEMA:</b> Come avviene lo scambio di dati tra il ColdStorageService(controller FACADE) e la ServiceAccessGUI? Quale protocollo utilizzare per il trasferimento dati?
 <solution>
     <b>Possibile soluzione</b>:
-    Il server si collegherà agli attori tramite WebSocket e anche come coapObserver. <br>
+    Il server si collegherà agli attori tramite protocollo <ksi>TCP </ksi> e anche come <ksi>coapObserver</ksi>. <br>
     <br>Le richieste ajax provenienti dai client verranno inoltrate tramite socket. <br>
-    <br> Potremmo usare il protocollo <ksi>CoAP</ksi> e rendere il <i>controller FACADE</i> un CoAP <b> observable</b>: in
+    <br> Potremmo usare il protocollo <ksi>CoAP</ksi> e rendere il <i>coldroommanager</i> un CoAP <b> observable</b>: in
     questo modo la ServiceAccessGUI potrebbe osservarlo e ottenere aggiornamenti immediati ogni volta che si verifica un cambiamento all'interno del ColdStorageService. <br>
 
     <br>
@@ -282,7 +282,8 @@ Realizzeremo la GUI non più come un simulatore e come attore interno  ma come u
     <p><img src="../sprint2/resources/archServerSpring_v2.drawio.png"> </p>
 </div>
 <div class="remark">
-    <br>Come da analisi del problema, gli eventi dell'attore ColdRoomManager verranno osservati tramite <ksi>observer </ksi>grazie alla classe <a href="./serviceaccessgui/src/main/java/unibo/springIntro23/ColdRoomObserver.java"><b>ColdRoomObserver.java</b></a>. <br>  Gli eventi degli attori verranno inoltrati ai client di Spring tramite websocket (create all'inizio di ogni sessione). <br>
+    <br>Come da analisi del problema, gli eventi dell'attore ColdRoomManager verranno osservati tramite <ksi>observer </ksi>grazie alla classe <a href="./serviceaccessgui/src/main/java/unibo/springIntro23/ColdRoomObserver.java"><b>ColdRoomObserver.java</b></a>.
+    <br><br>  Gli eventi degli attori verranno inoltrati ai client di Spring tramite websocket (create all'inizio di ogni sessione). <br>
     <br> Ogni volta che cambiano le label di currentweight e di freespace all'interno dell' attore ColdRoomManager si inviano aggiornamenti ai client Spring tramite la funzione <b>UpdateResource</b>  supportata dal linguaggio .qak .
 
 </div>
@@ -521,7 +522,7 @@ Lo sprint 3 coinvolgerà l'utilizzo di <ksi>RaspberryPi</ksi>:
 
 <br>
 <br>
-E' stato deciso che la quantità di tempo che sarà dedicata al completamento dello Sprint3 sarà di circa <b>XX ore umane</b> . <br>
+E' stato deciso che la quantità di tempo che sarà dedicata al completamento dello Sprint3 sarà di circa <b>20 ore umane</b> . <br>
 <a href="../sprint3/Sprint3_v0.html">Sprint3</a> link per lo sprint3 (Raspberry).
 
 <br>
