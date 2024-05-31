@@ -437,7 +437,7 @@ che viene invocato ogni volta che si apre la web page o che si fa un refresh man
             </pre>
 <br>
 
-Quindi, grazie al metodo <ksi>aggiornaPesoCorrente()</ksi> e grazie alla funzione <b>updateWeightField()</b> presente nella classe <a href="../sprint3/serviceaccessgui/src/main/resources/static/socket.js"><b>socket.js</b></a> riportata di seguito:
+Nella classe <a href="../sprint3/serviceaccessgui/src/main/resources/static/socket.js"><b>socket.js</b></a> ,abbiamo introdotto la funzione <ksi>updateWeightField()</ksi> . <br>  <br> La funzione viene attivata ogni volta che il <b>coldroommanager</b> esegue un updateResource; la funzione si occuperà di  aggiornare le label relative ai pesi. <br>
 <br>
 <pre>
     <code>
@@ -453,8 +453,10 @@ Quindi, grazie al metodo <ksi>aggiornaPesoCorrente()</ksi> e grazie alla funzion
     }
     </code>
     </pre>
+<solution>
+    Quindi, grazie al metodo <b>aggiornaPesoCorrente()</b> riportato sopra e grazie alla funzione <b>updateWeightField()</b>, l'utente vedrà gli aggiornamenti in tempo reale nella coldroom  <strong style="color:red">senza dover ricaricare manualmente la web page 😊</strong> <br>
+</solution>
 
-... l'utente vedrà gli aggiornamenti in tempo reale nella coldroom  <strong style="color:green">senza ricaricare manualmente la web page.</strong> <br>
 
 
 
