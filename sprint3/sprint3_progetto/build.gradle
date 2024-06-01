@@ -41,7 +41,7 @@ dependencies {
 
     /* COROUTINES ********************************************************************************************************** */
     // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-coroutines-core
-    implementation group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-core', version: "$kotlinVersion", ext: 'pom'
+    implementation group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-core', version: "$kotlinVersion"//, ext: 'pom'
     // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-coroutines-core-jvm
     implementation group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-core-jvm', version: "$kotlinVersion"
 
@@ -119,11 +119,28 @@ application {
     // Define the main class for the application.
     mainClassName = 'it.unibo.ctxcoldstorageservice.MainCtxcoldstorageserviceKt'
 }
-
+/*
  jar {
     println("building jar")
     from sourceSets.main.allSource
     manifest {
         attributes 'Main-Class': "$mainClassName"
+    }
+     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+     from { configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+}*/
+
+jar {
+    from sourceSets.main.allSource
+    println("building $mainClassName jar...")
+    manifest {
+        attributes 'Main-Class': "$mainClassName"
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from ((configurations.compileClasspath.findAll{ !it.path.endsWith(".pom") }).collect { it.isDirectory() ? it : zipTree(it) }) {
+        exclude 'META-INF/MANIFEST.MF'
+        exclude 'META-INF/*.SF'
+        exclude 'META-INF/*.DSA'
+        exclude 'META-INF/*.RSA'
     }
 }
