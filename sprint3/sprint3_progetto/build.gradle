@@ -117,7 +117,7 @@ eclipse {
 
 application {
     // Define the main class for the application.
-    mainClass = 'it.unibo.ctxraspberrypi.MainCtxraspberrypiKt'
+    mainClassName = 'it.unibo.ctxcoldstorageservice.MainCtxcoldstorageserviceKt'
 }
 
  jar {

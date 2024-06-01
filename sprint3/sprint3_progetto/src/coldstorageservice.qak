@@ -93,7 +93,7 @@ Dispatch stopped : stopped(_)
 //CONTESTI
 
 Context ctxcoldstorageservice ip [host="localhost" port=9990]
-Context ctxraspberrypi ip [host="192.168.232.244" port=9999]
+Context ctxraspberrypi ip [host="192.168.250.244" port=9999]
 
 
 
