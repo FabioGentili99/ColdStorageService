@@ -55,6 +55,23 @@ dependencies {
 	//implementation name: '2p301'
 }
 
+/*
 tasks.named('test') {
 	useJUnitPlatform()
+}*/
+
+/*application {
+	mainClassName = 'main.java.unibo.springIntro23.SpringIntro23Application.java'
+}*/
+
+jar {
+	println("executing jar")
+	duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+	from sourceSets.main.allSource
+	manifest {
+		attributes 'Main-Class': 'unibo.springIntro23.SpringIntro23Application.java'
+	}
+	//Add all project files to the jar
+	//from { configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
 }
+
