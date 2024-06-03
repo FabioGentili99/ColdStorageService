@@ -30,8 +30,10 @@ class TestDeposit {
         ColorsOut.outappl("Test Started", ColorsOut.CYAN)
 
         obs = CoapObserver1()
-
-        CommUtils.delay(2000)
+        var thread = thread {
+            RunDepositTest().main()
+        }
+        CommUtils.delay(20000)
         obs.addContext(ctxName, Pair(hostname,port))
         obs.addActor(actorName, ctxName)
         obs.createCoapConnection(actorName)
@@ -121,7 +123,7 @@ class TestDeposit {
 
 
 
-        CommUtils.delay(15000)
+        CommUtils.delay(25000)
         val list = mutableListOf(
             "test_deposit(handle_loaddone)",
             "test_deposit(move_to_indoor)",
@@ -133,7 +135,7 @@ class TestDeposit {
             "test_deposit(returning_home)"
         )
 
-        ColorsOut.out(obs.getCoapHistory().toString(),ColorsOut.GREEN)
+        ColorsOut.out("stringa finale: " + obs.getCoapHistory().toString(),ColorsOut.GREEN)
         assertTrue(obs.getCoapHistory().containsAll(list))
 
         if (obs.getCoapHistory().containsAll(list))
