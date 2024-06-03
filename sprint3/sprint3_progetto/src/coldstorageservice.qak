@@ -414,6 +414,7 @@ QActor transporttrolley context ctxcoldstorageservice{
 	
 	
 	State startdeposit{
+		updateResource [# "test_deposit(handle_loaddone)"#]
 	
 		onMsg(loaddone : loaddone(Ticket) ){
 			[# TruckTicket = payloadArg(0).toInt()
@@ -423,6 +424,7 @@ QActor transporttrolley context ctxcoldstorageservice{
 		forward warningdevice -m moving : moving(_)
 		
 		request robotpos -m moverobot : moverobot(0,4)
+		updateResource[#"test_deposit(move_to_indoor)"#]
 	}Transition t0 whenMsg stop -> stoppedWhileMovingIndoor
 					whenReply robotDead -> handleError
 					whenReply moverobotdone -> handlecharge
@@ -431,6 +433,7 @@ QActor transporttrolley context ctxcoldstorageservice{
 		forward warningdevice -m stopped : stopped(_)
 		println("il robot è arrivato all'indoor, inizio scarico della merce dal camion...") color yellow
 		delay 3000
+		updateResource[#"test_deposit(pickup_completed"#]
 		replyTo loaddone with goaway : goaway(_)
 	}Goto movetoport
 					
@@ -453,6 +456,7 @@ QActor transporttrolley context ctxcoldstorageservice{
 					
 	State movetoport{
 		request robotpos -m moverobot : moverobot(4,3)
+		updateResource[#"test_deposit(move_to_port)"#]
 		println("transport trolley moving to the cold room") color yellow
 		forward warningdevice -m moving : moving(_)
 	}Transition t0 whenMsg stop -> stoppedWhileMovingPort
@@ -462,6 +466,7 @@ QActor transporttrolley context ctxcoldstorageservice{
 					
 	State stoppedWhileMovingPort{
 		forward planexec -m stopplan : stopplan(_)
+		updateResource[#"test_deposit(stopped)"#]
 		println("transport trolley stopped while moving to the cold room") color yellow
 		forward warningdevice -m stopped : stopped(_)
 	}Transition t0 whenMsg resume -> resumePort
@@ -470,6 +475,7 @@ QActor transporttrolley context ctxcoldstorageservice{
 	
 	State resumePort{
 		forward planexec -m continueplan : continueplan(_)
+		updateResource[#"test_deposit(resumed)"#]
 		println("transport trolley resumed") color yellow
 		forward warningdevice -m moving : moving(_)
 	}Transition t0 whenMsg stop -> stoppedWhileMovingPort
@@ -482,6 +488,7 @@ QActor transporttrolley context ctxcoldstorageservice{
 		forward warningdevice -m stopped : stopped(_)
 		println("il robot è arrivato davanti alla cold room, inizio scarico della merce...") color yellow
 		delay 3000
+		updateResource[#"test_deposit(deposit_done)"#]
 	}Goto depositdone
 					
 					
@@ -495,6 +502,7 @@ QActor transporttrolley context ctxcoldstorageservice{
 	State returnhome{
 		println("no new requests, returning home...") color yellow
 		request robotpos -m moverobot : moverobot(0,0)
+		updateResource[#"test_deposit(returning_home)"#]
 		forward warningdevice -m moving : moving(_)
 	}Transition t0 whenMsg stop -> stoppedWhileMovingHome
 					whenReply robotDead -> handleError
