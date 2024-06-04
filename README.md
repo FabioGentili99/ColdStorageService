@@ -59,7 +59,7 @@ Sistema softaware DISTRIBUITO per un _**carrello elevatore robotizzato autonomo
   - Sprint Review: 07/05/2024
 - [x] **Sprint3** - Raspberry Pi: 
   - Latest Release (html format): [Sprint3_v0.html](sprint3/Sprint3_v0.html)
-  -Sprint Review: 04/06/2024
+  - Sprint Review: 04/06/2024
   - Final Exam: XX/XX/2024
 
 ## Team
