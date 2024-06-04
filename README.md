@@ -19,7 +19,7 @@ Sistema softaware DISTRIBUITO per un _**carrello elevatore robotizzato autonomo
   <tr align="center">
     <td><b>Virtual&nbsp;Robot</b></td>
     <td>
-      Web app che emula l'esecuzione di un Robot . Il robot è posizionato in un <b>virtual environment</b> (una stanza rettangolare) e può <b>ricevere comandi per eseguire alcune azioni</b>, come muoversi avanti/indietro per una certo periodo di tempo e ruotare.
+      Web app che simula l'esecuzione di un Robot . Il robot è posizionato in un <b>virtual environment</b> (una stanza rettangolare in un ambientre virtuale) e può <b>ricevere comandi per eseguire alcune azioni</b>, come muoversi avanti/indietro per una certo periodo di tempo e ruotare.
     </td>
     <td><img src="/commons/html/_images/ColdStorageServiceRoomAnnoted.PNG"/></td>
   </tr>
