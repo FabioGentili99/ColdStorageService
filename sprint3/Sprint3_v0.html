@@ -464,8 +464,32 @@ Per ottenere il blinking è sufficiente invocare questi due script consecutivame
 
 
 
+<h2>Test Plan</h2>
 
 
+Per testare il funzionamento del sistema, abbiamo deciso di predisporre un test oer verificare che tutte le fasi di un'azione di deposito vengano eseguite correttamente.
+<br>
+Il test si basa sul fatto che gli attori qak sono anche risorse CoAP, quindi è stato implementato un CoapObserver per tenere traccia degli aggiornamenti di stato notificati dal transporttrolley tramite la funzione updateResource.<br>
+In questo modo è possibile verificare che la lista delle azioni compiute dal robot è uguale a una serie di azioni che ci aspettiamo vengano svolte (spostamento verso indoor, scarico, <b>stop e resume</b>, movimento verso port, deposito, ritorno in home).<br>
+<br>La classe kotlin che implementa il test è: <a href="./sprint3_progetto/test/TestDeposit.kt" >TestDeposit.kt</a><br>
+
+<table class="dictionary">
+    <tr>
+        <td>Test</td>
+        <td>Descrizione</td>
+        <td>Risultati</td>
+    </tr>
+
+    <tr>
+        <td>test deposit</td>
+        <td>simulazione di invio di una serie di richiesta per lo svolgimento di un'azione di deposito completa.</td>
+        <td><a href="./resources/screenTestStoreRequest.png" >storerequest</a><br>
+            <a href="./resources/screenTestVerify.png" >verifyticket</a><br>
+            <a href="./resources/screenTestLoadDone.png" >loaddone</a><br>
+            <a href="./resources/screenTestDeposit.png" >Test Deposit</a>
+        </td>
+    </tr>
+</table>
 
 
 

@@ -71,19 +71,19 @@ class TestDeposit {
 
     @Test
     fun testDeposit(){
-        ColorsOut.out("TEST DEPOSIT START",ColorsOut.CYAN)
+        ColorsOut.outappl("TEST DEPOSIT START",ColorsOut.CYAN)
         obs.clearCoapHistory()
         val storereq = buildRequest("testDeposit","storerequest","storerequest(10)",facade)
 
-        ColorsOut.out("sending store request", ColorsOut.CYAN)
+        ColorsOut.outappl("sending store request", ColorsOut.CYAN)
 
         var reply : String = interaction.request(storereq.toString())
 
         assertTrue(reply.contains("loadaccepted"))
         if (reply.contains("loadaccepted"))
-            ColorsOut.out("TEST storerequest completed PASSED",ColorsOut.GREEN)
+            ColorsOut.outappl("TEST storerequest completed PASSED",ColorsOut.GREEN)
         else
-            ColorsOut.out("TEST storerequest completed FAILED",ColorsOut.RED)
+            ColorsOut.outappl("TEST storerequest completed FAILED",ColorsOut.RED)
 
         reply = reply.split(",")[4]
         var ticket : String= reply.replace("loadaccepted(","");
@@ -92,37 +92,37 @@ class TestDeposit {
 
         val verifyticket = buildRequest("testDeposit", "verifyticket", "verifyticket("+ ticket +")", facade)
 
-        ColorsOut.out("sending verify ticket request", ColorsOut.CYAN)
+        ColorsOut.outappl("sending verify ticket request", ColorsOut.CYAN)
 
         reply = interaction.request(verifyticket.toString())
 
         assertTrue(reply.contains("chargetaken"))
         if (reply.contains("chargetaken"))
-            ColorsOut.out("TEST verifyticket completed PASSED",ColorsOut.GREEN)
+            ColorsOut.outappl("TEST verifyticket completed PASSED",ColorsOut.GREEN)
         else
-            ColorsOut.out("TEST verifyticket completed FAILED",ColorsOut.RED)
+            ColorsOut.outappl("TEST verifyticket completed FAILED",ColorsOut.RED)
 
 
         val loaddone = buildRequest("testDeposit", "loaddone", "loaddone(" + ticket +")", facade)
-        ColorsOut.out("sending loaddone request", ColorsOut.CYAN)
+        ColorsOut.outappl("sending loaddone request", ColorsOut.CYAN)
         reply = interaction.request(loaddone.toString())
 
         assertTrue(reply.contains("goaway"))
         if (reply.contains("goaway"))
-            ColorsOut.out("TEST loaddone completed PASSED",ColorsOut.GREEN)
+            ColorsOut.outappl("TEST loaddone completed PASSED",ColorsOut.GREEN)
         else
-            ColorsOut.out("TEST loaddone completed FAILED",ColorsOut.RED)
+            ColorsOut.outappl("TEST loaddone completed FAILED",ColorsOut.RED)
         CommUtils.delay(500)
 
 
-        ColorsOut.out("sending stop message", ColorsOut.CYAN)
+        ColorsOut.outappl("sending stop message", ColorsOut.CYAN)
 
         val stop = buildDispatch("testDeposit", "stop", "stop(_)", facade)
         interaction.forward(stop)
 
         CommUtils.delay(2000)
 
-        ColorsOut.out("sending resume message", ColorsOut.CYAN)
+        ColorsOut.outappl("sending resume message", ColorsOut.CYAN)
         val resume = buildDispatch("testDeposit", "resume", "resume(_)", facade)
         interaction.forward(resume)
 
@@ -141,13 +141,13 @@ class TestDeposit {
             "test_deposit(returning_home)"
         )
 
-        ColorsOut.out("stringa finale: " + obs.getCoapHistory().toString(),ColorsOut.GREEN)
+        ColorsOut.outappl("stringa finale: " + obs.getCoapHistory().toString(),ColorsOut.GREEN)
         assertTrue(obs.getCoapHistory().containsAll(list))
 
         if (obs.getCoapHistory().containsAll(list))
-            ColorsOut.out("TEST DEPOSIT PASSED",ColorsOut.GREEN)
+            ColorsOut.outappl("TEST DEPOSIT PASSED",ColorsOut.GREEN)
         else
-            ColorsOut.out("TEST DEPOSIT FAILED",ColorsOut.RED)
+            ColorsOut.outappl("TEST DEPOSIT FAILED",ColorsOut.RED)
         /*
         val getweight = buildRequest("testDeposit","getweight","getweight(_)",facade)
         reply = interaction.request(getweight.toString())
