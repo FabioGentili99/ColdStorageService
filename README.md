@@ -35,7 +35,7 @@ Sistema software DISTRIBUITO per la gestione automatizzata di un servizio di sto
     <td>
 			Componente che può essere eseguito su un Raspberry Pi. Implementa un dispositivo di <b>alarm/warning</b>: quando un sensore sonar ad ultrasuoni rileva una distanza minore di un valore soglia, invia un messaggio al sistema, che stopperà/riprenderà l'attività del Transport Trolley; ColdStorage RaspPi mostra anche informazioni riguardo il stato attuale del sistema tramite un led.
 	</td>
-    <td><img src="/commons/html/_images/RaspImage.jpeg"/></td>
+    <td><img src="/commons/html/_images/img_raspNostra.jpg"/></td>
   </tr>
   <tr align="center">
     <td><b>Service&nbsp;Access&nbsp;GUI</b></td>
