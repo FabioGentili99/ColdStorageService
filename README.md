@@ -42,7 +42,7 @@ Sistema software DISTRIBUITO per la gestione automatizzata di un servizio di sto
     <td>
 			Web app per consentire al client di interagire con il sistema e <b>inviare richeste di servizio</b>. Permette di inviare una richiesta, verificare la convalida del ticket precedentemente ricevuto verificare il peso depositato in un determinato momento (current weight).
 		</td>
-    <td><img src="/commons/html/_images/SAG_storeRequest.png"/></td>
+    <td><img src="/commons/html/_images/SAG_storeRequest_ritagliata.png"/></td>
   </tr>
   
 </table>
