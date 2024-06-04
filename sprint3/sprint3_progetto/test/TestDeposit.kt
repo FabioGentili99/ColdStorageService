@@ -1,5 +1,6 @@
 import it.unibo.kactor.MsgUtil.buildDispatch
 import it.unibo.kactor.MsgUtil.buildRequest
+//import jdk.internal.org.jline.utils.Colors
 import unibo.basicomm23.interfaces.Interaction
 import unibo.basicomm23.tcp.TcpClientSupport
 import unibo.basicomm23.utils.ColorsOut
@@ -148,18 +149,21 @@ class TestDeposit {
             ColorsOut.outappl("TEST DEPOSIT PASSED",ColorsOut.GREEN)
         else
             ColorsOut.outappl("TEST DEPOSIT FAILED",ColorsOut.RED)
-        /*
+
         val getweight = buildRequest("testDeposit","getweight","getweight(_)",facade)
         reply = interaction.request(getweight.toString())
-        val weights = reply.split("\\(|\\)")[2].split(",");
-        assertTrue(weights[0].toInt() == 10)
-        assertTrue(weights[1].toInt() == 90)
-
-        if (weights[0].toInt() == 10 && weights[1].toInt() == 90)
-            ColorsOut.out("TEST getweight completed PASSED",ColorsOut.GREEN)
+        var currentweight = reply.split(",")[4]
+        var freespace = reply.split(",")[5]
+        currentweight = currentweight.replace("currentweight(","")
+        freespace = freespace.replace(")","")
+        assertTrue(currentweight.toInt() == 10)
+        assertTrue(freespace.toInt() == 90)
+        ColorsOut.outappl("Current weight: $currentweight freespace: $freespace",ColorsOut.GREEN)
+        if (currentweight.toInt() == 10 && freespace.toInt() == 90)
+            ColorsOut.outappl("TEST getweight completed PASSED",ColorsOut.GREEN)
         else
-            ColorsOut.out("TEST getweight completed FAILED",ColorsOut.RED)
-         */
+            ColorsOut.outappl("TEST getweight completed FAILED",ColorsOut.RED)
+
 
     }
 
