@@ -433,7 +433,7 @@ QActor transporttrolley context ctxcoldstorageservice{
 		forward warningdevice -m stopped : stopped(_)
 		println("il robot è arrivato all'indoor, inizio scarico della merce dal camion...") color yellow
 		delay 3000
-		updateResource[#"test_deposit(pickup_completed"#]
+		updateResource[#"test_deposit(pickup_completed)"#]
 		replyTo loaddone with goaway : goaway(_)
 	}Goto movetoport
 					

@@ -97,7 +97,7 @@ class Transporttrolley ( name: String, scope: CoroutineScope, isconfined: Boolea
 						forward("stopped", "stopped(_)" ,"warningdevice" ) 
 						CommUtils.outyellow("il robot è arrivato all'indoor, inizio scarico della merce dal camion...")
 						delay(3000) 
-						updateResourceRep("test_deposit(pickup_completed" 
+						updateResourceRep("test_deposit(pickup_completed)" 
 						)
 						answer("loaddone", "goaway", "goaway(_)"   )  
 						//genTimer( actor, state )
