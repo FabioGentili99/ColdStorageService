@@ -129,6 +129,7 @@ class TestDeposit {
 
 
         CommUtils.delay(25000)
+        /*
         val list = mutableListOf(
             "test_deposit(handle_loaddone)",
             "test_deposit(move_to_indoor)",
@@ -147,6 +148,19 @@ class TestDeposit {
             ColorsOut.out("TEST DEPOSIT PASSED",ColorsOut.GREEN)
         else
             ColorsOut.out("TEST DEPOSIT FAILED",ColorsOut.RED)
+         */
+        val getweight = buildRequest("testDeposit","getweight","getweight(_)",facade)
+        reply = interaction.request(getweight.toString())
+        val weights = reply.split("\\(|\\)")[2].split(",");
+        assertTrue(weights[0].toInt() == 10)
+        assertTrue(weights[1].toInt() == 90)
+
+        if (weights[0].toInt() == 10 && weights[1].toInt() == 90)
+            ColorsOut.out("TEST getweight completed PASSED",ColorsOut.GREEN)
+        else
+            ColorsOut.out("TEST getweight completed FAILED",ColorsOut.RED)
+
+
     }
 
 
