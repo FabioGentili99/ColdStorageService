@@ -5,7 +5,7 @@
   
   <h1>ColdStorage Service</h1>
 
-Sistema software DISTRIBUITO per la gestione automatizzata di un servizio di storage di cibo in una cella frigorifera tramite l'uso di un _** un robot dotato di carrello elevatore  **_. Il progetto è stato sviluppato per il corso di [Ingegneria dei Sistemi Software M](https://www.unibo.it/en/teaching/course-unit-catalogue/course-unit/2023/468003) dell' università di Bologna, Usando [SCRUM agile framework](https://www.scrum.org/resources/what-is-scrum).
+Sistema software DISTRIBUITO per la gestione automatizzata di un servizio di storage di cibo in una cella frigorifera tramite l'uso di un _**robot dotato di carrello elevatore  **_. Il progetto è stato sviluppato per il corso di [Ingegneria dei Sistemi Software M](https://www.unibo.it/en/teaching/course-unit-catalogue/course-unit/2023/468003) dell' università di Bologna, Usando [SCRUM agile framework](https://www.scrum.org/resources/what-is-scrum).
 <br/>Vedi la versione del <a href="README.html" target="_blank" rel="noopener">README.html </a>
 </div>
 
