@@ -34,9 +34,14 @@ class TestDeposit {
             RunDepositTest().main()
         }
         CommUtils.delay(20000)
+        /*
         obs.addContext(ctxName, Pair(hostname,port))
         obs.addActor(actorName, ctxName)
-        obs.createCoapConnection(actorName)
+
+         */
+        //obs.createCoapConnection(actorName)
+
+        obs.createCoapConnection(hostname, port, ctxName, actorName)
 
         try {
             interaction = TcpClientSupport.connect(hostname, port, 1);

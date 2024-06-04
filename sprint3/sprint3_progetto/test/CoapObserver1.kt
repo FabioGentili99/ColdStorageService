@@ -2,7 +2,6 @@ import org.eclipse.californium.core.CoapHandler
 import org.eclipse.californium.core.CoapResponse
 import unibo.basicomm23.coap.CoapConnection
 import unibo.basicomm23.utils.ColorsOut
-import unibo.basicomm23.utils.CommUtils
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
 
@@ -36,7 +35,7 @@ class CoapObserver1 : CoapHandler {
         actorsMap[actor] = context
     }
 
-
+    /*
     fun createCoapConnection(actor: String) {
         ColorsOut.out("Creating connection to $actor Actor", ColorsOut.BLUE)
         val coapTuple = createCoapTuple(actor)
@@ -52,7 +51,15 @@ class CoapObserver1 : CoapHandler {
         activeConnections[actor] = connection
         ColorsOut.out("Created connection to $actor, $connection", ColorsOut.BLUE)
     }
+*/
 
+    fun createCoapConnection(hostname: String, port: Int, context: String, actor: String){
+        ColorsOut.out("Creating connection to $actor Actor", ColorsOut.BLUE)
+        val connection = CoapConnection(hostname + ":" + port, context +  "/" + actor)
+        connection.observeResource(this)
+        activeConnections[actor] = connection
+        ColorsOut.out("Created connection to $actor, $connection", ColorsOut.BLUE)
+    }
 
     fun closeAllCoapConnections() {
         for(connEntry in activeConnections) {
