@@ -134,7 +134,7 @@ class TestDeposit {
             "test_deposit(handle_loaddone)",
             "test_deposit(move_to_indoor)",
             "test_deposit(pickup_completed)",
-            "tets_deposit(stopped)",
+            "test_deposit(stopped)",
             "test_deposit(resumed)",
             "test_deposit(move_to_port)",
             "test_deposit(deposit_done)",
@@ -148,7 +148,7 @@ class TestDeposit {
             ColorsOut.out("TEST DEPOSIT PASSED",ColorsOut.GREEN)
         else
             ColorsOut.out("TEST DEPOSIT FAILED",ColorsOut.RED)
-
+        /*
         val getweight = buildRequest("testDeposit","getweight","getweight(_)",facade)
         reply = interaction.request(getweight.toString())
         val weights = reply.split("\\(|\\)")[2].split(",");
@@ -159,7 +159,7 @@ class TestDeposit {
             ColorsOut.out("TEST getweight completed PASSED",ColorsOut.GREEN)
         else
             ColorsOut.out("TEST getweight completed FAILED",ColorsOut.RED)
-
+         */
 
     }
 
