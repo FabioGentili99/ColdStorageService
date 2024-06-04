@@ -28,7 +28,7 @@ Sistema software DISTRIBUITO per la gestione automatizzata di un servizio di sto
     <td>
      Componente principale del sistema. Esso <b>gestisce il ColdStorage</b>. Riceve storerequest (richiesta di deposito) dagli utenti, le elabora e delega un <i>Transport Trolley</i> per prelevare e depositare il foodload, nel caso ci sia abbastanza spazio nel container della ColdRoom.
     </td>
-    <td><img src="/sprint0/coldstorageservicearch.png"/></td>
+    <td><img src="/sprint1/sprint1_progetto/coldstorageservicearch.png"/></td>
   </tr>
   <tr align="center">
     <td><b>ColdStorage&nbsp;RaspPi</b></td>
