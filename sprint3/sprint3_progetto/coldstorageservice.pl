@@ -43,7 +43,7 @@ dispatch( moving, moving(_) ).
 dispatch( stopped, stopped(_) ).
 %====================================================================================
 context(ctxcoldstorageservice, "localhost",  "TCP", "9990").
-context(ctxraspberrypi, "192.168.250.244",  "TCP", "9999").
+context(ctxraspberrypi, "192.168.59.244",  "TCP", "9999").
  qactor( warningdevice, ctxraspberrypi, "external").
   qactor( alarmdevice, ctxraspberrypi, "external").
   qactor( coldstorageservice, ctxcoldstorageservice, "it.unibo.coldstorageservice.Coldstorageservice").
