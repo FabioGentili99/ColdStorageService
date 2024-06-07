@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-    <title>Sprint0</title>
+    <title>Sprint3</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/foundation-sites@6.7.4/dist/css/foundation.min.css" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.7.4/dist/js/foundation.min.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="../commons/resources/styles/templateISS.css">
@@ -169,49 +169,56 @@
             width: 85%;
             margin: auto;
         }
-        /* Updated CSS for Navigation */
         .sidenav {
-            height: 100%;
-            width: 0;
-            position: fixed;
-            z-index: 1;
-            top: 0;
-            left: 0;
-            background-color: #111;
-            overflow-x: hidden;
-            transition: 0.5s;
-            padding-top: 60px;
-        }
-        .sidenav a {
-            padding: 8px 8px 8px 32px;
-            text-decoration: none;
-            font-size: 25px;
-            color: #818181;
-            display: block;
-            transition: 0.3s;
-        }
-        .sidenav a:hover {
-            color: #f1f1f1;
-        }
-        .sidenav .closeButton {
-            position: absolute;
-            top: 0;
-            right: 25px;
-            font-size: 36px;
-            margin-left: 50px;
-        }
-        .openButton {
-            font-size: 30px;
-            cursor: pointer;
-        }
-        /* New styles for content shift */
-        .main-content {
-            transition: margin-left .5s;
-            padding: 16px;
-        }
-        .margin-shift {
-            margin-left: 250px;
-        }
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidenav a:hover {
+    color: #f1f1f1;
+}
+
+.sidenav .closeButton {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+.openButton {
+    font-size: 30px;
+    cursor: pointer;
+}
+
+/* New styles for content shift */
+.main-content {
+    transition: margin-left .5s;
+    padding: 16px;
+}
+
+.margin-shift {
+    margin-left: 300px; /* Increased margin */
+}
+
+
     </style>
 </head>
 <body onload="loadNav();">
@@ -232,9 +239,8 @@
             <a href="#Architettura Logica">Architettura Logica</a>
             <a href="#Test Plan">Test Plan</a>
             <a href="#Deployment">Deployment</a>
-            
+            <p class="separator">&mdash;&mdash;&mdash;&ndash;&ndash;&mdash;&mdash;&mdash;</p>    
         </div>
-        <p class="separator">&mdash;&mdash;&mdash;&ndash;&ndash;&mdash;&mdash;&mdash;</p>        
     </div>
     <div id="main-content" class="main-content">
 
@@ -576,13 +582,15 @@ GIT repo: <a href="https://github.com/FabioGentili99/ColdStorageService">https:/
 </div> 
 <script>
     function openNav() {
-        document.getElementById("sidenav").style.width = "250px";
-        document.getElementById("main-content").classList.add("margin-shift");
-    }
-    function closeNav() {
-        document.getElementById("sidenav").style.width = "0";
-        document.getElementById("main-content").classList.remove("margin-shift");
-    }
+    document.getElementById("sidenav").style.width = "250px"; /* Ensure this matches the sidenav width */
+    document.getElementById("main-content").classList.add("margin-shift");
+}
+
+function closeNav() {
+    document.getElementById("sidenav").style.width = "0";
+    document.getElementById("main-content").classList.remove("margin-shift");
+}
+
 </script>
 </body>
 </html>
